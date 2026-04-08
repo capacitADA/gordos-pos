@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
-/* ========== ESTILOS COMPLETOS (con imagen de logo) ========== */
+/* ========== ESTILOS COMPLETOS (sin imágenes) ========== */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
 :root{
   --red:#D32B2B;--red2:#A82222;--cream:#F5EDD6;--yellow:#F5C842;
@@ -22,7 +22,7 @@ body{background:var(--dark);color:var(--cream);font-family:'DM Sans',sans-serif;
 
 /* SELECTOR */
 #sel{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:1.5rem;padding:1.5rem;overflow-y:auto;}
-.sel-logo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--yellow);}
+.sel-logo{width:90px;height:90px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:bold;border:3px solid var(--yellow);}
 .sel-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--red);letter-spacing:.08em;}
 .sel-sub{font-size:.75rem;color:var(--mu);letter-spacing:.2em;margin-top:3px;}
 .sel-cards{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;width:100%;max-width:580px;}
@@ -37,7 +37,7 @@ body{background:var(--dark);color:var(--cream);font-family:'DM Sans',sans-serif;
 /* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--red);flex-shrink:0;}
 .tb-left{display:flex;align-items:center;gap:8px;}
-.tb-logo{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--cream);}
+.tb-logo{width:32px;height:32px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:bold;}
 .tb-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#fff;}
 .tb-right{display:flex;gap:6px;}
 .pill{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;}
@@ -201,23 +201,23 @@ body{background:var(--dark);color:var(--cream);font-family:'DM Sans',sans-serif;
 
 <!-- SELECTOR INICIAL -->
 <div id="sel">
-  <img class="sel-logo" src="LOGO_GBURGER.jpeg" alt="Gordo's Burger">
+  <div class="sel-logo">GB</div>
   <div>
     <div class="sel-title">GORDO'S BURGER</div>
     <div class="sel-sub">SISTEMA DE PEDIDOS EN NUBE</div>
   </div>
   <div class="sel-cards">
-    <div class="sel-card" onclick="setMode('cajero')">
+    <div class="sel-card" data-modo="cajero">
       <div class="ic">🧾</div>
       <h2>Cajero</h2>
       <p>Tomar pedidos, gestionar cola y WhatsApp</p>
     </div>
-    <div class="sel-card" onclick="setMode('cocina')">
+    <div class="sel-card" data-modo="cocina">
       <div class="ic">📺</div>
       <h2>Cocina / TV</h2>
       <p>Pantalla de visualización — solo lectura</p>
     </div>
-    <div class="sel-card" onclick="setMode('stats')">
+    <div class="sel-card" data-modo="stats">
       <div class="ic">📊</div>
       <h2>Estadísticas</h2>
       <p>Ventas del día, historial y exportar Excel</p>
@@ -229,7 +229,7 @@ body{background:var(--dark);color:var(--cream);font-family:'DM Sans',sans-serif;
 <!-- CAJERO -->
 <div id="caj">
   <div class="topbar">
-    <div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpeg" alt="GB"><div class="tb-brand">GORDO'S — CAJERO</div></div>
+    <div class="tb-left"><div class="tb-logo">GB</div><div class="tb-brand">GORDO'S — CAJERO</div></div>
     <div class="tb-right"><span class="pill py" id="conn-pill">Cloud</span><button class="bsm" onclick="goHome()">⟵ Inicio</button></div>
   </div>
   <div class="mtabs">
@@ -264,7 +264,7 @@ body{background:var(--dark);color:var(--cream);font-family:'DM Sans',sans-serif;
 <!-- COCINA TV -->
 <div id="coc">
   <div class="topbar">
-    <div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpeg" alt="GB"><div class="tb-brand">GORDO'S — COCINA</div></div>
+    <div class="tb-left"><div class="tb-logo">GB</div><div class="tb-brand">GORDO'S — COCINA</div></div>
     <div class="tb-right"><span class="tv-clock" id="tv-clock">00:00</span><span class="pill" id="conn-pill-tv">Cloud</span><button class="bsm" onclick="goHome()">⟵ Inicio</button></div>
   </div>
   <div class="tv-body">
@@ -275,7 +275,7 @@ body{background:var(--dark);color:var(--cream);font-family:'DM Sans',sans-serif;
 
 <!-- ESTADÍSTICAS -->
 <div id="stats">
-  <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpeg" alt="GB"><div class="tb-brand">GORDO'S — ESTADÍSTICAS</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">⟵ Inicio</button></div></div>
+  <div class="topbar"><div class="tb-left"><div class="tb-logo">GB</div><div class="tb-brand">GORDO'S — ESTADÍSTICAS</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">⟵ Inicio</button></div></div>
   <div class="stats-body"><div class="stats-hdr"><input type="date" id="stats-date" onchange="renderStats()"><button class="bxl" onclick="exportXlsx()">⬇ Exportar Excel</button></div><div class="kpis" id="kpis"></div><div style="overflow-x:auto;"><table class="stbl"><thead><tr><th>Hora</th><th>Cliente</th><th>WA</th><th>Tipo</th><th>Productos</th><th>Obs.</th><th>Empaque</th><th>Total</th><th>Tiempo</th><th>Estado</th><th>Prio</th></tr></thead><tbody id="stbl-body"></tbody></table></div></div>
 </div>
 
@@ -425,8 +425,20 @@ function exportXlsx() { let dateVal = document.getElementById("stats-date").valu
 // ==================== IMPRESIÓN ====================
 function printComanda() { if (!orden.length) { toast("No hay productos"); return; } let nombre = document.getElementById("c-nombre").value || "Cliente"; let wa = document.getElementById("c-wa").value || ""; let obs = document.getElementById("c-obs").value || ""; let tipo = document.getElementById("c-tipo").value; let numStr = String(pedidoNum).padStart(3,"0"); let html = `<div class="pr2"><span>Pedido</span><span>#${numStr}</span></div><div class="pr2"><span>Cliente</span><span>${nombre}</span></div><div class="pr2"><span>Tipo</span><span>${tipo==="llevar"?"Para llevar":"En el local"}</span></div>${wa?`<div class="pr2"><span>WA</span><span>${wa}</span></div>`:""}<div class="ps"></div>`; orden.forEach(i => html += `<div class="pr2"><span>${i.qty}x ${i.name}</span><span>$${((i.price*i.qty)/1000).toFixed(0)}K</span></div>`); let em = getEmpaque(); if (em) html += `<div class="pr2"><span>Empaque</span><span>$${(em/1000).toFixed(0)}K</span></div>`; if (obs) html += `<div style="font-size:10px;margin-top:4px;">Obs: ${obs}</div>`; html += `<div class="ps"></div><div class="pr2 ptot"><span>TOTAL</span><span>$${(getTotal()/1000).toFixed(0)}K</span></div><div style="text-align:center;margin-top:5px;font-size:10px;">${new Date().toLocaleString("es-CO")}</div>`; document.getElementById("prt-content").innerHTML = html; document.getElementById("prt").style.display = "block"; setTimeout(() => { window.print(); document.getElementById("prt").style.display = "none"; }, 80); }
 
+// ==================== ASIGNAR EVENTOS A LAS TARJETAS (para evitar problemas con onclick inline) ====================
+function asignarEventos() {
+  const cards = document.querySelectorAll('.sel-card');
+  cards.forEach(card => {
+    const modo = card.getAttribute('data-modo');
+    if (modo) {
+      card.addEventListener('click', () => setMode(modo));
+    }
+  });
+}
+
 // ==================== ARRANQUE ====================
 initFirebase();
+asignarEventos();
 </script>
 </body>
 </html>
