@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
-/* ========== ESTILOS COMPLETOS CON RESPONSIVE ========== */
+/* ========== ESTILOS OPTIMIZADOS PARA MÓVIL ========== */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
 :root{
   --red:#D32B2B; --red2:#A82222; --cream:#F5EDD6; --yellow:#F5C842;
@@ -21,128 +21,113 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 
 /* SELECTOR */
 #sel{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; gap:1.5rem; padding:1.5rem; overflow-y:auto;}
-.sel-logo{width:90px; height:90px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-size:2.5rem; font-weight:bold; border:3px solid var(--yellow);}
-.sel-title{font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--red);}
-.sel-sub{font-size:.75rem; color:var(--mu);}
-.sel-cards{display:flex; gap:.8rem; flex-wrap:wrap; justify-content:center; max-width:580px;}
-.sel-card{flex:1; min-width:150px; background:var(--d3); border:1.5px solid var(--bo); border-radius:12px; padding:1.5rem 1rem; text-align:center; cursor:pointer; transition:all .2s;}
-.sel-card:hover{border-color:var(--red); transform:translateY(-3px);}
-.sel-card .ic{font-size:2rem; margin-bottom:.6rem;}
-.sel-card h2{font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:#fff;}
-.fb-note{font-size:11px; color:var(--mu); max-width:400px; text-align:center; padding:.8rem; background:var(--d3); border-radius:8px;}
+.sel-logo{width:80px; height:80px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:bold; border:3px solid var(--yellow);}
+.sel-title{font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--red);}
+.sel-sub{font-size:.7rem; color:var(--mu);}
+.sel-cards{display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; max-width:580px;}
+.sel-card{flex:1; min-width:140px; background:var(--d3); border:1.5px solid var(--bo); border-radius:12px; padding:1rem 0.5rem; text-align:center; cursor:pointer;}
+.sel-card .ic{font-size:1.8rem; margin-bottom:.4rem;}
+.sel-card h2{font-family:'Bebas Neue',sans-serif; font-size:1rem; color:#fff;}
+.fb-note{font-size:10px; color:var(--mu); text-align:center; padding:.5rem; background:var(--d3); border-radius:8px;}
 
 /* TOPBAR */
-.topbar{display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:var(--red); flex-shrink:0;}
-.tb-left{display:flex; align-items:center; gap:8px;}
-.tb-logo{width:32px; height:32px; border-radius:50%; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-weight:bold;}
-.tb-brand{font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:#fff;}
-.tb-right{display:flex; gap:6px;}
-.pill{font-size:10px; padding:2px 7px; border-radius:20px; font-weight:700; background:var(--yellow); color:#412402;}
-.bsm{font-size:10px; padding:4px 8px; border-radius:5px; border:1px solid rgba(255,255,255,.3); background:transparent; color:#fff; cursor:pointer;}
+.topbar{display:flex; align-items:center; justify-content:space-between; padding:6px 10px; background:var(--red); flex-shrink:0;}
+.tb-left{display:flex; align-items:center; gap:6px;}
+.tb-logo{width:28px; height:28px; border-radius:50%; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;}
+.tb-brand{font-family:'Bebas Neue',sans-serif; font-size:1rem; color:#fff;}
+.tb-right{display:flex; gap:5px;}
+.pill{font-size:9px; padding:2px 6px; border-radius:20px; background:var(--yellow); color:#412402;}
+.bsm{font-size:9px; padding:3px 6px; border-radius:5px; border:1px solid rgba(255,255,255,.3); background:transparent; color:#fff; cursor:pointer;}
 
-/* CAJERO RESPONSIVE */
+/* CAJERO RESPONSIVE (COMPACTO) */
 #caj{display:none; flex-direction:column; height:100vh;}
-.caj-body{display:grid; grid-template-columns:1fr 300px; flex:1; overflow:hidden;}
+.caj-body{display:grid; grid-template-columns:1fr 280px; flex:1; overflow:hidden;}
 @media (max-width:680px){
   .caj-body{grid-template-columns:1fr;}
-  .caj-right{position:fixed; bottom:0; left:0; right:0; max-height:45vh; background:var(--d2); border-top:2px solid var(--red); border-radius:16px 16px 0 0; padding:10px; z-index:20; overflow-y:auto;}
-  .caj-left{padding-bottom:46vh;}
+  .caj-right{position:fixed; bottom:0; left:0; right:0; max-height:42vh; background:var(--d2); border-top:2px solid var(--red); border-radius:12px 12px 0 0; padding:8px; z-index:20; overflow-y:auto;}
+  .caj-left{padding-bottom:44vh;}
 }
-.caj-left{padding:10px; overflow-y:auto;}
-.caj-right{background:var(--d2); border-left:1px solid var(--bo); padding:10px; display:flex; flex-direction:column; gap:8px; overflow-y:auto;}
-.cats{display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px;}
-.cat{font-size:11px; padding:4px 12px; border-radius:20px; border:1px solid var(--bo); color:var(--mu); cursor:pointer; background:transparent;}
+.caj-left{padding:8px; overflow-y:auto;}
+.caj-right{background:var(--d2); border-left:1px solid var(--bo); padding:8px; display:flex; flex-direction:column; gap:6px; overflow-y:auto;}
+.cats{display:flex; gap:4px; flex-wrap:wrap; margin-bottom:6px;}
+.cat{font-size:10px; padding:3px 10px; border-radius:20px; border:1px solid var(--bo); color:var(--mu); cursor:pointer; background:transparent;}
 .cat.on{background:var(--red); color:#fff;}
-.mgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(105px,1fr)); gap:6px;}
-.mitem{background:var(--d3); border:1px solid var(--bo); border-radius:8px; padding:9px 7px; text-align:center; cursor:pointer;}
-.mn{font-size:11px; font-weight:500;}
-.mp{font-size:12px; color:var(--yellow); font-weight:700;}
-.mt{font-size:9px; color:var(--mu);}
-.cbox{background:var(--dark); border-radius:8px; padding:8px; display:flex; flex-direction:column; gap:5px;}
-.lbl{font-size:10px; color:var(--mu);}
-.cbox input,.cbox select,.cbox textarea{background:var(--d4); border:1px solid var(--bo); border-radius:5px; padding:6px; color:var(--cream); width:100%;}
-.oit{flex:1; overflow-y:auto; min-height:100px; max-height:200px;}
-.orow{display:flex; align-items:center; gap:5px; padding:5px 0; border-bottom:1px solid var(--bo);}
-.qc{display:flex; gap:3px;}
-.qb{width:20px; height:20px; border-radius:4px; border:none; cursor:pointer; font-weight:700;}
-.qm{background:var(--d4); color:var(--mu);}
-.qp{background:var(--red); color:#fff;}
-.qn{font-size:12px; color:#fff; min-width:20px; text-align:center;}
-.on2{flex:1; font-size:11px;}
-.opr{font-size:11px; color:var(--yellow);}
-.emrow{display:flex; justify-content:space-between; font-size:11px;}
-.empty-o{text-align:center; padding:1rem; color:var(--mu);}
-.trow{display:flex; justify-content:space-between; padding-top:6px; border-top:1px solid var(--bo);}
-.tv2{font-size:16px; color:var(--yellow); font-weight:700;}
-.bmain{background:var(--red); color:#fff; border:none; border-radius:7px; padding:10px; font-weight:700; cursor:pointer; width:100%;}
-.bsec{background:transparent; color:var(--mu); border:1px solid var(--bo); border-radius:6px; padding:6px; cursor:pointer; width:100%;}
-.blnk{background:transparent; color:var(--mu); border:none; font-size:11px; cursor:pointer; text-decoration:underline; text-align:right;}
-.cola-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:7px; margin-top:8px;}
-.pc{background:var(--d3); border:1.5px solid var(--bo); border-radius:10px; padding:10px; display:flex; flex-direction:column; gap:5px;}
-.pc.sprio{border-color:var(--gold); box-shadow:0 0 0 1px gold;}
-.pcnum{font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:#fff;}
-.pcli{font-size:11px; color:var(--mu);}
-.pitem{font-size:11px; border-top:1px solid var(--bo); padding-top:4px;}
-.kbtn{border:none; border-radius:6px; padding:7px; font-size:11px; font-weight:700; cursor:pointer;}
+.mgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:5px;}
+.mitem{background:var(--d3); border:1px solid var(--bo); border-radius:6px; padding:6px 4px; text-align:center; cursor:pointer;}
+.mn{font-size:10px; font-weight:500;}
+.mp{font-size:11px; color:var(--yellow); font-weight:700;}
+.mt{font-size:8px; color:var(--mu);}
+.cbox{background:var(--dark); border-radius:6px; padding:6px; display:flex; flex-direction:column; gap:4px;}
+.lbl{font-size:9px; color:var(--mu);}
+.cbox input,.cbox select,.cbox textarea{background:var(--d4); border:1px solid var(--bo); border-radius:4px; padding:5px; color:var(--cream); font-size:11px; width:100%;}
+.oit{flex:1; overflow-y:auto; min-height:80px; max-height:150px;}
+.orow{display:flex; align-items:center; gap:4px; padding:4px 0; border-bottom:1px solid var(--bo); font-size:10px;}
+.qc{display:flex; gap:2px;}
+.qb{width:18px; height:18px; border-radius:3px; font-size:11px;}
+.qn{font-size:11px; min-width:16px; text-align:center;}
+.on2{flex:1; font-size:10px;}
+.opr{font-size:10px;}
+.emrow{font-size:10px;}
+.empty-o{text-align:center; padding:0.5rem; font-size:11px;}
+.trow{font-size:12px; padding-top:4px;}
+.tv2{font-size:14px;}
+.bmain,.bsec{padding:6px; font-size:11px;}
+.blnk{font-size:10px;}
+.cola-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px; margin-top:6px;}
+.pc{background:var(--d3); border:1.5px solid var(--bo); border-radius:8px; padding:6px; display:flex; flex-direction:column; gap:3px;}
+.pc.sprio{border-color:var(--gold);}
+.pcnum{font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:#fff;}
+.pcli{font-size:10px; color:var(--mu);}
+.pitem{font-size:10px; border-top:1px solid var(--bo); padding-top:3px; margin-top:2px;}
+.kbtn{padding:4px 6px; font-size:10px; border-radius:4px;}
 .kpre{background:var(--yellow); color:#412402;}
 .klisto{background:#4CAF50; color:#fff;}
 .kwa{background:var(--green); color:#fff;}
 .kdone{background:var(--d4); color:var(--mu);}
-.ptime{font-size:10px; text-align:right;}
-.tbar{height:4px; background:var(--d4); border-radius:2px; margin-top:2px;}
-.tbfill{height:100%; border-radius:2px;}
-.prioctrl{display:flex; gap:4px; margin-top:5px;}
-.priobtn{background:var(--d4); border:1px solid var(--bo); color:var(--cream); border-radius:4px; padding:3px 6px; font-size:10px; cursor:pointer;}
+.ptime{font-size:9px; text-align:right;}
+.tbar{height:3px; margin-top:2px;}
+.prioctrl{display:flex; gap:3px; margin-top:3px;}
+.priobtn{padding:2px 5px; font-size:9px;}
 
 /* COCINA TV */
 #coc{display:none; flex-direction:column; height:100vh;}
-.tv-body{padding:12px; overflow-y:auto; flex:1;}
-.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;}
-.tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:12px; padding:14px; position:relative;}
-.tvcard.sprio{border-color:var(--gold); background:#2a2a1a;}
-.tvnum{font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#fff;}
-.tvcli{font-size:12px; color:var(--mu);}
-.tvit{font-size:13px; border-top:1px solid var(--bo); padding-top:7px; margin-top:5px;}
-.tvtime{font-size:12px; text-align:right; margin-top:5px;}
-.tvbar{height:5px; background:var(--d4); border-radius:3px; margin-top:5px;}
-.tvbarfill{height:100%; border-radius:3px;}
-.tv-alert{animation: pulse 0.5s infinite; background:rgba(255,215,0,0.2);}
-@keyframes pulse{0%{opacity:1;}50%{opacity:0.6;}100%{opacity:1;}}
+.tv-body{padding:8px;}
+.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:8px;}
+.tvcard{background:var(--d3); border:1.5px solid var(--bo); border-radius:10px; padding:8px;}
+.tvcard.sprio{border-color:var(--gold);}
+.tvnum{font-size:1.5rem;}
+.tvcli{font-size:10px;}
+.tvit{font-size:11px; padding-top:5px; margin-top:3px;}
+.tvtime{font-size:10px;}
+.tvbar{height:3px;}
 
 /* ADMIN */
 #admin{display:none; flex-direction:column; height:100vh;}
-.admin-body{padding:12px; overflow-y:auto;}
-.admin-form{background:var(--d3); padding:12px; border-radius:12px; margin-bottom:12px;}
-.admin-form input, .admin-form select, .admin-form button{margin:5px 0; width:100%; padding:8px; border-radius:6px;}
-.admin-list{margin-top:12px;}
-.admin-item{background:var(--d2); padding:8px; margin:5px 0; border-radius:8px; display:flex; justify-content:space-between; align-items:center;}
+.admin-body{padding:8px;}
+.admin-form{background:var(--d3); padding:8px; border-radius:10px; margin-bottom:10px;}
+.admin-form input,.admin-form select,.admin-form button{font-size:11px; padding:5px;}
+.admin-item{padding:5px; font-size:11px;}
 
 /* STATS */
 #stats{display:none; flex-direction:column; height:100vh;}
-.stats-body{padding:12px; overflow-y:auto; flex:1;}
-.stats-hdr{display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
-.kpis{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:8px; margin-bottom:16px;}
-.kpi{background:var(--d3); border-radius:10px; padding:12px; text-align:center;}
-.kpin{font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--yellow);}
-.kpil{font-size:10px; color:var(--mu);}
-.stbl{width:100%; border-collapse:collapse; font-size:11px;}
-.stbl th{text-align:left; padding:7px; color:var(--mu); border-bottom:1px solid var(--bo);}
-.stbl td{padding:7px; border-bottom:1px solid var(--bo);}
-.bxl{background:#217346; color:#fff; border:none; border-radius:7px; padding:7px 14px; cursor:pointer;}
+.stats-body{padding:8px;}
+.kpis{gap:6px;}
+.kpi{padding:8px;}
+.kpin{font-size:1.3rem;}
+.stbl th, .stbl td{padding:4px; font-size:10px;}
 
 /* MODAL */
-.modal-bg{display:none; position:fixed; inset:0; background:rgba(0,0,0,.78); z-index:500; align-items:center; justify-content:center;}
+.modal-bg{position:fixed; inset:0; background:rgba(0,0,0,.78); z-index:500; align-items:center; justify-content:center; display:none;}
 .modal-bg.on{display:flex;}
-.modal{background:var(--d2); border-radius:14px; padding:1.2rem; width:300px;}
-.modal h3{font-family:'Bebas Neue',sans-serif; margin-bottom:.9rem;}
-.modal-opts{display:flex; flex-direction:column; gap:6px;}
-.mopt{background:var(--d3); border:1px solid var(--bo); border-radius:8px; padding:9px; cursor:pointer;}
-.mclose{margin-top:9px; width:100%; padding:6px; background:transparent; color:var(--mu); border:1px solid var(--bo); border-radius:6px; cursor:pointer;}
+.modal{background:var(--d2); border-radius:12px; padding:1rem; width:260px;}
+.modal h3{font-size:1rem;}
+.mopt{padding:6px; font-size:12px;}
+.mclose{padding:5px; font-size:11px;}
 
 /* PRINT */
 @media print{body>*:not(#prt){display:none!important;}#prt{display:block!important;}}
-#prt{display:none; font-family:monospace; font-size:12px; width:280px; padding:8px; color:#000; background:#fff;}
-.toast{position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--d3); border-radius:8px; padding:9px 16px; z-index:999; white-space:nowrap;}
+#prt{display:none; font-family:monospace; font-size:11px; width:260px; padding:6px;}
+.toast{font-size:11px; padding:6px 12px; bottom:15px;}
 </style>
 </head>
 <body>
@@ -152,10 +137,10 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="sel-title">GORDO'S BURGER</div>
   <div class="sel-sub">SISTEMA DE PEDIDOS EN NUBE</div>
   <div class="sel-cards">
-    <div class="sel-card" data-modo="cajero"><div class="ic">🧾</div><h2>Cajero</h2><p>Tomar pedidos</p></div>
-    <div class="sel-card" data-modo="cocina"><div class="ic">📺</div><h2>Cocina / TV</h2><p>Pantalla de cocina</p></div>
-    <div class="sel-card" data-modo="stats"><div class="ic">📊</div><h2>Estadísticas</h2><p>Ventas y Excel</p></div>
-    <div class="sel-card" data-modo="admin"><div class="ic">⚙️</div><h2>Admin</h2><p>Gestionar menú</p></div>
+    <div class="sel-card" data-modo="cajero"><div class="ic">🧾</div><h2>Cajero</h2></div>
+    <div class="sel-card" data-modo="cocina"><div class="ic">📺</div><h2>Cocina</h2></div>
+    <div class="sel-card" data-modo="stats"><div class="ic">📊</div><h2>Estadísticas</h2></div>
+    <div class="sel-card" data-modo="admin"><div class="ic">⚙️</div><h2>Admin</h2></div>
   </div>
   <div class="fb-note" id="fb-status">🔄 Conectando con Firebase...</div>
 </div>
@@ -174,14 +159,14 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
         <div class="lbl">NOMBRE</div><input type="text" id="c-nombre">
         <div class="lbl">WHATSAPP</div><input type="tel" id="c-wa" oninput="checkRecurrente()">
         <div class="lbl">TIPO</div><select id="c-tipo"><option value="llevar">Para llevar</option><option value="local">En el local</option></select>
-        <div class="lbl">OBSERVACIONES</div><textarea id="c-obs" rows="2"></textarea>
+        <div class="lbl">OBSERVACIONES</div><textarea id="c-obs" rows="1"></textarea>
       </div>
-      <div id="recur-box" style="display:none; background:#1a2e10; padding:5px; border-radius:6px; font-size:10px;"></div>
+      <div id="recur-box" style="display:none; background:#1a2e10; padding:3px; border-radius:4px; font-size:9px;"></div>
       <div class="oit" id="o-items"><div class="empty-o">Toca un producto</div></div>
       <button class="blnk" onclick="clearOrder()">Limpiar pedido</button>
       <div class="trow"><span>Total</span><span class="tv2" id="o-total">$0</span></div>
-      <button class="bmain" onclick="confirmar()">Confirmar y enviar</button>
-      <button class="bsec" onclick="printComanda()">🖨 Imprimir comanda</button>
+      <button class="bmain" onclick="confirmar()">Confirmar</button>
+      <button class="bsec" onclick="printComanda()">🖨 Imprimir</button>
     </div>
   </div>
 </div>
@@ -195,15 +180,15 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="topbar"><div class="tb-left"><div class="tb-logo">GB</div><div class="tb-brand">ADMIN - MENÚ</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="admin-body">
     <div class="admin-form">
-      <h3>Agregar / Editar producto</h3>
-      <input type="text" id="prod-id" placeholder="ID único (ej: nuevo1)" style="display:none;">
+      <h3 style="font-size:0.9rem;">Agregar producto</h3>
+      <input type="text" id="prod-id" placeholder="ID" style="display:none;">
       <input type="text" id="prod-nombre" placeholder="Nombre">
-      <input type="number" id="prod-precio" placeholder="Precio (COP)">
-      <select id="prod-categoria"><option value="Burgers">Burgers</option><option value="Combos">Combos</option><option value="Bebidas">Bebidas</option><option value="Adicionales">Adicionales</option></select>
-      <label><input type="checkbox" id="prod-empaque"> ¿Empaque para llevar?</label>
-      <label><input type="checkbox" id="prod-sabores"> ¿Tiene sabores?</label>
-      <input type="text" id="prod-sabores-list" placeholder="Sabores separados por coma (ej: Coca, Sprite)">
-      <button onclick="guardarProducto()">Guardar producto</button>
+      <input type="number" id="prod-precio" placeholder="Precio COP">
+      <select id="prod-categoria"><option>Burgers</option><option>Combos</option><option>Bebidas</option><option>Adicionales</option></select>
+      <label style="font-size:10px;"><input type="checkbox" id="prod-empaque"> Empaque llevar</label>
+      <label style="font-size:10px;"><input type="checkbox" id="prod-sabores"> Tiene sabores</label>
+      <input type="text" id="prod-sabores-list" placeholder="Sabores (ej: Coca, Sprite)">
+      <button onclick="guardarProducto()">Guardar</button>
       <button onclick="limpiarFormProducto()" style="background:#555;">Cancelar</button>
     </div>
     <div id="admin-lista" class="admin-list"></div>
@@ -215,8 +200,8 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="stats-body"><div class="stats-hdr"><input type="date" id="stats-date"><button class="bxl" onclick="exportXlsx()">Exportar Excel</button></div><div class="kpis" id="kpis"></div><div style="overflow-x:auto;"><table class="stbl"><thead><tr><th>Hora</th><th>Cliente</th><th>WA</th><th>Tipo</th><th>Productos</th><th>Obs</th><th>Total</th><th>Estado</th></tr></thead><tbody id="stbl-body"></tbody></table></div></div>
 </div>
 
-<div class="modal-bg" id="modal-sabor"><div class="modal"><h3>¿Sabor de bebida?</h3><div class="modal-opts" id="sabor-opts"></div><button class="mclose" onclick="closeModal()">Cancelar</button></div></div>
-<div id="prt"><div class="pl">GORDO'S BURGER</div><div style="font-size:10px;">Calle 34 #25-02 · Bucaramanga</div><div class="ps"></div><div id="prt-content"></div><div class="ps"></div><div>¡Gracias!</div></div>
+<div class="modal-bg" id="modal-sabor"><div class="modal"><h3>¿Sabor?</h3><div class="modal-opts" id="sabor-opts"></div><button class="mclose" onclick="closeModal()">Cancelar</button></div></div>
+<div id="prt"><div class="pl">GORDO'S BURGER</div><div style="font-size:9px;">Calle 34 #25-02 · Bucaramanga</div><div class="ps"></div><div id="prt-content"></div><div class="ps"></div><div>¡Gracias!</div></div>
 
 <script>
 // ========== CONFIGURACIÓN FIREBASE ==========
@@ -230,102 +215,62 @@ const firebaseConfig = {
   appId: "1:239611023125:web:b41defcb1c47c8dba1a31c"
 };
 
-// ========== MENÚ POR DEFECTO (completo) ==========
 const DEFAULT_MENU = {
-  "Burgers": [
-    {id:"b1", name:"Burger Clásica", price:23000, tag:"Pan artesanal 150g"},
-    {id:"b2", name:"Gordo's Máster", price:29000, tag:"Doble smash"}
-  ],
-  "Combos": [
-    {id:"c1", name:"Combo Clásica", price:30000, tag:"+ papas + bebida", empaque:true},
-    {id:"c2", name:"Combo Máster", price:36000, tag:"+ papas + bebida", empaque:true}
-  ],
-  "Bebidas": [
-    {id:"d1", name:"Bebida", price:5000, tag:"Elige sabor", sabores:["Coca-Cola","Sprite","Quatro","Agua"]}
-  ],
+  "Burgers": [{id:"b1", name:"Burger Clásica", price:23000},{id:"b2", name:"Gordo's Máster", price:29000}],
+  "Combos": [{id:"c1", name:"Combo Clásica", price:30000, empaque:true},{id:"c2", name:"Combo Máster", price:36000, empaque:true}],
+  "Bebidas": [{id:"d1", name:"Bebida", price:5000, sabores:["Coca-Cola","Sprite","Quatro","Agua"]}],
   "Adicionales": [
-    {id:"a1", name:"Adición salsa", price:1000},
-    {id:"a2", name:"Pepinillos", price:2000},
-    {id:"a3", name:"Queso americano", price:2000},
-    {id:"a4", name:"Tocineta", price:4000},
-    {id:"a5", name:"Mermelada de tocino", price:7000},
-    {id:"a6", name:"Goma", price:10000},
-    {id:"a7", name:"Papitas", price:6000},
-    {id:"a8", name:"Enchurlada papitas", price:6000}
+    {id:"a1", name:"Adición salsa", price:1000},{id:"a2", name:"Pepinillos", price:2000},
+    {id:"a3", name:"Queso americano", price:2000},{id:"a4", name:"Tocineta", price:4000},
+    {id:"a5", name:"Mermelada de tocino", price:7000},{id:"a6", name:"Goma", price:10000},
+    {id:"a7", name:"Papitas", price:6000},{id:"a8", name:"Enchurlada papitas", price:6000}
   ]
 };
-
 let MENU = JSON.parse(JSON.stringify(DEFAULT_MENU));
 let db = null, pedidos = {}, orden = [], pedidoNum = 1, catActual = "Burgers", modo = "";
-const EMPAQUE_PRECIO = 500;
-const TIEMPO_OBJETIVO = 12;
-const VISITAS_RECURRENTE = 5;
+const EMPAQUE_PRECIO = 500, TIEMPO_OBJETIVO = 12, VISITAS_RECURRENTE = 5;
 
-// ========== INICIALIZAR FIREBASE Y MENÚ ==========
+// ========== INICIALIZAR ==========
 function initFirebase() {
   try {
     if (typeof firebase === 'undefined') throw new Error("No Firebase");
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     db = firebase.database();
-    db.ref(".info/connected").on("value", snap => {
-      document.getElementById("fb-status").innerHTML = snap.val() ? "✅ Firebase conectado" : "⚠️ Sin conexión";
-    });
-    // Cargar menú desde Firebase o usar default
-    db.ref("menu").once("value", snap => {
-      if(snap.exists()) MENU = snap.val();
-      else db.ref("menu").set(DEFAULT_MENU);
-      if(modo === "cajero") { buildMenu(); renderItems(); }
-      if(modo === "admin") cargarAdminLista();
-    });
-    db.ref("menu").on("value", snap => {
-      if(snap.exists()) MENU = snap.val();
-      if(modo === "cajero") { buildMenu(); renderItems(); }
-      if(modo === "admin") cargarAdminLista();
-    });
-    db.ref("pedidos").on("value", snap => { pedidos = snap.val() || {}; if (modo === "cajero") renderCola(); if (modo === "cocina") renderTV(); if (modo === "stats") renderStats(); });
+    db.ref(".info/connected").on("value", snap => document.getElementById("fb-status").innerHTML = snap.val() ? "✅ Firebase conectado" : "⚠️ Sin conexión");
+    db.ref("menu").once("value", snap => { if(snap.exists()) MENU = snap.val(); else db.ref("menu").set(DEFAULT_MENU); if(modo==="cajero") { buildMenu(); renderItems(); } if(modo==="admin") cargarAdminLista(); });
+    db.ref("menu").on("value", snap => { if(snap.exists()) MENU = snap.val(); if(modo==="cajero") { buildMenu(); renderItems(); } if(modo==="admin") cargarAdminLista(); });
+    db.ref("pedidos").on("value", snap => { pedidos = snap.val() || {}; if(modo==="cajero") renderCola(); if(modo==="cocina") renderTV(); if(modo==="stats") renderStats(); });
     db.ref("meta/ultimoNumero").once("value", snap => { pedidoNum = (snap.val() || 0) + 1; db.ref("meta/ultimoNumero").set(pedidoNum); });
   } catch(e) { console.error(e); }
 }
 
-// ========== ADMIN: GESTIÓN DE MENÚ ==========
+// ========== ADMIN ==========
 function cargarAdminLista() {
-  let container = document.getElementById("admin-lista");
-  if(!container) return;
+  let container = document.getElementById("admin-lista"); if(!container) return;
   container.innerHTML = "";
   for(let cat in MENU) {
-    let catDiv = document.createElement("div");
-    catDiv.innerHTML = `<h3 style="margin-top:10px;">${cat}</h3>`;
-    container.appendChild(catDiv);
+    let catDiv = document.createElement("div"); catDiv.innerHTML = `<h3 style="margin:8px 0 4px; font-size:0.9rem;">${cat}</h3>`; container.appendChild(catDiv);
     MENU[cat].forEach(item => {
       let div = document.createElement("div"); div.className = "admin-item";
-      div.innerHTML = `<span><b>${item.name}</b> - $${(item.price/1000).toFixed(0)}K</span>
-        <div><button onclick="editarProducto('${cat}','${item.id}')">✏️</button>
-        <button onclick="eliminarProducto('${cat}','${item.id}')">🗑️</button></div>`;
+      div.innerHTML = `<span><b>${item.name}</b> - $${(item.price/1000).toFixed(0)}K</span><div><button onclick="editarProducto('${cat}','${item.id}')">✏️</button><button onclick="eliminarProducto('${cat}','${item.id}')">🗑️</button></div>`;
       container.appendChild(div);
     });
   }
 }
 function editarProducto(cat, id) {
-  let producto = MENU[cat].find(p => p.id === id);
-  if(!producto) return;
+  let p = MENU[cat].find(p=>p.id===id);
+  if(!p) return;
   document.getElementById("prod-id").value = id;
-  document.getElementById("prod-nombre").value = producto.name;
-  document.getElementById("prod-precio").value = producto.price;
+  document.getElementById("prod-nombre").value = p.name;
+  document.getElementById("prod-precio").value = p.price;
   document.getElementById("prod-categoria").value = cat;
-  document.getElementById("prod-empaque").checked = producto.empaque || false;
-  document.getElementById("prod-sabores").checked = !!producto.sabores;
-  document.getElementById("prod-sabores-list").value = producto.sabores ? producto.sabores.join(",") : "";
+  document.getElementById("prod-empaque").checked = p.empaque || false;
+  document.getElementById("prod-sabores").checked = !!p.sabores;
+  document.getElementById("prod-sabores-list").value = p.sabores ? p.sabores.join(",") : "";
 }
-function eliminarProducto(cat, id) {
-  if(confirm("¿Eliminar producto?")) {
-    MENU[cat] = MENU[cat].filter(p => p.id !== id);
-    if(MENU[cat].length === 0) delete MENU[cat];
-    db.ref("menu").set(MENU);
-    cargarAdminLista();
-  }
-}
+function eliminarProducto(cat, id) { if(confirm("¿Eliminar?")) { MENU[cat] = MENU[cat].filter(p=>p.id!==id); if(!MENU[cat].length) delete MENU[cat]; db.ref("menu").set(MENU); cargarAdminLista(); } }
 function guardarProducto() {
-  let id = document.getElementById("prod-id").value;
+  let id = document.getElementById("prod-id").value || Date.now().toString();
   let nombre = document.getElementById("prod-nombre").value.trim();
   let precio = parseInt(document.getElementById("prod-precio").value);
   let categoria = document.getElementById("prod-categoria").value;
@@ -333,12 +278,12 @@ function guardarProducto() {
   let tieneSabores = document.getElementById("prod-sabores").checked;
   let saboresStr = document.getElementById("prod-sabores-list").value;
   if(!nombre || isNaN(precio)) { alert("Nombre y precio válidos"); return; }
-  let producto = { id: id || Date.now().toString(), name: nombre, price: precio };
+  let producto = { id, name: nombre, price: precio };
   if(empaque) producto.empaque = true;
   if(tieneSabores && saboresStr) producto.sabores = saboresStr.split(",").map(s=>s.trim());
   if(!MENU[categoria]) MENU[categoria] = [];
-  let idx = MENU[categoria].findIndex(p => p.id === producto.id);
-  if(idx >= 0) MENU[categoria][idx] = producto;
+  let idx = MENU[categoria].findIndex(p=>p.id===id);
+  if(idx>=0) MENU[categoria][idx] = producto;
   else MENU[categoria].push(producto);
   db.ref("menu").set(MENU);
   limpiarFormProducto();
@@ -379,8 +324,8 @@ function goHome() { modo=""; document.getElementById("sel").style.display="flex"
 function buildMenu() {
   let catsDiv = document.getElementById("cats"); catsDiv.innerHTML = "";
   Object.keys(MENU).forEach(c => {
-    let btn = document.createElement("button"); btn.className = "cat" + (c===catActual?" on":"");
-    btn.textContent = c; btn.onclick = () => { catActual=c; document.querySelectorAll(".cat").forEach(x=>x.classList.remove("on")); btn.classList.add("on"); renderItems(); };
+    let btn = document.createElement("button"); btn.className = "cat" + (c===catActual?" on":""); btn.textContent = c;
+    btn.onclick = () => { catActual=c; document.querySelectorAll(".cat").forEach(x=>x.classList.remove("on")); btn.classList.add("on"); renderItems(); };
     catsDiv.appendChild(btn);
   });
   renderItems();
@@ -431,7 +376,7 @@ function checkRecurrente() {
   if(!wa) { box.style.display="none"; return; }
   let hist = Object.values(pedidos).filter(p=>normalizeWA(p.wa||"")===wa && p.estado==="entregado");
   if(hist.length>=VISITAS_RECURRENTE) {
-    box.innerHTML = `<strong>⭐ Cliente frecuente (${hist.length} visitas)</strong><br>Último: ${hist[0].items.map(i=>i.qty+"× "+i.name).join(", ")}`;
+    box.innerHTML = `<strong>⭐ Frecuente (${hist.length} visitas)</strong><br>Último: ${hist[0].items.map(i=>i.qty+"× "+i.name).join(", ")}`;
     box.style.display="block";
   } else box.style.display="none";
 }
@@ -453,48 +398,49 @@ function confirmar() {
   persist(key, pedido);
   db.ref("meta/ultimoNumero").set(pedidoNum);
   pedidoNum++;
-  toast(`Pedido #${pedido.num} de ${nombre} enviado`);
+  toast(`Pedido #${pedido.num} enviado`);
   clearOrder();
 }
 
-// ========== COLA CON PRIORIDAD ==========
+// ========== COLA CON PRIORIDAD Y SIN ETIQUETA "NUEVO" ==========
 function getActivos() { return Object.entries(pedidos).filter(([,p])=>p.estado!=="entregado").sort(([,a],[,b])=> (b.prioridad||0)-(a.prioridad||0) || a.ts-b.ts); }
 function renderCola() {
   let el = document.getElementById("cola-d"); if(!el) return;
   let activos = getActivos();
-  if(!activos.length) { el.innerHTML="<div>Sin pedidos activos</div>"; return; }
+  if(!activos.length) { el.innerHTML="<div style='font-size:11px;'>Sin pedidos activos</div>"; return; }
   el.innerHTML = "";
   activos.forEach(([key,p]) => {
     let mins = Math.floor((Date.now()-p.ts)/60000);
     let pct = Math.min(100, Math.round(mins/TIEMPO_OBJETIVO*100));
     let barCol = pct<60?"#4CAF50":pct<100?"#F5C842":"#E24B4A";
-    let card = document.createElement("div"); card.className="pc" + (p.prioridad ? " sprio" : "");
-    let badge = `<span class="pill" style="background:${p.estado==='nuevo'?'var(--red)':p.estado==='preparando'?'var(--yellow)':'#4CAF50'}">${p.estado.toUpperCase()}</span>`;
-    if(p.prioridad) badge += `<span style="background:var(--gold);color:#000;margin-left:5px;">⭐ PRIO ${p.prioridad}</span>`;
+    let card = document.createElement("div"); card.className = "pc" + (p.prioridad ? " sprio" : "");
+    // Indicador de estado sin texto "NUEVO", solo color
+    let estadoColor = p.estado==='nuevo'?'var(--red)':p.estado==='preparando'?'var(--yellow)':'#4CAF50';
+    let badge = `<span style="display:inline-block; width:10px; height:10px; border-radius:10px; background:${estadoColor}; margin-right:5px;"></span>`;
+    if(p.prioridad) badge += `<span style="background:var(--gold); color:#000; font-size:9px; padding:0 4px; border-radius:10px;">⭐</span>`;
     let hist = Object.values(pedidos).filter(x=>normalizeWA(x.wa||"")===normalizeWA(p.wa||"") && x.estado==="entregado");
-    if(hist.length>=VISITAS_RECURRENTE) badge += `<span style="background:#1a4010;color:#a3d96a;margin-left:5px;">Frecuente</span>`;
+    if(hist.length>=VISITAS_RECURRENTE) badge += `<span style="background:#1a4010; color:#a3d96a; font-size:8px; padding:0 4px; border-radius:10px;">Frec</span>`;
     let actHtml = "";
     if(p.estado==="nuevo") actHtml = `<button class="kbtn kpre" onclick="cambiarEstado('${key}','preparando')">Preparar</button>`;
     else if(p.estado==="preparando") actHtml = `<button class="kbtn klisto" onclick="cambiarEstado('${key}','listo')">Listo</button>`;
     else if(p.estado==="listo") {
       let waNum = normalizeWA(p.wa||"");
-      let msg = encodeURIComponent(`¡Hola ${p.cliente}! 🍔 Tu pedido #${p.num} está listo.`);
+      let msg = encodeURIComponent(`¡Hola ${p.cliente}! 🍔 Tu pedido #${p.num} está listo para entregar. Si tienes un momento, nos ayudaría mucho con una reseña en Google Maps: https://www.google.com/maps/place/Gordo's+Burger/@7.1222284,-73.1188766,17z/data=!4m8!3m7!1s0x8e68150033a8aa37:0xaaaaf587a13769c2!8m2!3d7.1222284!4d-73.1188766!9m1!1b1!16s%2Fg%2F11yhd9d6wg?entry=ttu`);
       let waLink = waNum ? `https://wa.me/${waNum}?text=${msg}` : "";
-      actHtml = waLink ? `<button class="kbtn kwa" onclick="window.open('${waLink}','_blank'); cambiarEstado('${key}','entregado')">WhatsApp</button>` : `<div>Sin WA</div>`;
+      actHtml = waLink ? `<button class="kbtn kwa" onclick="window.open('${waLink}','_blank'); cambiarEstado('${key}','entregado')">WhatsApp</button>` : `<span style="font-size:9px;">Sin WA</span>`;
     }
-    let prioCtrl = `<div class="prioctrl"><button class="priobtn" onclick="moverPrio('${key}',-1)">↑ Subir</button><button class="priobtn" onclick="moverPrio('${key}',1)">↓ Bajar</button></div>`;
-    card.innerHTML = `<div class="pcnum">#${String(p.num).padStart(3,"0")}</div><div>${badge}</div><div class="pcli">${p.cliente} · ${p.tipo==="llevar"?"Llevar":"Local"}</div><div class="pitem">${p.items.map(i=>`<div>${i.qty}× ${i.name}</div>`).join("")}</div>${p.obs?`<div style="color:var(--yellow);">📝 ${p.obs}</div>`:""}<div class="tbar"><div class="tbfill" style="width:${pct}%;background:${barCol};"></div></div><div class="ptime">Hace ${mins} min</div><div>${actHtml}</div>${prioCtrl}`;
+    let prioCtrl = `<div class="prioctrl"><button class="priobtn" onclick="moverPrio('${key}',-1)">↑</button><button class="priobtn" onclick="moverPrio('${key}',1)">↓</button></div>`;
+    card.innerHTML = `<div style="display:flex; justify-content:space-between;"><div class="pcnum">#${String(p.num).padStart(3,"0")}</div><div>${badge}</div></div>
+      <div class="pcli">${p.cliente} · ${p.tipo==="llevar"?"Llevar":"Local"}</div>
+      <div class="pitem">${p.items.map(i=>`${i.qty}× ${i.name}`).join(", ")}</div>
+      ${p.obs?`<div style="color:var(--yellow); font-size:9px;">📝 ${p.obs}</div>`:""}
+      <div class="tbar"><div class="tbfill" style="width:${pct}%;background:${barCol};"></div></div>
+      <div class="ptime">Hace ${mins} min</div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">${actHtml}${prioCtrl}</div>`;
     el.appendChild(card);
   });
 }
-function cambiarEstado(key, estado) {
-  persistField(key,"estado",estado);
-  if(estado === "listo") {
-    playBeep();
-    toast("¡Pedido listo! Notifica al cliente");
-    // Alerta visual en cocina: se maneja con animación en renderTV
-  }
-}
+function cambiarEstado(key, estado) { persistField(key,"estado",estado); if(estado==="listo") { playBeep(); toast("¡Pedido listo! Notifica al cliente"); } }
 function moverPrio(key, dir) {
   let activos = getActivos();
   let idx = activos.findIndex(([k])=>k===key);
@@ -508,18 +454,18 @@ function moverPrio(key, dir) {
   setTimeout(renderCola, 100);
 }
 
-// ========== TV COCINA CON ALERTA ==========
+// ========== TV COCINA ==========
 function renderTV() {
   let grid = document.getElementById("tv-grid"); if(!grid) return;
   let activos = getActivos();
-  if(!activos.length) { grid.innerHTML="<div>Sin pedidos activos</div>"; return; }
+  if(!activos.length) { grid.innerHTML="<div style='font-size:12px;'>Sin pedidos activos</div>"; return; }
   grid.innerHTML = "";
   activos.forEach(([,p]) => {
     let mins = Math.floor((Date.now()-p.ts)/60000);
     let pct = Math.min(100, Math.round(mins/TIEMPO_OBJETIVO*100));
     let barCol = pct<60?"#4CAF50":pct<100?"#F5C842":"#E24B4A";
     let card = document.createElement("div"); card.className = "tvcard" + (p.prioridad ? " sprio" : "");
-    if(p.estado === "listo") card.classList.add("tv-alert");
+    if(p.estado === "listo") card.style.animation = "pulse 0.8s infinite";
     card.innerHTML = `<div class="tvnum">#${String(p.num).padStart(3,"0")}</div><div class="tvcli">${p.cliente} · ${p.tipo}</div><div class="tvit">${p.items.map(i=>`${i.qty}× ${i.name}`).join("<br>")}</div>${p.obs?`<div style="color:var(--yellow);">📝 ${p.obs}</div>`:""}<div class="tvbar"><div class="tvbarfill" style="width:${pct}%;background:${barCol};"></div></div><div class="tvtime">⏱ ${mins} min · ${p.estado}</div>`;
     grid.appendChild(card);
   });
@@ -559,23 +505,10 @@ function exportXlsx() {
   XLSX.utils.book_append_sheet(wb, ws, "Pedidos "+dateVal);
   XLSX.writeFile(wb, `GordosBurger_${dateVal}.xlsx`);
 }
-function printComanda() {
-  if(!orden.length) { toast("No hay productos"); return; }
-  let nombre = document.getElementById("c-nombre").value||"Cliente";
-  let tipo = document.getElementById("c-tipo").value;
-  let html = `<div class="pr2"><span>Pedido #${String(pedidoNum).padStart(3,"0")}</span><span>${new Date().toLocaleTimeString()}</span></div><div>Cliente: ${nombre}</div><div>Tipo: ${tipo==="llevar"?"Para llevar":"Local"}</div><div class="ps"></div>`;
-  orden.forEach(i=>html+=`<div>${i.qty}x ${i.name} $${((i.price*i.qty)/1000).toFixed(0)}K</div>`);
-  let em=getEmpaque(); if(em) html+=`<div>Empaque: $${(em/1000).toFixed(0)}K</div>`;
-  html+=`<div class="ps"></div><div><strong>Total: $${(getTotal()/1000).toFixed(0)}K</strong></div>`;
-  document.getElementById("prt-content").innerHTML=html;
-  document.getElementById("prt").style.display="block";
-  setTimeout(()=>{window.print(); document.getElementById("prt").style.display="none";},80);
-}
+function printComanda() { if(!orden.length) { toast("No hay productos"); return; } let nombre = document.getElementById("c-nombre").value||"Cliente"; let tipo = document.getElementById("c-tipo").value; let html = `<div>Pedido #${String(pedidoNum).padStart(3,"0")} - ${new Date().toLocaleTimeString()}</div><div>Cliente: ${nombre}</div><div>Tipo: ${tipo==="llevar"?"Para llevar":"Local"}</div><div class="ps"></div>`; orden.forEach(i=>html+=`<div>${i.qty}x ${i.name} $${((i.price*i.qty)/1000).toFixed(0)}K</div>`); let em=getEmpaque(); if(em) html+=`<div>Empaque: $${(em/1000).toFixed(0)}K</div>`; html+=`<div class="ps"></div><div><strong>Total: $${(getTotal()/1000).toFixed(0)}K</strong></div>`; document.getElementById("prt-content").innerHTML=html; document.getElementById("prt").style.display="block"; setTimeout(()=>{window.print(); document.getElementById("prt").style.display="none";},80); }
 
-// ========== EVENTOS Y ARRANQUE ==========
-document.querySelectorAll('.sel-card').forEach(card => {
-  card.addEventListener('click', () => setMode(card.getAttribute('data-modo')));
-});
+// ========== EVENTOS ==========
+document.querySelectorAll('.sel-card').forEach(card => card.addEventListener('click', () => setMode(card.getAttribute('data-modo'))));
 initFirebase();
 </script>
 </body>
