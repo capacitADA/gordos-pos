@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Gordo's Burger POS</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#111;color:#fff;font-family:sans-serif;height:100vh;overflow:hidden;}
+#sel{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;}
+.sel-card{background:#252525;border:1px solid #333;border-radius:12px;padding:20px;margin:10px;cursor:pointer;display:inline-block;}
+#caj, #coc, #stats{display:none;height:100vh;flex-direction:column;}
+.topbar{background:#D32B2B;padding:10px;display:flex;justify-content:space-between;}
+.caj-body{display:grid;grid-template-columns:1fr 300px;flex:1;overflow:auto;padding:10px;}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;}
+.mitem{background:#2E2E2E;padding:8px;border-radius:8px;text-align:center;cursor:pointer;}
+button{background:#D32B2B;color:white;border:none;padding:8px;border-radius:6px;cursor:pointer;}
+input,select,textarea{background:#2E2E2E;border:1px solid #333;color:white;padding:6px;border-radius:4px;width:100%;}
+</style>
+</head>
+<body>
+
+<div id="sel">
+  <h1>GORDO'S BURGER</h1>
+  <div>
+    <div class="sel-card" data-modo="cajero">🧾 Cajero</div>
+    <div class="sel-card" data-modo="cocina">📺 Cocina</div>
+    <div class="sel-card" data-modo="stats">📊 Estadísticas</div>
+  </div>
+  <div id="fb-status">Conectando Firebase...</div>
+</div>
+
+<div id="caj">
+  <div class="topbar"><span>CAJERO</span><button onclick="goHome()">Inicio</button></div>
+  <div class="caj-body">
+    <div class="caj-left">
+      <div id="cats"></div>
+      <div id="mgrid" class="mgrid"></div>
+      <div id="cola"></div>
+    </div>
+    <div class="caj-right">
+      <input type="text" id="nombre" placeholder="Cliente">
+      <input type="tel" id="wa" placeholder="WhatsApp">
+      <select id="tipo"><option>Llevar</option><option>Local</option></select>
+      <textarea id="obs" placeholder="Observaciones"></textarea>
+      <div id="items"></div>
+      <button onclick="confirmarPedido()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div id="coc">
+  <div class="topbar"><span>COCINA</span><button onclick="goHome()">Inicio</button></div>
+  <div id="tv-grid" style="padding:10px;"></div>
+</div>
+
+<div id="stats">
+  <div class="topbar"><span>ESTADÍSTICAS</span><button onclick="goHome()">Inicio</button></div>
+  <div style="padding:10px;"><input type="date" id="statsDate"><button onclick="exportarExcel()">Exportar</button><div id="statsData"></div></div>
+</div>
+
+<script>
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyDdoj6UZEBGetMNgfucn2kQsv12EtgEju4",
+  authDomain: "gordos-burger-443fb.firebaseapp.com",
+  databaseURL: "https://gordos-burger-443fb-default-rtdb.firebaseio.com",
+  projectId: "gordos-burger-443fb",
+  storageBucket: "gordos-burger-443fb.firebasestorage.app",
+  messagingSenderId: "239611023125",
+  appId: "1:239611023125:web:b41defcb1c47c8dba1a31c"
+};
+
+let db = null;
+let pedidos = {};
+let orden = [];
+let pedidoNum = 1;
+let modo = "";
+
+const MENU = {
+  Burgers: [{id:"b1",name:"Clásica",price:23000},{id:"b2",name:"Máster",price:29000}],
+  Bebidas: [{id:"d1",name:"Coca-Cola",price:5000},{id:"d2",name:"Sprite",price:5000}]
+};
+
+function initFirebase() {
+  if (typeof firebase === 'undefined') return;
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  db.ref(".info/connected").on("value", snap => {
+    document.getElementById("fb-status").innerHTML = snap.val() ? "✅ Firebase conectado" : "⚠️ Sin conexión";
+  });
+  db.ref("pedidos").on("value", snap => { pedidos = snap.val() || {}; if (modo === "cajero") renderCola(); if (modo === "cocina") renderTV(); });
+  db.ref("meta/ultimoNumero").once("value", snap => { pedidoNum = (snap.val() || 0) + 1; db.ref("meta/ultimoNumero").set(pedidoNum); });
+}
+
+function setMode(m) {
+  modo = m;
+  document.getElementById("sel").style.display = "none";
+  document.getElementById("caj").style.display = m === "cajero" ? "flex" : "none";
+  document.getElementById("coc").style.display = m === "cocina" ? "flex" : "none";
+  document.getElementById("stats").style.display = m === "stats" ? "flex" : "none";
+  if (m === "cajero") { renderMenu(); renderCola(); }
+  if (m === "cocina") renderTV();
+  if (m === "stats") { document.getElementById("statsDate").value = new Date().toISOString().slice(0,10); renderStats(); }
+}
+
+function goHome() {
+  modo = "";
+  document.getElementById("sel").style.display = "flex";
+  document.getElementById("caj").style.display = "none";
+  document.getElementById("coc").style.display = "none";
+  document.getElementById("stats").style.display = "none";
+}
+
+function renderMenu() {
+  let catsDiv = document.getElementById("cats");
+  catsDiv.innerHTML = "";
+  let grid = document.getElementById("mgrid");
+  grid.innerHTML = "";
+  Object.keys(MENU).forEach(cat => {
+    let btn = document.createElement("button");
+    btn.textContent = cat;
+    btn.onclick = () => {
+      grid.innerHTML = "";
+      MENU[cat].forEach(item => {
+        let div = document.createElement("div");
+        div.className = "mitem";
+        div.textContent = `${item.name} $${item.price/1000}K`;
+        div.onclick = () => agregarAlCarrito(item);
+        grid.appendChild(div);
+      });
+    };
+    catsDiv.appendChild(btn);
+  });
+  // Mostrar primera categoría
+  if (Object.keys(MENU).length) {
+    MENU[Object.keys(MENU)[0]].forEach(item => {
+      let div = document.createElement("div");
+      div.className = "mitem";
+      div.textContent = `${item.name} $${item.price/1000}K`;
+      div.onclick = () => agregarAlCarrito(item);
+      grid.appendChild(div);
+    });
+  }
+}
+
+function agregarAlCarrito(item) {
+  let existente = orden.find(i => i.id === item.id);
+  if (existente) existente.cantidad++;
+  else orden.push({...item, cantidad: 1});
+  actualizarCarrito();
+}
+
+function actualizarCarrito() {
+  let div = document.getElementById("items");
+  if (!orden.length) { div.innerHTML = "<div>Sin productos</div>"; return; }
+  let html = "";
+  orden.forEach((item, idx) => {
+    html += `<div>${item.cantidad}x ${item.name} - $${(item.price * item.cantidad)/1000}K 
+      <button onclick="orden.splice(${idx},1); actualizarCarrito()">X</button></div>`;
+  });
+  let total = orden.reduce((s,i) => s + i.price * i.cantidad, 0);
+  html += `<div><strong>Total: $${total/1000}K</strong></div>`;
+  div.innerHTML = html;
+}
+
+function confirmarPedido() {
+  let nombre = document.getElementById("nombre").value.trim();
+  if (!nombre || !orden.length) { alert("Faltan datos"); return; }
+  let key = "p" + Date.now() + "_" + pedidoNum;
+  let pedido = {
+    num: pedidoNum,
+    cliente: nombre,
+    wa: document.getElementById("wa").value,
+    obs: document.getElementById("obs").value,
+    tipo: document.getElementById("tipo").value,
+    items: orden.map(i => ({ name: i.name, qty: i.cantidad, price: i.price })),
+    total: orden.reduce((s,i) => s + i.price * i.cantidad, 0),
+    estado: "nuevo",
+    ts: Date.now()
+  };
+  db.ref("pedidos/" + key).set(pedido);
+  db.ref("meta/ultimoNumero").set(pedidoNum);
+  pedidoNum++;
+  orden = [];
+  actualizarCarrito();
+  document.getElementById("nombre").value = "";
+  document.getElementById("wa").value = "";
+  document.getElementById("obs").value = "";
+  alert("Pedido enviado");
+}
+
+function renderCola() {
+  let div = document.getElementById("cola");
+  if (!div) return;
+  let activos = Object.entries(pedidos).filter(([,p]) => p.estado !== "entregado").sort((a,b) => a[1].ts - b[1].ts);
+  if (!activos.length) { div.innerHTML = "Sin pedidos"; return; }
+  div.innerHTML = "";
+  activos.forEach(([key, p]) => {
+    let card = document.createElement("div");
+    card.style.background = "#252525"; card.style.margin = "5px"; card.style.padding = "8px";
+    card.innerHTML = `<b>#${p.num}</b> ${p.cliente}<br>${p.items.map(i => i.qty+"x "+i.name).join(", ")}<br>
+      <button onclick="db.ref('pedidos/${key}/estado').set('preparando')">Preparar</button>
+      <button onclick="db.ref('pedidos/${key}/estado').set('listo')">Listo</button>`;
+    div.appendChild(card);
+  });
+}
+
+function renderTV() {
+  let div = document.getElementById("tv-grid");
+  if (!div) return;
+  let activos = Object.entries(pedidos).filter(([,p]) => p.estado !== "entregado").sort((a,b) => a[1].ts - b[1].ts);
+  if (!activos.length) { div.innerHTML = "Sin pedidos"; return; }
+  div.innerHTML = "";
+  activos.forEach(([,p]) => {
+    let card = document.createElement("div");
+    card.style.background = "#252525"; card.style.margin = "5px"; card.style.padding = "8px";
+    card.innerHTML = `<b>#${p.num}</b> ${p.cliente}<br>${p.items.map(i => i.qty+"x "+i.name).join(", ")}<br>Estado: ${p.estado}`;
+    div.appendChild(card);
+  });
+}
+
+function renderStats() {
+  document.getElementById("statsData").innerHTML = "Estadísticas en construcción";
+}
+
+function exportarExcel() { alert("Exportar Excel - funcionalidad completa en versión final"); }
+
+// Asignar eventos a las tarjetas
+document.querySelectorAll('.sel-card').forEach(card => {
+  card.addEventListener('click', () => setMode(card.getAttribute('data-modo')));
+});
+
+initFirebase();
+console.log("Script cargado. setMode existe:", typeof setMode);
+</script>
+</body>
+</html>
