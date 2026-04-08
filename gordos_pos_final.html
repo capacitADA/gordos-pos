@@ -381,18 +381,12 @@ body{background:var(--dark);color:var(--cream);font-family:'DM Sans',sans-serif;
 //  FIREBASE CONFIG — reemplaza con los tuyos
 // ══════════════════════════════════════════════
 const FB_CFG = {
-   apiKey: "AIzaSyDdoj6UZEBGetMNgfucn2kQsv12EtgEju4",
-
+  apiKey: "AIzaSyDdoj6UZEBGetMNgfucn2kQsv12EtgEju4",
   authDomain: "gordos-burger-443fb.firebaseapp.com",
-
   databaseURL: "https://gordos-burger-443fb-default-rtdb.firebaseio.com",
-
   projectId: "gordos-burger-443fb",
-
   storageBucket: "gordos-burger-443fb.firebasestorage.app",
-
   messagingSenderId: "239611023125",
-
   appId: "1:239611023125:web:b41defcb1c47c8dba1a31c"
 };
 
@@ -446,7 +440,7 @@ document.querySelectorAll(".sel-logo,.tb-logo").forEach(el=>el.src=LOGO);
 // ══ FIREBASE ══
 function initFB(){
   try{
-    if(FB_CFG.apiKey==="TU_API_KEY") throw new Error("no config");
+    // Firebase configurado
     if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
     db = firebase.database();
     useFB = true;
