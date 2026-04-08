@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
-/* ========== ESTILOS COMPLETOS ========== */
+/* ========== ESTILOS COMPLETOS CON RESPONSIVE ========== */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
 :root{
   --red:#D32B2B; --red2:#A82222; --cream:#F5EDD6; --yellow:#F5C842;
@@ -20,7 +20,7 @@ html,body{height:100%; overflow:hidden;}
 body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-serif; font-size:13px;}
 
 /* SELECTOR */
-#sel{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; gap:1.5rem; padding:1.5rem;}
+#sel{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; gap:1.5rem; padding:1.5rem; overflow-y:auto;}
 .sel-logo{width:90px; height:90px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-size:2.5rem; font-weight:bold; border:3px solid var(--yellow);}
 .sel-title{font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--red);}
 .sel-sub{font-size:.75rem; color:var(--mu);}
@@ -29,7 +29,6 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .sel-card:hover{border-color:var(--red); transform:translateY(-3px);}
 .sel-card .ic{font-size:2rem; margin-bottom:.6rem;}
 .sel-card h2{font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:#fff;}
-.sel-card p{font-size:11px; color:var(--mu);}
 .fb-note{font-size:11px; color:var(--mu); max-width:400px; text-align:center; padding:.8rem; background:var(--d3); border-radius:8px;}
 
 /* TOPBAR */
@@ -41,9 +40,14 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .pill{font-size:10px; padding:2px 7px; border-radius:20px; font-weight:700; background:var(--yellow); color:#412402;}
 .bsm{font-size:10px; padding:4px 8px; border-radius:5px; border:1px solid rgba(255,255,255,.3); background:transparent; color:#fff; cursor:pointer;}
 
-/* CAJERO */
+/* CAJERO RESPONSIVE */
 #caj{display:none; flex-direction:column; height:100vh;}
 .caj-body{display:grid; grid-template-columns:1fr 300px; flex:1; overflow:hidden;}
+@media (max-width:680px){
+  .caj-body{grid-template-columns:1fr;}
+  .caj-right{position:fixed; bottom:0; left:0; right:0; max-height:45vh; background:var(--d2); border-top:2px solid var(--red); border-radius:16px 16px 0 0; padding:10px; z-index:20; overflow-y:auto;}
+  .caj-left{padding-bottom:46vh;}
+}
 .caj-left{padding:10px; overflow-y:auto;}
 .caj-right{background:var(--d2); border-left:1px solid var(--bo); padding:10px; display:flex; flex-direction:column; gap:8px; overflow-y:auto;}
 .cats{display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px;}
@@ -57,7 +61,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .cbox{background:var(--dark); border-radius:8px; padding:8px; display:flex; flex-direction:column; gap:5px;}
 .lbl{font-size:10px; color:var(--mu);}
 .cbox input,.cbox select,.cbox textarea{background:var(--d4); border:1px solid var(--bo); border-radius:5px; padding:6px; color:var(--cream); width:100%;}
-.oit{flex:1; overflow-y:auto; min-height:100px;}
+.oit{flex:1; overflow-y:auto; min-height:100px; max-height:200px;}
 .orow{display:flex; align-items:center; gap:5px; padding:5px 0; border-bottom:1px solid var(--bo);}
 .qc{display:flex; gap:3px;}
 .qb{width:20px; height:20px; border-radius:4px; border:none; cursor:pointer; font-weight:700;}
@@ -75,6 +79,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .blnk{background:transparent; color:var(--mu); border:none; font-size:11px; cursor:pointer; text-decoration:underline; text-align:right;}
 .cola-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:7px; margin-top:8px;}
 .pc{background:var(--d3); border:1.5px solid var(--bo); border-radius:10px; padding:10px; display:flex; flex-direction:column; gap:5px;}
+.pc.sprio{border-color:var(--gold); box-shadow:0 0 0 1px gold;}
 .pcnum{font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:#fff;}
 .pcli{font-size:11px; color:var(--mu);}
 .pitem{font-size:11px; border-top:1px solid var(--bo); padding-top:4px;}
@@ -86,23 +91,36 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .ptime{font-size:10px; text-align:right;}
 .tbar{height:4px; background:var(--d4); border-radius:2px; margin-top:2px;}
 .tbfill{height:100%; border-radius:2px;}
+.prioctrl{display:flex; gap:4px; margin-top:5px;}
+.priobtn{background:var(--d4); border:1px solid var(--bo); color:var(--cream); border-radius:4px; padding:3px 6px; font-size:10px; cursor:pointer;}
 
 /* COCINA TV */
 #coc{display:none; flex-direction:column; height:100vh;}
 .tv-body{padding:12px; overflow-y:auto; flex:1;}
 .tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;}
-.tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:12px; padding:14px;}
+.tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:12px; padding:14px; position:relative;}
+.tvcard.sprio{border-color:var(--gold); background:#2a2a1a;}
 .tvnum{font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#fff;}
 .tvcli{font-size:12px; color:var(--mu);}
 .tvit{font-size:13px; border-top:1px solid var(--bo); padding-top:7px; margin-top:5px;}
 .tvtime{font-size:12px; text-align:right; margin-top:5px;}
 .tvbar{height:5px; background:var(--d4); border-radius:3px; margin-top:5px;}
 .tvbarfill{height:100%; border-radius:3px;}
+.tv-alert{animation: pulse 0.5s infinite; background:rgba(255,215,0,0.2);}
+@keyframes pulse{0%{opacity:1;}50%{opacity:0.6;}100%{opacity:1;}}
+
+/* ADMIN */
+#admin{display:none; flex-direction:column; height:100vh;}
+.admin-body{padding:12px; overflow-y:auto;}
+.admin-form{background:var(--d3); padding:12px; border-radius:12px; margin-bottom:12px;}
+.admin-form input, .admin-form select, .admin-form button{margin:5px 0; width:100%; padding:8px; border-radius:6px;}
+.admin-list{margin-top:12px;}
+.admin-item{background:var(--d2); padding:8px; margin:5px 0; border-radius:8px; display:flex; justify-content:space-between; align-items:center;}
 
 /* STATS */
 #stats{display:none; flex-direction:column; height:100vh;}
 .stats-body{padding:12px; overflow-y:auto; flex:1;}
-.stats-hdr{display:flex; gap:10px; margin-bottom:14px;}
+.stats-hdr{display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
 .kpis{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:8px; margin-bottom:16px;}
 .kpi{background:var(--d3); border-radius:10px; padding:12px; text-align:center;}
 .kpin{font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--yellow);}
@@ -134,9 +152,10 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="sel-title">GORDO'S BURGER</div>
   <div class="sel-sub">SISTEMA DE PEDIDOS EN NUBE</div>
   <div class="sel-cards">
-    <div class="sel-card" data-modo="cajero"><div class="ic">🧾</div><h2>Cajero</h2><p>Tomar pedidos, gestionar cola</p></div>
-    <div class="sel-card" data-modo="cocina"><div class="ic">📺</div><h2>Cocina / TV</h2><p>Pantalla de visualización</p></div>
-    <div class="sel-card" data-modo="stats"><div class="ic">📊</div><h2>Estadísticas</h2><p>Ventas y exportar Excel</p></div>
+    <div class="sel-card" data-modo="cajero"><div class="ic">🧾</div><h2>Cajero</h2><p>Tomar pedidos</p></div>
+    <div class="sel-card" data-modo="cocina"><div class="ic">📺</div><h2>Cocina / TV</h2><p>Pantalla de cocina</p></div>
+    <div class="sel-card" data-modo="stats"><div class="ic">📊</div><h2>Estadísticas</h2><p>Ventas y Excel</p></div>
+    <div class="sel-card" data-modo="admin"><div class="ic">⚙️</div><h2>Admin</h2><p>Gestionar menú</p></div>
   </div>
   <div class="fb-note" id="fb-status">🔄 Conectando con Firebase...</div>
 </div>
@@ -172,6 +191,25 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="tv-body"><div class="tv-grid" id="tv-grid"></div></div>
 </div>
 
+<div id="admin">
+  <div class="topbar"><div class="tb-left"><div class="tb-logo">GB</div><div class="tb-brand">ADMIN - MENÚ</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
+  <div class="admin-body">
+    <div class="admin-form">
+      <h3>Agregar / Editar producto</h3>
+      <input type="text" id="prod-id" placeholder="ID único (ej: nuevo1)" style="display:none;">
+      <input type="text" id="prod-nombre" placeholder="Nombre">
+      <input type="number" id="prod-precio" placeholder="Precio (COP)">
+      <select id="prod-categoria"><option value="Burgers">Burgers</option><option value="Combos">Combos</option><option value="Bebidas">Bebidas</option><option value="Adicionales">Adicionales</option></select>
+      <label><input type="checkbox" id="prod-empaque"> ¿Empaque para llevar?</label>
+      <label><input type="checkbox" id="prod-sabores"> ¿Tiene sabores?</label>
+      <input type="text" id="prod-sabores-list" placeholder="Sabores separados por coma (ej: Coca, Sprite)">
+      <button onclick="guardarProducto()">Guardar producto</button>
+      <button onclick="limpiarFormProducto()" style="background:#555;">Cancelar</button>
+    </div>
+    <div id="admin-lista" class="admin-list"></div>
+  </div>
+</div>
+
 <div id="stats">
   <div class="topbar"><div class="tb-left"><div class="tb-logo">GB</div><div class="tb-brand">ESTADÍSTICAS</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="stats-body"><div class="stats-hdr"><input type="date" id="stats-date"><button class="bxl" onclick="exportXlsx()">Exportar Excel</button></div><div class="kpis" id="kpis"></div><div style="overflow-x:auto;"><table class="stbl"><thead><tr><th>Hora</th><th>Cliente</th><th>WA</th><th>Tipo</th><th>Productos</th><th>Obs</th><th>Total</th><th>Estado</th></tr></thead><tbody id="stbl-body"></tbody></table></div></div>
@@ -181,7 +219,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 <div id="prt"><div class="pl">GORDO'S BURGER</div><div style="font-size:10px;">Calle 34 #25-02 · Bucaramanga</div><div class="ps"></div><div id="prt-content"></div><div class="ps"></div><div>¡Gracias!</div></div>
 
 <script>
-// ========== CONFIGURACIÓN ==========
+// ========== CONFIGURACIÓN FIREBASE ==========
 const firebaseConfig = {
   apiKey: "AIzaSyDdoj6UZEBGetMNgfucn2kQsv12EtgEju4",
   authDomain: "gordos-burger-443fb.firebaseapp.com",
@@ -192,7 +230,8 @@ const firebaseConfig = {
   appId: "1:239611023125:web:b41defcb1c47c8dba1a31c"
 };
 
-const MENU = {
+// ========== MENÚ POR DEFECTO (completo) ==========
+const DEFAULT_MENU = {
   "Burgers": [
     {id:"b1", name:"Burger Clásica", price:23000, tag:"Pan artesanal 150g"},
     {id:"b2", name:"Gordo's Máster", price:29000, tag:"Doble smash"}
@@ -205,18 +244,24 @@ const MENU = {
     {id:"d1", name:"Bebida", price:5000, tag:"Elige sabor", sabores:["Coca-Cola","Sprite","Quatro","Agua"]}
   ],
   "Adicionales": [
-    {id:"a1", name:"Salsa extra", price:1000},
-    {id:"a2", name:"Tocineta", price:4000},
-    {id:"a3", name:"Queso americano", price:2000}
+    {id:"a1", name:"Adición salsa", price:1000},
+    {id:"a2", name:"Pepinillos", price:2000},
+    {id:"a3", name:"Queso americano", price:2000},
+    {id:"a4", name:"Tocineta", price:4000},
+    {id:"a5", name:"Mermelada de tocino", price:7000},
+    {id:"a6", name:"Goma", price:10000},
+    {id:"a7", name:"Papitas", price:6000},
+    {id:"a8", name:"Enchurlada papitas", price:6000}
   ]
 };
+
+let MENU = JSON.parse(JSON.stringify(DEFAULT_MENU));
+let db = null, pedidos = {}, orden = [], pedidoNum = 1, catActual = "Burgers", modo = "";
 const EMPAQUE_PRECIO = 500;
 const TIEMPO_OBJETIVO = 12;
 const VISITAS_RECURRENTE = 5;
 
-let db = null, pedidos = {}, orden = [], pedidoNum = 1, catActual = "Burgers", modo = "";
-
-// ========== FIREBASE ==========
+// ========== INICIALIZAR FIREBASE Y MENÚ ==========
 function initFirebase() {
   try {
     if (typeof firebase === 'undefined') throw new Error("No Firebase");
@@ -225,9 +270,87 @@ function initFirebase() {
     db.ref(".info/connected").on("value", snap => {
       document.getElementById("fb-status").innerHTML = snap.val() ? "✅ Firebase conectado" : "⚠️ Sin conexión";
     });
+    // Cargar menú desde Firebase o usar default
+    db.ref("menu").once("value", snap => {
+      if(snap.exists()) MENU = snap.val();
+      else db.ref("menu").set(DEFAULT_MENU);
+      if(modo === "cajero") { buildMenu(); renderItems(); }
+      if(modo === "admin") cargarAdminLista();
+    });
+    db.ref("menu").on("value", snap => {
+      if(snap.exists()) MENU = snap.val();
+      if(modo === "cajero") { buildMenu(); renderItems(); }
+      if(modo === "admin") cargarAdminLista();
+    });
     db.ref("pedidos").on("value", snap => { pedidos = snap.val() || {}; if (modo === "cajero") renderCola(); if (modo === "cocina") renderTV(); if (modo === "stats") renderStats(); });
     db.ref("meta/ultimoNumero").once("value", snap => { pedidoNum = (snap.val() || 0) + 1; db.ref("meta/ultimoNumero").set(pedidoNum); });
   } catch(e) { console.error(e); }
+}
+
+// ========== ADMIN: GESTIÓN DE MENÚ ==========
+function cargarAdminLista() {
+  let container = document.getElementById("admin-lista");
+  if(!container) return;
+  container.innerHTML = "";
+  for(let cat in MENU) {
+    let catDiv = document.createElement("div");
+    catDiv.innerHTML = `<h3 style="margin-top:10px;">${cat}</h3>`;
+    container.appendChild(catDiv);
+    MENU[cat].forEach(item => {
+      let div = document.createElement("div"); div.className = "admin-item";
+      div.innerHTML = `<span><b>${item.name}</b> - $${(item.price/1000).toFixed(0)}K</span>
+        <div><button onclick="editarProducto('${cat}','${item.id}')">✏️</button>
+        <button onclick="eliminarProducto('${cat}','${item.id}')">🗑️</button></div>`;
+      container.appendChild(div);
+    });
+  }
+}
+function editarProducto(cat, id) {
+  let producto = MENU[cat].find(p => p.id === id);
+  if(!producto) return;
+  document.getElementById("prod-id").value = id;
+  document.getElementById("prod-nombre").value = producto.name;
+  document.getElementById("prod-precio").value = producto.price;
+  document.getElementById("prod-categoria").value = cat;
+  document.getElementById("prod-empaque").checked = producto.empaque || false;
+  document.getElementById("prod-sabores").checked = !!producto.sabores;
+  document.getElementById("prod-sabores-list").value = producto.sabores ? producto.sabores.join(",") : "";
+}
+function eliminarProducto(cat, id) {
+  if(confirm("¿Eliminar producto?")) {
+    MENU[cat] = MENU[cat].filter(p => p.id !== id);
+    if(MENU[cat].length === 0) delete MENU[cat];
+    db.ref("menu").set(MENU);
+    cargarAdminLista();
+  }
+}
+function guardarProducto() {
+  let id = document.getElementById("prod-id").value;
+  let nombre = document.getElementById("prod-nombre").value.trim();
+  let precio = parseInt(document.getElementById("prod-precio").value);
+  let categoria = document.getElementById("prod-categoria").value;
+  let empaque = document.getElementById("prod-empaque").checked;
+  let tieneSabores = document.getElementById("prod-sabores").checked;
+  let saboresStr = document.getElementById("prod-sabores-list").value;
+  if(!nombre || isNaN(precio)) { alert("Nombre y precio válidos"); return; }
+  let producto = { id: id || Date.now().toString(), name: nombre, price: precio };
+  if(empaque) producto.empaque = true;
+  if(tieneSabores && saboresStr) producto.sabores = saboresStr.split(",").map(s=>s.trim());
+  if(!MENU[categoria]) MENU[categoria] = [];
+  let idx = MENU[categoria].findIndex(p => p.id === producto.id);
+  if(idx >= 0) MENU[categoria][idx] = producto;
+  else MENU[categoria].push(producto);
+  db.ref("menu").set(MENU);
+  limpiarFormProducto();
+  cargarAdminLista();
+}
+function limpiarFormProducto() {
+  document.getElementById("prod-id").value = "";
+  document.getElementById("prod-nombre").value = "";
+  document.getElementById("prod-precio").value = "";
+  document.getElementById("prod-empaque").checked = false;
+  document.getElementById("prod-sabores").checked = false;
+  document.getElementById("prod-sabores-list").value = "";
 }
 
 // ========== UTILIDADES ==========
@@ -235,6 +358,7 @@ function persist(key, data) { if(db) db.ref("pedidos/"+key).set(data); }
 function persistField(key, field, val) { if(db && pedidos[key]) db.ref("pedidos/"+key+"/"+field).set(val); }
 function normalizeWA(wa) { let n = wa.replace(/\D/g,""); if(n.length===10) n="57"+n; return n; }
 function toast(msg) { let t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2600); }
+function playBeep() { try { new Audio('data:audio/wav;base64,U3RlYWx0aCBzb3VuZA==').play(); } catch(e){} }
 
 // ========== NAVEGACIÓN ==========
 function setMode(m) {
@@ -243,11 +367,13 @@ function setMode(m) {
   document.getElementById("caj").style.display = m==="cajero" ? "flex" : "none";
   document.getElementById("coc").style.display = m==="cocina" ? "flex" : "none";
   document.getElementById("stats").style.display = m==="stats" ? "flex" : "none";
+  document.getElementById("admin").style.display = m==="admin" ? "flex" : "none";
   if(m==="cajero") { buildMenu(); updateOrderUI(); renderCola(); }
   if(m==="cocina") renderTV();
   if(m==="stats") { document.getElementById("stats-date").value = new Date().toISOString().slice(0,10); renderStats(); }
+  if(m==="admin") cargarAdminLista();
 }
-function goHome() { modo=""; document.getElementById("sel").style.display="flex"; document.getElementById("caj").style.display="none"; document.getElementById("coc").style.display="none"; document.getElementById("stats").style.display="none"; }
+function goHome() { modo=""; document.getElementById("sel").style.display="flex"; document.getElementById("caj").style.display="none"; document.getElementById("coc").style.display="none"; document.getElementById("stats").style.display="none"; document.getElementById("admin").style.display="none"; }
 
 // ========== MENÚ ==========
 function buildMenu() {
@@ -269,11 +395,11 @@ function renderItems() {
   });
 }
 function addItem(item) {
-  if(item.sabores) {
+  if(item.sabores && item.sabores.length) {
     let opts = document.getElementById("sabor-opts"); opts.innerHTML = "";
     item.sabores.forEach(s => {
       let opt = document.createElement("div"); opt.className = "mopt"; opt.textContent = s;
-      opt.onclick = () => { addToOrder({...item, name:`Bebida · ${s}`, id:item.id+"_"+s}); closeModal(); };
+      opt.onclick = () => { addToOrder({...item, name:`${item.name} · ${s}`, id:item.id+"_"+s}); closeModal(); };
       opts.appendChild(opt);
     });
     document.getElementById("modal-sabor").classList.add("on");
@@ -327,11 +453,11 @@ function confirmar() {
   persist(key, pedido);
   db.ref("meta/ultimoNumero").set(pedidoNum);
   pedidoNum++;
-  toast(`Pedido de ${nombre} enviado`);
+  toast(`Pedido #${pedido.num} de ${nombre} enviado`);
   clearOrder();
 }
 
-// ========== COLA ==========
+// ========== COLA CON PRIORIDAD ==========
 function getActivos() { return Object.entries(pedidos).filter(([,p])=>p.estado!=="entregado").sort(([,a],[,b])=> (b.prioridad||0)-(a.prioridad||0) || a.ts-b.ts); }
 function renderCola() {
   let el = document.getElementById("cola-d"); if(!el) return;
@@ -342,9 +468,9 @@ function renderCola() {
     let mins = Math.floor((Date.now()-p.ts)/60000);
     let pct = Math.min(100, Math.round(mins/TIEMPO_OBJETIVO*100));
     let barCol = pct<60?"#4CAF50":pct<100?"#F5C842":"#E24B4A";
-    let card = document.createElement("div"); card.className="pc";
+    let card = document.createElement("div"); card.className="pc" + (p.prioridad ? " sprio" : "");
     let badge = `<span class="pill" style="background:${p.estado==='nuevo'?'var(--red)':p.estado==='preparando'?'var(--yellow)':'#4CAF50'}">${p.estado.toUpperCase()}</span>`;
-    if(p.prioridad) badge += `<span style="background:var(--gold);color:#000;margin-left:5px;">⭐ PRIO</span>`;
+    if(p.prioridad) badge += `<span style="background:var(--gold);color:#000;margin-left:5px;">⭐ PRIO ${p.prioridad}</span>`;
     let hist = Object.values(pedidos).filter(x=>normalizeWA(x.wa||"")===normalizeWA(p.wa||"") && x.estado==="entregado");
     if(hist.length>=VISITAS_RECURRENTE) badge += `<span style="background:#1a4010;color:#a3d96a;margin-left:5px;">Frecuente</span>`;
     let actHtml = "";
@@ -352,17 +478,37 @@ function renderCola() {
     else if(p.estado==="preparando") actHtml = `<button class="kbtn klisto" onclick="cambiarEstado('${key}','listo')">Listo</button>`;
     else if(p.estado==="listo") {
       let waNum = normalizeWA(p.wa||"");
-      let msg = encodeURIComponent(`¡Hola ${p.cliente}! 🍔 Tu pedido está listo. Acércate a la ventanilla.`);
+      let msg = encodeURIComponent(`¡Hola ${p.cliente}! 🍔 Tu pedido #${p.num} está listo.`);
       let waLink = waNum ? `https://wa.me/${waNum}?text=${msg}` : "";
       actHtml = waLink ? `<button class="kbtn kwa" onclick="window.open('${waLink}','_blank'); cambiarEstado('${key}','entregado')">WhatsApp</button>` : `<div>Sin WA</div>`;
     }
-    card.innerHTML = `<div class="pcnum">#${String(p.num).padStart(3,"0")}</div><div>${badge}</div><div class="pcli">${p.cliente} · ${p.tipo==="llevar"?"Llevar":"Local"}</div><div class="pitem">${p.items.map(i=>`<div>${i.qty}× ${i.name}</div>`).join("")}</div>${p.obs?`<div style="color:var(--yellow);">📝 ${p.obs}</div>`:""}<div class="tbar"><div class="tbfill" style="width:${pct}%;background:${barCol};"></div></div><div class="ptime">Hace ${mins} min</div><div>${actHtml}</div>`;
+    let prioCtrl = `<div class="prioctrl"><button class="priobtn" onclick="moverPrio('${key}',-1)">↑ Subir</button><button class="priobtn" onclick="moverPrio('${key}',1)">↓ Bajar</button></div>`;
+    card.innerHTML = `<div class="pcnum">#${String(p.num).padStart(3,"0")}</div><div>${badge}</div><div class="pcli">${p.cliente} · ${p.tipo==="llevar"?"Llevar":"Local"}</div><div class="pitem">${p.items.map(i=>`<div>${i.qty}× ${i.name}</div>`).join("")}</div>${p.obs?`<div style="color:var(--yellow);">📝 ${p.obs}</div>`:""}<div class="tbar"><div class="tbfill" style="width:${pct}%;background:${barCol};"></div></div><div class="ptime">Hace ${mins} min</div><div>${actHtml}</div>${prioCtrl}`;
     el.appendChild(card);
   });
 }
-function cambiarEstado(key, estado) { persistField(key,"estado",estado); }
+function cambiarEstado(key, estado) {
+  persistField(key,"estado",estado);
+  if(estado === "listo") {
+    playBeep();
+    toast("¡Pedido listo! Notifica al cliente");
+    // Alerta visual en cocina: se maneja con animación en renderTV
+  }
+}
+function moverPrio(key, dir) {
+  let activos = getActivos();
+  let idx = activos.findIndex(([k])=>k===key);
+  if(idx<0) return;
+  let target = idx + dir;
+  if(target<0 || target>=activos.length) return;
+  let prioActual = activos[idx][1].prioridad || 0;
+  let prioDestino = activos[target][1].prioridad || 0;
+  persistField(key, "prioridad", prioDestino);
+  persistField(activos[target][0], "prioridad", prioActual);
+  setTimeout(renderCola, 100);
+}
 
-// ========== TV COCINA ==========
+// ========== TV COCINA CON ALERTA ==========
 function renderTV() {
   let grid = document.getElementById("tv-grid"); if(!grid) return;
   let activos = getActivos();
@@ -372,7 +518,8 @@ function renderTV() {
     let mins = Math.floor((Date.now()-p.ts)/60000);
     let pct = Math.min(100, Math.round(mins/TIEMPO_OBJETIVO*100));
     let barCol = pct<60?"#4CAF50":pct<100?"#F5C842":"#E24B4A";
-    let card = document.createElement("div"); card.className="tvcard";
+    let card = document.createElement("div"); card.className = "tvcard" + (p.prioridad ? " sprio" : "");
+    if(p.estado === "listo") card.classList.add("tv-alert");
     card.innerHTML = `<div class="tvnum">#${String(p.num).padStart(3,"0")}</div><div class="tvcli">${p.cliente} · ${p.tipo}</div><div class="tvit">${p.items.map(i=>`${i.qty}× ${i.name}`).join("<br>")}</div>${p.obs?`<div style="color:var(--yellow);">📝 ${p.obs}</div>`:""}<div class="tvbar"><div class="tvbarfill" style="width:${pct}%;background:${barCol};"></div></div><div class="tvtime">⏱ ${mins} min · ${p.estado}</div>`;
     grid.appendChild(card);
   });
@@ -425,12 +572,10 @@ function printComanda() {
   setTimeout(()=>{window.print(); document.getElementById("prt").style.display="none";},80);
 }
 
-// ========== ASIGNAR EVENTOS A LAS TARJETAS ==========
+// ========== EVENTOS Y ARRANQUE ==========
 document.querySelectorAll('.sel-card').forEach(card => {
   card.addEventListener('click', () => setMode(card.getAttribute('data-modo')));
 });
-
-// ========== INICIO ==========
 initFirebase();
 </script>
 </body>
