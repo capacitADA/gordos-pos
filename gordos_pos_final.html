@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
-/* ========== ESTILOS COMPACTOS Y RESPONSIVE ========== */
+/* ========== ESTILOS (sin cambios visuales importantes) ========== */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
 :root{
   --red:#D32B2B; --red2:#A82222; --cream:#F5EDD6; --yellow:#F5C842;
@@ -82,7 +82,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .ptime{font-size:8px; text-align:right;}
 .tbar{height:2px; margin-top:2px;}
 .prioctrl{display:flex; gap:2px; margin-top:3px;}
-.priobtn{padding:2px 4px; font-size:8px; cursor:pointer;}
+.priobtn{padding:2px 4px; font-size:8px; cursor:pointer; background:var(--d4); border:1px solid var(--bo); color:var(--cream); border-radius:4px;}
 
 /* COCINA TV */
 #coc{display:none; flex-direction:column; height:100vh;}
@@ -161,8 +161,8 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="topbar">
     <div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">COCINA</div></div>
     <div class="tb-right">
-      <button class="zoom-btn" onclick="zoomCocina(1.2)">🔍+</button>
-      <button class="zoom-btn" onclick="zoomCocina(0.8)">🔍-</button>
+      <button class="zoom-btn" id="zoomInBtn">🔍+</button>
+      <button class="zoom-btn" id="zoomOutBtn">🔍-</button>
       <span class="pill">Cloud</span>
       <button class="bsm" onclick="goHome()">Inicio</button>
     </div>
@@ -245,13 +245,14 @@ const DEFAULT_MENU = {
 };
 let MENU = JSON.parse(JSON.stringify(DEFAULT_MENU));
 
-// ========== ZOOM PARA COCINA ==========
+// ========== ZOOM PARA COCINA (CORREGIDO Y CON MÁS AUMENTO) ==========
 function zoomCocina(factor) {
   const tvBody = document.querySelector('#coc .tv-body');
   if (!tvBody) return;
   let currentSize = parseFloat(getComputedStyle(tvBody).fontSize);
   let newSize = currentSize * factor;
-  newSize = Math.min(Math.max(newSize, 10), 30);
+  // Aumento hasta 48px (de 12 a 48 = 300% de aumento)
+  newSize = Math.min(Math.max(newSize, 12), 48);
   tvBody.style.fontSize = newSize + 'px';
   localStorage.setItem('cocinaFontSize', newSize);
 }
@@ -262,6 +263,13 @@ function restaurarZoomCocina() {
     if (tvBody) tvBody.style.fontSize = saved + 'px';
   }
 }
+// Asignar eventos después de que el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+  const zoomIn = document.getElementById('zoomInBtn');
+  const zoomOut = document.getElementById('zoomOutBtn');
+  if (zoomIn) zoomIn.addEventListener('click', () => zoomCocina(1.25));
+  if (zoomOut) zoomOut.addEventListener('click', () => zoomCocina(0.8));
+});
 
 // ========== WHATSAPP ==========
 function enviarWhatsApp(key) {
@@ -436,7 +444,7 @@ function confirmar() {
   clearOrder();
 }
 
-// ========== COLA CON PRIORIDAD ==========
+// ========== COLA CON PRIORIDAD (CON EVENTOS DIRECTOS) ==========
 function getActivos() { return Object.entries(pedidos).filter(([,p])=>p.estado!=="entregado").sort(([,a],[,b])=> (b.prioridad||0)-(a.prioridad||0) || a.ts-b.ts).slice(0,30); }
 function renderCola() {
   if (!suscripcionActiva) return;
@@ -455,10 +463,10 @@ function renderCola() {
     let hist = Object.values(pedidos).filter(x=>normalizeWA(x.wa||"")===normalizeWA(p.wa||"") && x.estado==="entregado");
     if(hist.length>=VISITAS_RECURRENTE) badge += `<span style="background:#1a4010; color:#a3d96a; font-size:7px; padding:0 3px; border-radius:8px;">Frec</span>`;
     let actHtml = "";
-    if(p.estado==="nuevo") actHtml = `<button class="kbtn kpre" onclick="cambiarEstado('${key}','preparando')">Prep</button>`;
-    else if(p.estado==="preparando") actHtml = `<button class="kbtn klisto" onclick="cambiarEstado('${key}','listo')">Listo</button>`;
-    else if(p.estado==="listo") actHtml = `<button class="kbtn kwa" onclick="enviarWhatsApp('${key}')">WhatsApp</button>`;
-    let prioCtrl = `<div class="prioctrl"><button class="priobtn" onclick="moverPrio('${key}',-1)">↑</button><button class="priobtn" onclick="moverPrio('${key}',1)">↓</button></div>`;
+    if(p.estado==="nuevo") actHtml = `<button class="kbtn kpre" data-key="${key}" data-estado="preparando">Prep</button>`;
+    else if(p.estado==="preparando") actHtml = `<button class="kbtn klisto" data-key="${key}" data-estado="listo">Listo</button>`;
+    else if(p.estado==="listo") actHtml = `<button class="kbtn kwa" data-key="${key}" data-wa>WhatsApp</button>`;
+    let prioCtrl = `<div class="prioctrl"><button class="priobtn" data-key="${key}" data-dir="-1">↑</button><button class="priobtn" data-key="${key}" data-dir="1">↓</button></div>`;
     card.innerHTML = `<div style="display:flex; justify-content:space-between;"><div class="pcnum">#${String(p.num).padStart(3,"0")}</div><div>${badge}</div></div>
       <div class="pcli">${p.cliente} · ${p.tipo==="llevar"?"Llevar":"Local"}</div>
       <div class="pitem">${p.items.map(i=>`${i.qty}× ${i.name}`).join(", ")}</div>
@@ -467,6 +475,32 @@ function renderCola() {
       <div class="ptime">Hace ${mins} min</div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:3px;">${actHtml}${prioCtrl}</div>`;
     el.appendChild(card);
+  });
+  // Asignar eventos a los botones después de renderizar
+  document.querySelectorAll('#cola-d .kbtn.kpre').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const key = btn.getAttribute('data-key');
+      cambiarEstado(key, 'preparando');
+    });
+  });
+  document.querySelectorAll('#cola-d .kbtn.klisto').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const key = btn.getAttribute('data-key');
+      cambiarEstado(key, 'listo');
+    });
+  });
+  document.querySelectorAll('#cola-d .kbtn.kwa').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const key = btn.getAttribute('data-key');
+      enviarWhatsApp(key);
+    });
+  });
+  document.querySelectorAll('#cola-d .priobtn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const key = btn.getAttribute('data-key');
+      const dir = parseInt(btn.getAttribute('data-dir'));
+      moverPrio(key, dir);
+    });
   });
 }
 function cambiarEstado(key, estado) { persistField(key,"estado",estado); if(estado==="listo") { playBeep(); toast("¡Pedido listo!"); } }
