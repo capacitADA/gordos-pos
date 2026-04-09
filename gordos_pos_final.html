@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
-/* ========== ESTILOS (mismos que antes, compactos) ========== */
+/* ========== ESTILOS COMPACTOS Y RESPONSIVE ========== */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
 :root{
   --red:#D32B2B; --red2:#A82222; --cream:#F5EDD6; --yellow:#F5C842;
@@ -36,7 +36,8 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .tb-logo{width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;}
 .tb-brand{font-family:'Bebas Neue',sans-serif; font-size:0.9rem;}
 .pill{font-size:8px; padding:2px 5px; background:var(--yellow); color:#412402; border-radius:12px;}
-.bsm{font-size:8px; padding:2px 5px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:4px;}
+.bsm{font-size:8px; padding:2px 5px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:4px; cursor:pointer;}
+.zoom-btn{background:rgba(0,0,0,0.5); border:1px solid #fff; color:#fff; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer; margin-left:5px;}
 
 /* CAJERO RESPONSIVE */
 #caj{display:none; flex-direction:column; height:100vh;}
@@ -49,7 +50,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .caj-left{padding:6px; overflow-y:auto;}
 .caj-right{background:var(--d2); border-left:1px solid var(--bo); padding:6px; display:flex; flex-direction:column; gap:4px;}
 .cats{display:flex; gap:4px; flex-wrap:wrap; margin-bottom:4px;}
-.cat{font-size:9px; padding:2px 8px; border-radius:16px; border:1px solid var(--bo); background:transparent; color:var(--mu);}
+.cat{font-size:9px; padding:2px 8px; border-radius:16px; border:1px solid var(--bo); background:transparent; color:var(--mu); cursor:pointer;}
 .cat.on{background:var(--red); color:#fff;}
 .mgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:4px;}
 .mitem{background:var(--d3); border-radius:6px; padding:5px 2px; text-align:center; cursor:pointer;}
@@ -62,18 +63,18 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .oit{flex:1; overflow-y:auto; max-height:120px;}
 .orow{display:flex; align-items:center; gap:4px; padding:3px 0; border-bottom:1px solid var(--bo); font-size:9px;}
 .qc{display:flex; gap:2px;}
-.qb{width:16px; height:16px; font-size:10px;}
+.qb{width:16px; height:16px; font-size:10px; cursor:pointer;}
 .qn{font-size:10px; min-width:14px; text-align:center;}
 .on2{flex:1;}
 .opr{font-size:9px;}
 .empty-o{text-align:center; padding:0.5rem; font-size:10px;}
 .trow{font-size:11px; padding-top:3px;}
 .tv2{font-size:13px;}
-.bmain,.bsec{padding:5px; font-size:10px;}
-.blnk{font-size:9px;}
+.bmain,.bsec{padding:5px; font-size:10px; cursor:pointer;}
+.blnk{font-size:9px; cursor:pointer;}
 .cola-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:5px; margin-top:5px;}
 .pc{background:var(--d3); border:1px solid var(--bo); border-radius:8px; padding:5px;}
-.pc.sprio{border-color:var(--gold);}
+.pc.sprio{border-color:var(--gold); box-shadow:0 0 0 1px gold;}
 .pcnum{font-family:'Bebas Neue',sans-serif; font-size:1rem;}
 .pcli{font-size:9px;}
 .pitem{font-size:9px; border-top:1px solid var(--bo); padding-top:2px; margin-top:2px;}
@@ -81,19 +82,37 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .ptime{font-size:8px; text-align:right;}
 .tbar{height:2px; margin-top:2px;}
 .prioctrl{display:flex; gap:2px; margin-top:3px;}
-.priobtn{padding:2px 4px; font-size:8px;}
+.priobtn{padding:2px 4px; font-size:8px; cursor:pointer;}
 
 /* COCINA TV */
 #coc{display:none; flex-direction:column; height:100vh;}
-.tv-body{padding:6px;}
-.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px;}
-.tvcard{background:var(--d3); border:1px solid var(--bo); border-radius:8px; padding:6px;}
-.tvcard.sprio{border-color:var(--gold);}
-.tvnum{font-size:1.2rem;}
-.tvcli{font-size:9px;}
-.tvit{font-size:10px; padding-top:3px;}
-.tvtime{font-size:9px;}
-.tvbar{height:2px;}
+.tv-body{padding:6px; transition: font-size 0.2s;}
+.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:8px;}
+.tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:12px; padding:8px; transition: all 0.2s;}
+/* Estilo para pedidos con prioridad (adelantados) - BORDE DORADO MUY GRUESO */
+.tvcard.sprio{
+  border: 4px solid var(--gold) !important;
+  box-shadow: 0 0 15px rgba(255,215,0,0.6);
+  background: rgba(30,30,20,0.9);
+}
+/* Estrella grande y notoria en la esquina superior derecha */
+.tvcard.sprio .star-prio{
+  font-size: 2rem;
+  line-height: 1;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.tvnum{font-family:'Bebas Neue',sans-serif; font-size:1.4rem;}
+.tvcli{font-size:10px; margin:3px 0;}
+.tvit{font-size:11px; border-top:1px solid var(--bo); padding-top:6px; margin-top:5px;}
+.tvtime{font-size:10px; text-align:right; margin-top:5px;}
+.tvbar{height:3px; margin-top:5px;}
 
 /* ADMIN, STATS */
 #admin, #stats{display:none; flex-direction:column; height:100vh;}
@@ -102,30 +121,19 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .kpi{padding:6px;}
 .kpin{font-size:1.2rem;}
 .stbl th, .stbl td{padding:3px; font-size:9px;}
-.modal{width:240px; padding:0.8rem;}
-.toast{font-size:10px; padding:4px 10px;}
+.toast{font-size:10px; padding:4px 10px; position:fixed; bottom:10px; left:50%; transform:translateX(-50%); background:var(--d3); border-radius:6px; z-index:1000;}
 
-/* Pantalla de bloqueo por suscripción */
 #blockScreen{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:var(--dark); text-align:center; padding:2rem;}
 #blockScreen h2{color:var(--red); margin-bottom:1rem;}
-#blockScreen p{color:var(--mu); margin-bottom:0.5rem;}
 #blockScreen button{background:var(--red); color:#fff; border:none; padding:8px 16px; border-radius:8px; margin-top:1rem; cursor:pointer;}
 </style>
 </head>
 <body>
 
-<!-- Pantalla de bloqueo -->
-<div id="blockScreen" style="display:none;">
-  <div class="sel-logo" style="margin-bottom:1rem;">GB</div>
-  <h2>SUSCRIPCIÓN VENCIDA</h2>
-  <p>El periodo de acceso ha expirado.</p>
-  <p>Contacta al administrador para renovar.</p>
-  <button onclick="location.reload()">Reintentar</button>
-</div>
+<div id="blockScreen" style="display:none;"><div class="sel-logo" style="margin-bottom:1rem;">GB</div><h2>SUSCRIPCIÓN VENCIDA</h2><p>Contacta al administrador.</p><button onclick="location.reload()">Reintentar</button></div>
 
-<!-- SELECTOR INICIAL -->
 <div id="sel">
-  <img class="sel-logo" src="LOGO_GBURGER.jpg" alt="Gordo's" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="sel-logo" style="display:none;">GB</div>
+  <img class="sel-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="sel-logo" style="display:none;">GB</div>
   <div class="sel-title">GORDO'S BURGER</div>
   <div class="sel-sub">SISTEMA DE PEDIDOS</div>
   <div class="sel-cards">
@@ -137,7 +145,6 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="fb-note" id="fb-status">🔄 Conectando...</div>
 </div>
 
-<!-- CAJERO -->
 <div id="caj">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">CAJERO</div></div><div class="tb-right"><span class="pill">Cloud</span><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="caj-body">
@@ -164,21 +171,27 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   </div>
 </div>
 
-<!-- COCINA -->
 <div id="coc">
-  <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">COCINA</div></div><div class="tb-right"><span class="pill">Cloud</span><button class="bsm" onclick="goHome()">Inicio</button></div></div>
+  <div class="topbar">
+    <div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">COCINA</div></div>
+    <div class="tb-right">
+      <button class="zoom-btn" onclick="zoomCocina(1.2)">🔍+</button>
+      <button class="zoom-btn" onclick="zoomCocina(0.8)">🔍-</button>
+      <span class="pill">Cloud</span>
+      <button class="bsm" onclick="goHome()">Inicio</button>
+    </div>
+  </div>
   <div class="tv-body"><div class="tv-grid" id="tv-grid"></div></div>
 </div>
 
-<!-- ADMIN -->
 <div id="admin">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">ADMIN</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="admin-body">
     <div class="admin-form" style="background:var(--d3); padding:6px; border-radius:8px; margin-bottom:6px;">
-      <h3 style="font-size:0.8rem;">Gestión de Suscripción</h3>
+      <h3 style="font-size:0.8rem;">Suscripción</h3>
       <div id="adminSuscripcionInfo" style="background:var(--d4); padding:6px; border-radius:6px; margin-bottom:6px; font-size:10px;"></div>
       <input type="datetime-local" id="nuevaFechaExpiracion" style="font-size:10px; padding:4px; width:100%; margin-bottom:6px;">
-      <button onclick="cambiarFechaExpiracion()" style="font-size:10px; padding:4px;">Cambiar fecha de expiración</button>
+      <button onclick="cambiarFechaExpiracion()" style="font-size:10px; padding:4px;">Cambiar fecha</button>
       <hr style="margin:8px 0;">
       <h3 style="font-size:0.8rem;">Gestión de Menú</h3>
       <input type="text" id="prod-id" style="display:none;">
@@ -188,14 +201,13 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
       <label style="font-size:9px;"><input type="checkbox" id="prod-empaque"> Empaque llevar</label>
       <label style="font-size:9px;"><input type="checkbox" id="prod-sabores"> Sabores</label>
       <input type="text" id="prod-sabores-list" placeholder="Sabores (ej: Coca, Sprite)" style="font-size:9px; padding:3px; width:100%; margin-bottom:4px;">
-      <button onclick="guardarProducto()" style="font-size:10px; padding:4px;">Guardar producto</button>
+      <button onclick="guardarProducto()" style="font-size:10px; padding:4px;">Guardar</button>
       <button onclick="limpiarFormProducto()" style="background:#555; font-size:10px;">Cancelar</button>
     </div>
     <div id="admin-lista"></div>
   </div>
 </div>
 
-<!-- ESTADÍSTICAS -->
 <div id="stats">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">ESTADÍSTICAS</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="stats-body">
@@ -205,7 +217,6 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   </div>
 </div>
 
-<div class="modal-bg" id="modal-sabor"><div class="modal"><h3>¿Sabor?</h3><div class="modal-opts" id="sabor-opts"></div><button class="mclose" onclick="closeModal()">Cancelar</button></div></div>
 <div id="prt" style="display:none;"><div class="pl">GORDO'S BURGER</div><div style="font-size:9px;">Calle 34 #25-02 · Bucaramanga</div><div class="ps"></div><div id="prt-content"></div><div class="ps"></div><div>¡Gracias!</div></div>
 
 <script>
@@ -248,30 +259,34 @@ const DEFAULT_MENU = {
 };
 let MENU = JSON.parse(JSON.stringify(DEFAULT_MENU));
 
-// ========== FUNCIÓN WHATSAPP CORREGIDA ==========
+// ========== ZOOM PARA COCINA ==========
+function zoomCocina(factor) {
+  const tvBody = document.querySelector('#coc .tv-body');
+  if (!tvBody) return;
+  let currentSize = parseFloat(getComputedStyle(tvBody).fontSize);
+  let newSize = currentSize * factor;
+  newSize = Math.min(Math.max(newSize, 10), 30);
+  tvBody.style.fontSize = newSize + 'px';
+  localStorage.setItem('cocinaFontSize', newSize);
+}
+function restaurarZoomCocina() {
+  const saved = localStorage.getItem('cocinaFontSize');
+  if (saved) {
+    const tvBody = document.querySelector('#coc .tv-body');
+    if (tvBody) tvBody.style.fontSize = saved + 'px';
+  }
+}
+
+// ========== WHATSAPP ==========
 function enviarWhatsApp(key) {
   const pedido = pedidos[key];
-  if (!pedido) {
-    toast("Pedido no encontrado");
-    return;
-  }
+  if (!pedido) { toast("Pedido no encontrado"); return; }
   let waNum = pedido.wa || pedido.waRaw;
-  if (!waNum) {
-    toast("Cliente no tiene número de WhatsApp");
-    return;
-  }
+  if (!waNum) { toast("Cliente sin WhatsApp"); return; }
   waNum = normalizeWA(waNum);
-  if (!waNum) {
-    toast("Número inválido");
-    return;
-  }
-  const mensaje = encodeURIComponent(`¡Hola ${pedido.cliente}! 🍔 Tu pedido #${pedido.num} está listo. Si tienes un momento, nos ayudaría mucho con una reseña en Google Maps: https://www.google.com/maps/place/Gordo's+Burger/@7.1222284,-73.1188766,17z/data=!4m8!3m7!1s0x8e68150033a8aa37:0xaaaaf587a13769c2!8m2!3d7.1222284!4d-73.1188766!9m1!1b1!16s%2Fg%2F11yhd9d6wg?entry=ttu`);
-  const url = `https://wa.me/${waNum}?text=${mensaje}`;
-  window.open(url, '_blank');
-  // Cambiar estado a entregado después de un breve momento
-  setTimeout(() => {
-    cambiarEstado(key, 'entregado');
-  }, 500);
+  const mensaje = encodeURIComponent(`¡Hola ${pedido.cliente}! 🍔 Tu pedido #${pedido.num} está listo. Si tienes un momento, nos ayudaría mucho con una reseña en Google Maps: https://www.google.com/maps/place/Gordo's+Burger/@7.1222284,-73.1188766,17z/`);
+  window.open(`https://wa.me/${waNum}?text=${mensaje}`, '_blank');
+  setTimeout(() => cambiarEstado(key, 'entregado'), 500);
 }
 
 // ========== VERIFICACIÓN SUSCRIPCIÓN ==========
@@ -282,17 +297,13 @@ function verificarSuscripcion() {
       fechaExpiracion = new Date(2026, 3, 23, 23, 59, 59).getTime();
       db.ref('config/fechaExpiracion').set(fechaExpiracion);
     }
-    const ahora = Date.now();
-    suscripcionActiva = ahora <= fechaExpiracion;
+    suscripcionActiva = Date.now() <= fechaExpiracion;
     const block = document.getElementById('blockScreen');
     const sel = document.getElementById('sel');
     if (!suscripcionActiva) {
       block.style.display = 'flex';
       sel.style.display = 'none';
-      document.getElementById('caj').style.display = 'none';
-      document.getElementById('coc').style.display = 'none';
-      document.getElementById('stats').style.display = 'none';
-      document.getElementById('admin').style.display = 'none';
+      ['caj','coc','stats','admin'].forEach(id => document.getElementById(id).style.display = 'none');
     } else {
       block.style.display = 'none';
       if (modo === '') sel.style.display = 'flex';
@@ -302,15 +313,12 @@ function verificarSuscripcion() {
 }
 function actualizarInfoAdmin(fechaExpiracion) {
   const div = document.getElementById('adminSuscripcionInfo');
-  if (!div) return;
-  const fecha = new Date(fechaExpiracion);
-  div.innerHTML = `<strong>Expira:</strong> ${fecha.toLocaleString('es-ES')}<br><strong>Estado:</strong> ${suscripcionActiva ? 'ACTIVA' : 'VENCIDA'}`;
+  if (div) div.innerHTML = `<strong>Expira:</strong> ${new Date(fechaExpiracion).toLocaleString('es-ES')}<br><strong>Estado:</strong> ${suscripcionActiva ? 'ACTIVA' : 'VENCIDA'}`;
 }
 function cambiarFechaExpiracion() {
   const input = document.getElementById('nuevaFechaExpiracion');
   if (!input.value) { alert('Selecciona fecha'); return; }
-  const nuevaFecha = new Date(input.value).getTime();
-  db.ref('config/fechaExpiracion').set(nuevaFecha);
+  db.ref('config/fechaExpiracion').set(new Date(input.value).getTime());
   alert('Fecha actualizada');
 }
 
@@ -331,13 +339,13 @@ function setMode(m) {
   document.getElementById("stats").style.display = m==="stats" ? "flex" : "none";
   document.getElementById("admin").style.display = m==="admin" ? "flex" : "none";
   if(m==="cajero") { buildMenu(); updateOrderUI(); renderCola(); }
-  if(m==="cocina") renderTV();
+  if(m==="cocina") { restaurarZoomCocina(); renderTV(); }
   if(m==="stats") { document.getElementById("stats-date").value = new Date().toISOString().slice(0,10); renderStats(); }
   if(m==="admin") { cargarAdminLista(); actualizarInfoAdmin(); }
 }
 function goHome() { modo=""; document.getElementById("sel").style.display="flex"; document.getElementById("caj").style.display="none"; document.getElementById("coc").style.display="none"; document.getElementById("stats").style.display="none"; document.getElementById("admin").style.display="none"; }
 
-// ========== MENÚ ==========
+// ========== MENÚ (BEBIDAS: EXPANDIR SABORES) ==========
 function buildMenu() {
   let catsDiv = document.getElementById("cats"); catsDiv.innerHTML = "";
   Object.keys(MENU).forEach(c => {
@@ -349,32 +357,56 @@ function buildMenu() {
 }
 function renderItems() {
   let grid = document.getElementById("mgrid"); grid.innerHTML = "";
-  (MENU[catActual] || []).forEach(item => {
-    let div = document.createElement("div"); div.className = "mitem";
-    div.innerHTML = `<div class="mn">${item.name}</div><div class="mp">$${(item.price/1000).toFixed(0)}K</div>${item.tag?`<div class="mt">${item.tag}</div>`:""}`;
-    div.onclick = () => addItem(item);
-    grid.appendChild(div);
-  });
-}
-function addItem(item) {
-  if(item.sabores && item.sabores.length) {
-    let opts = document.getElementById("sabor-opts"); opts.innerHTML = "";
-    item.sabores.forEach(s => {
-      let opt = document.createElement("div"); opt.className = "mopt"; opt.textContent = s;
-      opt.onclick = () => { addToOrder({...item, name:`${item.name} · ${s}`, id:item.id+"_"+s}); closeModal(); };
-      opts.appendChild(opt);
+  let items = MENU[catActual] || [];
+  if (catActual === "Bebidas") {
+    items.forEach(item => {
+      if (item.sabores && item.sabores.length) {
+        item.sabores.forEach(sabor => {
+          let div = document.createElement("div"); div.className = "mitem";
+          div.innerHTML = `<div class="mn">${item.name} ${sabor}</div><div class="mp">$${(item.price/1000).toFixed(0)}K</div>`;
+          div.onclick = () => {
+            let nuevoItem = { ...item, name: `${item.name} ${sabor}`, id: item.id+"_"+sabor, price: item.price, categoria: catActual };
+            addToOrder(nuevoItem);
+          };
+          grid.appendChild(div);
+        });
+      } else {
+        let div = document.createElement("div"); div.className = "mitem";
+        div.innerHTML = `<div class="mn">${item.name}</div><div class="mp">$${(item.price/1000).toFixed(0)}K</div>`;
+        div.onclick = () => addToOrder({ ...item, categoria: catActual });
+        grid.appendChild(div);
+      }
     });
-    document.getElementById("modal-sabor").classList.add("on");
-    return;
+  } else {
+    items.forEach(item => {
+      let div = document.createElement("div"); div.className = "mitem";
+      div.innerHTML = `<div class="mn">${item.name}</div><div class="mp">$${(item.price/1000).toFixed(0)}K</div>${item.tag?`<div class="mt">${item.tag}</div>`:""}`;
+      div.onclick = () => addToOrder({ ...item, categoria: catActual });
+      grid.appendChild(div);
+    });
   }
-  addToOrder(item);
 }
-function addToOrder(item) { let ex = orden.find(i=>i.id===item.id); if(ex) ex.qty++; else orden.push({...item, qty:1}); updateOrderUI(); }
-function closeModal() { document.getElementById("modal-sabor").classList.remove("on"); }
+function addToOrder(item) {
+  let ex = orden.find(i => i.id === item.id);
+  if (ex) ex.qty++;
+  else orden.push({ ...item, qty: 1 });
+  updateOrderUI();
+}
 function changeQty(id, delta) { let idx = orden.findIndex(i=>i.id===id); if(idx<0) return; orden[idx].qty += delta; if(orden[idx].qty<=0) orden.splice(idx,1); updateOrderUI(); }
 function clearOrder() { orden=[]; document.getElementById("c-nombre").value=""; document.getElementById("c-wa").value=""; document.getElementById("c-obs").value=""; document.getElementById("recur-box").style.display="none"; updateOrderUI(); }
-function getEmpaque() { if(document.getElementById("c-tipo").value!=="llevar") return 0; return orden.reduce((s,i)=>s+(i.empaque?i.qty:0),0)*EMPAQUE_PRECIO; }
-function getTotal() { return orden.reduce((s,i)=>s+i.price*i.qty,0)+getEmpaque(); }
+
+// EMPAQUE: aplica a Burgers y Combos
+function getEmpaque() {
+  if (document.getElementById("c-tipo").value !== "llevar") return 0;
+  let totalEmpaque = 0;
+  orden.forEach(item => {
+    if (item.categoria === "Burgers" || item.categoria === "Combos") {
+      totalEmpaque += item.qty * EMPAQUE_PRECIO;
+    }
+  });
+  return totalEmpaque;
+}
+function getTotal() { return orden.reduce((s,i)=>s+i.price*i.qty,0) + getEmpaque(); }
 function updateOrderUI() {
   let container = document.getElementById("o-items");
   if(!orden.length) { container.innerHTML='<div class="empty-o">Toca un producto</div>'; document.getElementById("o-total").textContent="$0"; return; }
@@ -383,7 +415,7 @@ function updateOrderUI() {
     let sub = item.price * item.qty;
     html += `<div class="orow"><div class="qc"><button class="qb qm" onclick="changeQty('${item.id}',-1)">−</button><span class="qn">${item.qty}</span><button class="qb qp" onclick="changeQty('${item.id}',1)">+</button></div><span class="on2">${item.name}</span><span class="opr">$${(sub/1000).toFixed(0)}K</span></div>`;
   });
-  let em = getEmpaque(); if(em) html += `<div class="emrow"><span>Empaque</span><span>$${(em/1000).toFixed(0)}K</span></div>`;
+  let em = getEmpaque(); if(em) html += `<div class="emrow"><span>Empaque llevar</span><span>$${(em/1000).toFixed(0)}K</span></div>`;
   container.innerHTML = html;
   document.getElementById("o-total").textContent = "$"+getTotal().toLocaleString("es-CO");
 }
@@ -408,7 +440,7 @@ function confirmar() {
   let pedido = {
     num: pedidoNum, cliente: nombre, wa, waRaw, obs: document.getElementById("c-obs").value,
     tipo: document.getElementById("c-tipo").value,
-    items: orden.map(i=>({name:i.name, qty:i.qty, price:i.price})),
+    items: orden.map(i=>({name:i.name, qty:i.qty, price:i.price, categoria:i.categoria})),
     empaque: getEmpaque(), total: getTotal(), estado:"nuevo", prioridad:0, ts:Date.now()
   };
   persist(key, pedido);
@@ -419,7 +451,7 @@ function confirmar() {
 }
 
 // ========== COLA ==========
-function getActivos() { return Object.entries(pedidos).filter(([,p])=>p.estado!=="entregado").sort(([,a],[,b])=> (b.prioridad||0)-(a.prioridad||0) || a.ts-b.ts); }
+function getActivos() { return Object.entries(pedidos).filter(([,p])=>p.estado!=="entregado").sort(([,a],[,b])=> (b.prioridad||0)-(a.prioridad||0) || a.ts-b.ts).slice(0,30); }
 function renderCola() {
   if (!suscripcionActiva) return;
   let el = document.getElementById("cola-d"); if(!el) return;
@@ -439,10 +471,7 @@ function renderCola() {
     let actHtml = "";
     if(p.estado==="nuevo") actHtml = `<button class="kbtn kpre" onclick="cambiarEstado('${key}','preparando')">Prep</button>`;
     else if(p.estado==="preparando") actHtml = `<button class="kbtn klisto" onclick="cambiarEstado('${key}','listo')">Listo</button>`;
-    else if(p.estado==="listo") {
-      // Botón WhatsApp corregido: llama a la función global enviarWhatsApp
-      actHtml = `<button class="kbtn kwa" onclick="enviarWhatsApp('${key}')">WhatsApp</button>`;
-    }
+    else if(p.estado==="listo") actHtml = `<button class="kbtn kwa" onclick="enviarWhatsApp('${key}')">WhatsApp</button>`;
     let prioCtrl = `<div class="prioctrl"><button class="priobtn" onclick="moverPrio('${key}',-1)">↑</button><button class="priobtn" onclick="moverPrio('${key}',1)">↓</button></div>`;
     card.innerHTML = `<div style="display:flex; justify-content:space-between;"><div class="pcnum">#${String(p.num).padStart(3,"0")}</div><div>${badge}</div></div>
       <div class="pcli">${p.cliente} · ${p.tipo==="llevar"?"Llevar":"Local"}</div>
@@ -468,7 +497,7 @@ function moverPrio(key, dir) {
   setTimeout(renderCola, 100);
 }
 
-// ========== TV ==========
+// ========== TV COCINA CON ESTRELLA GRANDE Y BORDE DORADO GRUESO ==========
 function renderTV() {
   if (!suscripcionActiva) return;
   let grid = document.getElementById("tv-grid"); if(!grid) return;
@@ -479,9 +508,25 @@ function renderTV() {
     let mins = Math.floor((Date.now()-p.ts)/60000);
     let pct = Math.min(100, Math.round(mins/TIEMPO_OBJETIVO*100));
     let barCol = pct<60?"#4CAF50":pct<100?"#F5C842":"#E24B4A";
-    let card = document.createElement("div"); card.className = "tvcard" + (p.prioridad ? " sprio" : "");
+    let card = document.createElement("div"); 
+    card.className = "tvcard" + (p.prioridad ? " sprio" : "");
     if(p.estado === "listo") card.style.animation = "pulse 0.8s infinite";
-    card.innerHTML = `<div class="tvnum">#${String(p.num).padStart(3,"0")}</div><div class="tvcli">${p.cliente} · ${p.tipo}</div><div class="tvit">${p.items.map(i=>`${i.qty}× ${i.name}`).join("<br>")}</div>${p.obs?`<div style="color:var(--yellow);">📝 ${p.obs}</div>`:""}<div class="tvbar"><div class="tvbarfill" style="width:${pct}%;background:${barCol};"></div></div><div class="tvtime">⏱ ${mins} min · ${p.estado}</div>`;
+    
+    // Estrella grande y notoria para pedidos con prioridad
+    let starHtml = "";
+    if (p.prioridad) {
+      starHtml = `<div class="star-prio" style="font-size: 2rem; line-height: 1; text-align: right; margin-bottom: 5px;">⭐</div>`;
+    }
+    
+    card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="tvnum">#${String(p.num).padStart(3,"0")}</div>
+        ${starHtml}
+      </div>
+      <div class="tvcli">${p.cliente} · ${p.tipo}</div>
+      <div class="tvit">${p.items.map(i=>`${i.qty}× ${i.name}`).join("<br>")}</div>
+      ${p.obs?`<div style="color:var(--yellow); font-size:10px;">📝 ${p.obs}</div>`:""}
+      <div class="tvbar"><div class="tvbarfill" style="width:${pct}%;background:${barCol};"></div></div>
+      <div class="tvtime">⏱ ${mins} min · ${p.estado}</div>`;
     grid.appendChild(card);
   });
 }
@@ -592,12 +637,7 @@ function limpiarFormProducto() {
 }
 
 // ========== EVENTOS Y SUSCRIPCIONES ==========
-db.ref("menu").on("value", snap => {
-  if(snap.exists()) MENU = snap.val();
-  else db.ref("menu").set(DEFAULT_MENU);
-  if(modo === "cajero") { buildMenu(); renderItems(); }
-  if(modo === "admin") cargarAdminLista();
-});
+db.ref("menu").once("value", snap => { if(snap.exists()) MENU = snap.val(); else db.ref("menu").set(DEFAULT_MENU); if(modo === "cajero") { buildMenu(); renderItems(); } if(modo === "admin") cargarAdminLista(); });
 db.ref("pedidos").on("value", snap => { pedidos = snap.val() || {}; if(modo === "cajero") renderCola(); if(modo === "cocina") renderTV(); if(modo === "stats") renderStats(); });
 db.ref("meta/ultimoNumero").once("value", snap => { pedidoNum = (snap.val() || 0) + 1; db.ref("meta/ultimoNumero").set(pedidoNum); });
 
