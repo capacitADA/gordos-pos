@@ -33,7 +33,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 /* ========== BARRA SUPERIOR (común a todas las vistas) ========== */
 .topbar{display:flex; align-items:center; justify-content:space-between; padding:5px 8px; background:var(--red);}
 .tb-left{display:flex; align-items:center; gap:5px;}
-.tb-logo{width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;} /* Logo pequeño */
+.tb-logo{width:30px; height:30px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;} /* Logo pequeño */
 .tb-brand{font-family:'Bebas Neue',sans-serif; font-size:0.9rem;} /* Nombre de la vista */
 .pill{font-size:8px; padding:2px 5px; background:var(--yellow); color:#412402; border-radius:12px;} /* Indicador "Cloud" */
 .bsm{font-size:8px; padding:2px 5px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:4px; cursor:pointer;} /* Botón "Inicio" */
@@ -93,9 +93,9 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   box-shadow: 0 0 20px rgba(255,215,0,0.8);
   background: rgba(30,30,20,0.95);
 }
-.tvnum{font-family:'Bebas Neue',sans-serif; font-size: 2rem; font-weight: bold;} /* Número de pedido (grande) */
+.tvnum{font-family:'Bebas Neue',sans-serif; font-size: 2.2rem; font-weight: bold;} /* Número de pedido (grande) */
 .tvcli{font-size: 0.9rem; margin: 5px 0;} /* Nombre del cliente y tipo (para llevar/local) */
-.tvit{font-size: 2rem; border-top:1px solid var(--bo); padding-top:8px; margin-top:6px;} /* Lista de productos del pedido. Se aumentó a 2rem (enorme) como se pidió. */
+.tvit{font-size: 1.5rem; border-top:1px solid var(--bo); padding-top:8px; margin-top:6px;} /* Lista de productos del pedido. Se aumentó a 2rem (enorme) como se pidió. */
 .tvtime{font-size: 0.8rem; text-align:right; margin-top:5px;} /* Tiempo transcurrido y estado */
 .tvbar{height:4px; margin-top:5px;} /* Barra de progreso de tiempo */
 
@@ -108,8 +108,8 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .kpis{gap:5px;}
 .kpi{padding:6px;}
 .kpin{font-size:1.2rem;}
-.stbl th, .stbl td{padding:3px; font-size:9px;}
-.toast{font-size:10px; padding:4px 10px; position:fixed; bottom:10px; left:50%; transform:translateX(-50%); background:var(--d3); border-radius:6px; z-index:1000;}
+.stbl th, .stbl td{padding:3px; font-size:12px;}
+.toast{font-size:12px; padding:4px 10px; position:fixed; bottom:10px; left:50%; transform:translateX(-50%); background:var(--d3); border-radius:6px; z-index:1000;}
 
 #blockScreen{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:var(--dark); text-align:center; padding:2rem;}
 #blockScreen h2{color:var(--red); margin-bottom:1rem;}
@@ -139,7 +139,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
     <div class="caj-left">
       <div class="cats" id="cats"></div>
       <div class="mgrid" id="mgrid"></div>
-      <div class="stit" style="font-size:10px; margin:5px 0;">Pedidos activos</div>
+      <div class="stit" style="font-size:12px; margin:5px 0;">Pedidos activos</div>
       <div class="cola-grid" id="cola-d"></div>
     </div>
     <div class="caj-right">
