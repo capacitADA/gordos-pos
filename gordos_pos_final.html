@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
-/* ========== ESTILOS COMPACTOS ========== */
+/* ========== ESTILOS GENERALES ========== */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
 :root{
   --red:#D32B2B; --red2:#A82222; --cream:#F5EDD6; --yellow:#F5C842;
@@ -19,26 +19,26 @@
 html,body{height:100%; overflow:hidden;}
 body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-serif; font-size:12px;}
 
-/* SELECTOR */
+/* ========== PANTALLA DE SELECCIÓN (INICIO) ========== */
 #sel{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; gap:1rem; padding:1rem;}
-.sel-logo{width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--yellow); background:var(--red); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.5rem;}
-.sel-title{font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--red);}
-.sel-sub{font-size:.6rem; color:var(--mu);}
-.sel-cards{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center;}
-.sel-card{flex:1; min-width:120px; background:var(--d3); border:1px solid var(--bo); border-radius:10px; padding:0.8rem 0.5rem; text-align:center; cursor:pointer;}
-.sel-card .ic{font-size:1.5rem;}
-.sel-card h2{font-family:'Bebas Neue',sans-serif; font-size:1rem; color:#fff;}
-.fb-note{font-size:9px; padding:.5rem; background:var(--d3); border-radius:6px;}
+.sel-logo{width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--yellow); background:var(--red); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.5rem;} /* Logo con texto "GB" */
+.sel-title{font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--red);} /* Título principal */
+.sel-sub{font-size:.6rem; color:var(--mu);} /* Subtítulo */
+.sel-cards{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center;} /* Contenedor de tarjetas de opciones */
+.sel-card{flex:1; min-width:120px; background:var(--d3); border:1px solid var(--bo); border-radius:10px; padding:0.8rem 0.5rem; text-align:center; cursor:pointer;} /* Cada tarjeta (Cajero, Cocina, etc.) */
+.sel-card .ic{font-size:1.5rem;} /* Icono emoji dentro de la tarjeta */
+.sel-card h2{font-family:'Bebas Neue',sans-serif; font-size:1rem; color:#fff;} /* Texto de la tarjeta */
+.fb-note{font-size:9px; padding:.5rem; background:var(--d3); border-radius:6px;} /* Estado de conexión a Firebase */
 
-/* TOPBAR */
+/* ========== BARRA SUPERIOR (común a todas las vistas) ========== */
 .topbar{display:flex; align-items:center; justify-content:space-between; padding:5px 8px; background:var(--red);}
 .tb-left{display:flex; align-items:center; gap:5px;}
-.tb-logo{width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;}
-.tb-brand{font-family:'Bebas Neue',sans-serif; font-size:0.9rem;}
-.pill{font-size:8px; padding:2px 5px; background:var(--yellow); color:#412402; border-radius:12px;}
-.bsm{font-size:8px; padding:2px 5px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:4px; cursor:pointer;}
+.tb-logo{width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;} /* Logo pequeño */
+.tb-brand{font-family:'Bebas Neue',sans-serif; font-size:0.9rem;} /* Nombre de la vista */
+.pill{font-size:8px; padding:2px 5px; background:var(--yellow); color:#412402; border-radius:12px;} /* Indicador "Cloud" */
+.bsm{font-size:8px; padding:2px 5px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:4px; cursor:pointer;} /* Botón "Inicio" */
 
-/* CAJERO RESPONSIVE */
+/* ========== CAJERO (vista principal) ========== */
 #caj{display:none; flex-direction:column; height:100vh;}
 .caj-body{display:grid; grid-template-columns:1fr 260px; flex:1; overflow:hidden;}
 @media (max-width:680px){
@@ -46,60 +46,63 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   .caj-right{position:fixed; bottom:0; left:0; right:0; max-height:40vh; background:var(--d2); border-top:2px solid var(--red); border-radius:12px 12px 0 0; padding:6px; z-index:20; overflow-y:auto;}
   .caj-left{padding-bottom:42vh;}
 }
-.caj-left{padding:6px; overflow-y:auto;}
-.caj-right{background:var(--d2); border-left:1px solid var(--bo); padding:6px; display:flex; flex-direction:column; gap:4px;}
-.cats{display:flex; gap:4px; flex-wrap:wrap; margin-bottom:4px;}
+.caj-left{padding:6px; overflow-y:auto;} /* Panel izquierdo (menú y cola) */
+.caj-right{background:var(--d2); border-left:1px solid var(--bo); padding:6px; display:flex; flex-direction:column; gap:4px;} /* Panel derecho (carrito y datos cliente) */
+.cats{display:flex; gap:4px; flex-wrap:wrap; margin-bottom:4px;} /* Contenedor de botones de categorías */
 .cat{font-size:9px; padding:2px 8px; border-radius:16px; border:1px solid var(--bo); background:transparent; color:var(--mu); cursor:pointer;}
-.cat.on{background:var(--red); color:#fff;}
-.mgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:4px;}
-.mitem{background:var(--d3); border-radius:6px; padding:5px 2px; text-align:center; cursor:pointer;}
-.mn{font-size:9px; font-weight:500;}
-.mp{font-size:10px; color:var(--yellow);}
-.mt{font-size:7px; color:var(--mu);}
-.cbox{background:var(--dark); border-radius:6px; padding:5px; display:flex; flex-direction:column; gap:3px;}
-.lbl{font-size:8px; color:var(--mu);}
+.cat.on{background:var(--red); color:#fff;} /* Categoría activa */
+.mgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:4px;} /* Cuadrícula de productos del menú */
+.mitem{background:var(--d3); border-radius:6px; padding:5px 2px; text-align:center; cursor:pointer;} /* Cada producto */
+.mn{font-size:9px; font-weight:500;} /* Nombre del producto */
+.mp{font-size:10px; color:var(--yellow);} /* Precio del producto */
+.mt{font-size:7px; color:var(--mu);} /* Etiqueta adicional (tag) */
+.cbox{background:var(--dark); border-radius:6px; padding:5px; display:flex; flex-direction:column; gap:3px;} /* Campos de datos del cliente */
+.lbl{font-size:8px; color:var(--mu);} /* Etiquetas de campos */
 .cbox input,.cbox select,.cbox textarea{background:var(--d4); border:1px solid var(--bo); border-radius:4px; padding:4px; color:var(--cream); font-size:10px; width:100%;}
-.oit{flex:1; overflow-y:auto; max-height:120px;}
-.orow{display:flex; align-items:center; gap:4px; padding:3px 0; border-bottom:1px solid var(--bo); font-size:9px;}
-.qc{display:flex; gap:2px;}
-.qb{width:16px; height:16px; font-size:10px; cursor:pointer;}
-.qn{font-size:10px; min-width:14px; text-align:center;}
-.on2{flex:1;}
-.opr{font-size:9px;}
-.empty-o{text-align:center; padding:0.5rem; font-size:10px;}
-.trow{font-size:11px; padding-top:3px;}
-.tv2{font-size:13px;}
-.bmain,.bsec{padding:5px; font-size:10px; cursor:pointer;}
-.blnk{font-size:9px; cursor:pointer;}
-.cola-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:5px; margin-top:5px;}
-.pc{background:var(--d3); border:1px solid var(--bo); border-radius:8px; padding:5px;}
-.pc.sprio{border-color:var(--gold); box-shadow:0 0 0 1px gold;}
-.pcnum{font-family:'Bebas Neue',sans-serif; font-size:1rem;}
-.pcli{font-size:9px;}
-.pitem{font-size:9px; border-top:1px solid var(--bo); padding-top:2px; margin-top:2px;}
-.kbtn{padding:3px 5px; font-size:8px; border-radius:4px; cursor:pointer;}
-.ptime{font-size:8px; text-align:right;}
-.tbar{height:2px; margin-top:2px;}
-.prioctrl{display:flex; gap:2px; margin-top:3px;}
+.oit{flex:1; overflow-y:auto; max-height:120px;} /* Lista de productos en el carrito */
+.orow{display:flex; align-items:center; gap:4px; padding:3px 0; border-bottom:1px solid var(--bo); font-size:9px;} /* Fila de producto en carrito */
+.qc{display:flex; gap:2px;} /* Controles de cantidad */
+.qb{width:16px; height:16px; font-size:10px; cursor:pointer;} /* Botón + / - */
+.qn{font-size:10px; min-width:14px; text-align:center;} /* Cantidad */
+.on2{flex:1;} /* Nombre del producto en carrito */
+.opr{font-size:9px;} /* Precio del producto en carrito */
+.empty-o{text-align:center; padding:0.5rem; font-size:10px;} /* Mensaje de carrito vacío */
+.trow{font-size:11px; padding-top:3px;} /* Fila del total */
+.tv2{font-size:13px;} /* Monto total */
+.bmain,.bsec{padding:5px; font-size:10px; cursor:pointer;} /* Botones principales (Confirmar, Imprimir) */
+.blnk{font-size:9px; cursor:pointer;} /* Botón "Limpiar pedido" */
+.cola-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:5px; margin-top:5px;} /* Cuadrícula de pedidos activos en cola */
+.pc{background:var(--d3); border:1px solid var(--bo); border-radius:8px; padding:5px;} /* Tarjeta de pedido en cola */
+.pc.sprio{border-color:var(--gold); box-shadow:0 0 0 1px gold;} /* Pedido con prioridad (borde dorado) */
+.pcnum{font-family:'Bebas Neue',sans-serif; font-size:1rem;} /* Número de pedido */
+.pcli{font-size:9px;} /* Nombre del cliente y tipo */
+.pitem{font-size:9px; border-top:1px solid var(--bo); padding-top:2px; margin-top:2px;} /* Lista de productos del pedido */
+.kbtn{padding:3px 5px; font-size:8px; border-radius:4px; cursor:pointer;} /* Botones de acción (Preparar, Listo, WhatsApp) */
+.ptime{font-size:8px; text-align:right;} /* Tiempo transcurrido */
+.tbar{height:2px; margin-top:2px;} /* Barra de progreso de tiempo */
+.prioctrl{display:flex; gap:2px; margin-top:3px;} /* Controles de prioridad (↑ ↓) */
 .priobtn{padding:2px 4px; font-size:8px; cursor:pointer; background:var(--d4); border:1px solid var(--bo); color:var(--cream); border-radius:4px;}
 
-/* COCINA TV - TEXTO 50% MÁS GRANDE */
+/* ========== COCINA TV (pantalla para el cocinero) ========== */
 #coc{display:none; flex-direction:column; height:100vh;}
-.tv-body{padding:6px; font-size: 20px; /* Tamaño base aumentado 50% (12px -> 18px) */}
-.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:10px;}
-.tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:14px; padding:10px; transition: all 0.2s;}
+.tv-body{padding:6px; font-size: 18px;} /* Contenedor principal de la TV, tamaño base de letra 18px */
+.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;} /* Cuadrícula de tarjetas de pedidos. auto-fill: se ajusta al ancho. minmax(220px,1fr): cada tarjeta mínimo 220px, máximo 1 fracción. Se puede modificar dinámicamente con zoom. */
+.tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:14px; padding:10px; transition: all 0.2s;} /* Tarjeta individual de un pedido */
 .tvcard.sprio{
-  border: 4px solid var(--gold) !important;
+  border: 4px solid var(--gold) !important; /* Pedido con prioridad: borde dorado grueso */
   box-shadow: 0 0 20px rgba(255,215,0,0.8);
   background: rgba(30,30,20,0.95);
 }
-.tvnum{font-family:'Bebas Neue',sans-serif; font-size: 2rem; font-weight: bold;}
-.tvcli{font-size: 0.9rem; margin: 5px 0;}
-.tvit{font-size: 1.3rem; border-top:1px solid var(--bo); padding-top:8px; margin-top:6px;}
-.tvtime{font-size: 0.8rem; text-align:right; margin-top:5px;}
-.tvbar{height:4px; margin-top:5px;}
+.tvnum{font-family:'Bebas Neue',sans-serif; font-size: 2rem; font-weight: bold;} /* Número de pedido (grande) */
+.tvcli{font-size: 0.9rem; margin: 5px 0;} /* Nombre del cliente y tipo (para llevar/local) */
+.tvit{font-size: 2rem; border-top:1px solid var(--bo); padding-top:8px; margin-top:6px;} /* Lista de productos del pedido. Se aumentó a 2rem (enorme) como se pidió. */
+.tvtime{font-size: 0.8rem; text-align:right; margin-top:5px;} /* Tiempo transcurrido y estado */
+.tvbar{height:4px; margin-top:5px;} /* Barra de progreso de tiempo */
 
-/* ADMIN, STATS */
+/* Botones de zoom para ajustar el ancho de las tarjetas */
+.zoom-tv-btn{background:rgba(0,0,0,0.5); border:1px solid #fff; color:#fff; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer; margin-left:5px;}
+
+/* ========== ADMIN y ESTADÍSTICAS (sin cambios relevantes) ========== */
 #admin, #stats{display:none; flex-direction:column; height:100vh;}
 .admin-body, .stats-body{padding:6px;}
 .kpis{gap:5px;}
@@ -160,6 +163,8 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="topbar">
     <div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">COCINA</div></div>
     <div class="tb-right">
+      <button class="zoom-tv-btn" id="zoomMasBtn">🔍+ Ancho</button>
+      <button class="zoom-tv-btn" id="zoomMenosBtn">🔍- Ancho</button>
       <span class="pill">Cloud</span>
       <button class="bsm" onclick="goHome()">Inicio</button>
     </div>
@@ -203,7 +208,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 <div id="prt" style="display:none;"></div>
 
 <script>
-// ========== CONFIGURACIÓN ==========
+// ========== CONFIGURACIÓN DE FIREBASE ==========
 const firebaseConfig = {
   apiKey: "AIzaSyDdoj6UZEBGetMNgfucn2kQsv12EtgEju4",
   authDomain: "gordos-burger-443fb.firebaseapp.com",
@@ -217,7 +222,7 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ========== VARIABLES ==========
+// ========== VARIABLES GLOBALES ==========
 let pedidos = {};
 let orden = [];
 let pedidoNum = 1;
@@ -241,6 +246,44 @@ const DEFAULT_MENU = {
   ]
 };
 let MENU = JSON.parse(JSON.stringify(DEFAULT_MENU));
+
+// ========== ZOOM PARA LA CUADRÍCULA DE COCINA (ajusta el minmax) ==========
+let anchoMinimoTarjeta = 220; // valor inicial en px
+
+function actualizarGridTV() {
+  const tvGrid = document.getElementById('tv-grid');
+  if (tvGrid) {
+    tvGrid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${anchoMinimoTarjeta}px, 1fr))`;
+    localStorage.setItem('tvGridMinWidth', anchoMinimoTarjeta);
+  }
+}
+
+function zoomMas() {
+  anchoMinimoTarjeta = Math.min(anchoMinimoTarjeta + 30, 500);
+  actualizarGridTV();
+}
+
+function zoomMenos() {
+  anchoMinimoTarjeta = Math.max(anchoMinimoTarjeta - 30, 150);
+  actualizarGridTV();
+}
+
+// Restaurar valor guardado al cargar la pantalla de cocina
+function restaurarAnchoTarjetas() {
+  const saved = localStorage.getItem('tvGridMinWidth');
+  if (saved && !isNaN(parseInt(saved))) {
+    anchoMinimoTarjeta = parseInt(saved);
+    actualizarGridTV();
+  }
+}
+
+// Asignar eventos a los botones de zoom después de que el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+  const btnMas = document.getElementById('zoomMasBtn');
+  const btnMenos = document.getElementById('zoomMenosBtn');
+  if (btnMas) btnMas.addEventListener('click', zoomMas);
+  if (btnMenos) btnMenos.addEventListener('click', zoomMenos);
+});
 
 // ========== WHATSAPP ==========
 function enviarWhatsApp(key) {
@@ -304,7 +347,7 @@ function setMode(m) {
   document.getElementById("stats").style.display = m==="stats" ? "flex" : "none";
   document.getElementById("admin").style.display = m==="admin" ? "flex" : "none";
   if(m==="cajero") { buildMenu(); updateOrderUI(); renderCola(); }
-  if(m==="cocina") renderTV();
+  if(m==="cocina") { restaurarAnchoTarjetas(); renderTV(); }
   if(m==="stats") { document.getElementById("stats-date").value = new Date().toISOString().slice(0,10); renderStats(); }
   if(m==="admin") { cargarAdminLista(); actualizarInfoAdmin(); }
 }
@@ -488,7 +531,7 @@ function moverPrio(key, dir) {
   setTimeout(renderCola, 100);
 }
 
-// ========== TV COCINA (texto grande) ==========
+// ========== TV COCINA (con zoom de ancho) ==========
 function renderTV() {
   if (!suscripcionActiva) return;
   let grid = document.getElementById("tv-grid"); if(!grid) return;
