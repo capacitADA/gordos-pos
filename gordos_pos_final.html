@@ -33,10 +33,11 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 /* ========== BARRA SUPERIOR (común a todas las vistas) ========== */
 .topbar{display:flex; align-items:center; justify-content:space-between; padding:5px 8px; background:var(--red);}
 .tb-left{display:flex; align-items:center; gap:5px;}
-.tb-logo{width:30px; height:30px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;} /* Logo pequeño */
+.tb-logo{width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;} /* Logo pequeño */
 .tb-brand{font-family:'Bebas Neue',sans-serif; font-size:0.9rem;} /* Nombre de la vista */
 .pill{font-size:8px; padding:2px 5px; background:var(--yellow); color:#412402; border-radius:12px;} /* Indicador "Cloud" */
 .bsm{font-size:8px; padding:2px 5px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:4px; cursor:pointer;} /* Botón "Inicio" */
+.zoom-tv-btn{background:rgba(0,0,0,0.5); border:1px solid #fff; color:#fff; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer; margin-left:5px;}
 
 /* ========== CAJERO (vista principal) ========== */
 #caj{display:none; flex-direction:column; height:100vh;}
@@ -86,30 +87,27 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 /* ========== COCINA TV (pantalla para el cocinero) ========== */
 #coc{display:none; flex-direction:column; height:100vh;}
 .tv-body{padding:6px; font-size: 18px;} /* Contenedor principal de la TV, tamaño base de letra 18px */
-.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;} /* Cuadrícula de tarjetas de pedidos. auto-fill: se ajusta al ancho. minmax(220px,1fr): cada tarjeta mínimo 220px, máximo 1 fracción. Se puede modificar dinámicamente con zoom. */
+.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;} /* Cuadrícula de tarjetas de pedidos. El minmax se ajusta con zoom de ancho */
 .tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:14px; padding:10px; transition: all 0.2s;} /* Tarjeta individual de un pedido */
 .tvcard.sprio{
   border: 4px solid var(--gold) !important; /* Pedido con prioridad: borde dorado grueso */
   box-shadow: 0 0 20px rgba(255,215,0,0.8);
   background: rgba(30,30,20,0.95);
 }
-.tvnum{font-family:'Bebas Neue',sans-serif; font-size: 2.2rem; font-weight: bold;} /* Número de pedido (grande) */
+.tvnum{font-family:'Bebas Neue',sans-serif; font-size: 2rem; font-weight: bold;} /* Número de pedido (grande) */
 .tvcli{font-size: 0.9rem; margin: 5px 0;} /* Nombre del cliente y tipo (para llevar/local) */
-.tvit{font-size: 1.5rem; border-top:1px solid var(--bo); padding-top:8px; margin-top:6px;} /* Lista de productos del pedido. Se aumentó a 2rem (enorme) como se pidió. */
+.tvit{font-size: 1.5rem; border-top:1px solid var(--bo); padding-top:8px; margin-top:6px;} /* Lista de productos del pedido. Tamaño ajustable dinámicamente con zoom de texto */
 .tvtime{font-size: 0.8rem; text-align:right; margin-top:5px;} /* Tiempo transcurrido y estado */
 .tvbar{height:4px; margin-top:5px;} /* Barra de progreso de tiempo */
 
-/* Botones de zoom para ajustar el ancho de las tarjetas */
-.zoom-tv-btn{background:rgba(0,0,0,0.5); border:1px solid #fff; color:#fff; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer; margin-left:5px;}
-
-/* ========== ADMIN y ESTADÍSTICAS (sin cambios relevantes) ========== */
+/* ========== ADMIN y ESTADÍSTICAS ========== */
 #admin, #stats{display:none; flex-direction:column; height:100vh;}
 .admin-body, .stats-body{padding:6px;}
 .kpis{gap:5px;}
 .kpi{padding:6px;}
 .kpin{font-size:1.2rem;}
-.stbl th, .stbl td{padding:3px; font-size:12px;}
-.toast{font-size:12px; padding:4px 10px; position:fixed; bottom:10px; left:50%; transform:translateX(-50%); background:var(--d3); border-radius:6px; z-index:1000;}
+.stbl th, .stbl td{padding:3px; font-size:9px;}
+.toast{font-size:10px; padding:4px 10px; position:fixed; bottom:10px; left:50%; transform:translateX(-50%); background:var(--d3); border-radius:6px; z-index:1000;}
 
 #blockScreen{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:var(--dark); text-align:center; padding:2rem;}
 #blockScreen h2{color:var(--red); margin-bottom:1rem;}
@@ -139,7 +137,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
     <div class="caj-left">
       <div class="cats" id="cats"></div>
       <div class="mgrid" id="mgrid"></div>
-      <div class="stit" style="font-size:12px; margin:5px 0;">Pedidos activos</div>
+      <div class="stit" style="font-size:10px; margin:5px 0;">Pedidos activos</div>
       <div class="cola-grid" id="cola-d"></div>
     </div>
     <div class="caj-right">
@@ -163,8 +161,10 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="topbar">
     <div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">COCINA</div></div>
     <div class="tb-right">
-      <button class="zoom-tv-btn" id="zoomMasBtn">🔍+ Ancho</button>
-      <button class="zoom-tv-btn" id="zoomMenosBtn">🔍- Ancho</button>
+      <button class="zoom-tv-btn" id="zoomMasBtn">📐+ Ancho</button>
+      <button class="zoom-tv-btn" id="zoomMenosBtn">📐- Ancho</button>
+      <button class="zoom-tv-btn" id="textoMasBtn">🔤+ Texto</button>
+      <button class="zoom-tv-btn" id="textoMenosBtn">🔤- Texto</button>
       <span class="pill">Cloud</span>
       <button class="bsm" onclick="goHome()">Inicio</button>
     </div>
@@ -247,7 +247,7 @@ const DEFAULT_MENU = {
 };
 let MENU = JSON.parse(JSON.stringify(DEFAULT_MENU));
 
-// ========== ZOOM PARA LA CUADRÍCULA DE COCINA (ajusta el minmax) ==========
+// ========== ZOOM PARA ANCHO DE TARJETAS (minmax) ==========
 let anchoMinimoTarjeta = 220; // valor inicial en px
 
 function actualizarGridTV() {
@@ -268,21 +268,55 @@ function zoomMenos() {
   actualizarGridTV();
 }
 
-// Restaurar valor guardado al cargar la pantalla de cocina
-function restaurarAnchoTarjetas() {
-  const saved = localStorage.getItem('tvGridMinWidth');
-  if (saved && !isNaN(parseInt(saved))) {
-    anchoMinimoTarjeta = parseInt(saved);
+// ========== ZOOM PARA TEXTO DE PRODUCTOS (.tvit) ==========
+let tvitFontSize = 2.0; // valor en rem, inicial 2rem
+
+function aplicarTvitFontSize() {
+  // Aplica a todos los elementos .tvit existentes (incluyendo los que ya están renderizados)
+  document.querySelectorAll('#tv-grid .tvit').forEach(el => {
+    el.style.fontSize = tvitFontSize + 'rem';
+  });
+  // Guardar en localStorage
+  localStorage.setItem('tvitFontSize', tvitFontSize);
+}
+
+function textoMas() {
+  tvitFontSize = Math.min(tvitFontSize + 0.2, 3.5); // máximo 3.5rem
+  aplicarTvitFontSize();
+}
+
+function textoMenos() {
+  tvitFontSize = Math.max(tvitFontSize - 0.2, 1.0); // mínimo 1rem
+  aplicarTvitFontSize();
+}
+
+// Restaurar valores guardados
+function restaurarZoomTarjetas() {
+  const savedAncho = localStorage.getItem('tvGridMinWidth');
+  if (savedAncho && !isNaN(parseInt(savedAncho))) {
+    anchoMinimoTarjeta = parseInt(savedAncho);
     actualizarGridTV();
+  }
+}
+
+function restaurarTvitFontSize() {
+  const savedSize = localStorage.getItem('tvitFontSize');
+  if (savedSize && !isNaN(parseFloat(savedSize))) {
+    tvitFontSize = parseFloat(savedSize);
+    // No aplicar aquí porque aún no hay elementos .tvit; se aplicará en renderTV
   }
 }
 
 // Asignar eventos a los botones de zoom después de que el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-  const btnMas = document.getElementById('zoomMasBtn');
-  const btnMenos = document.getElementById('zoomMenosBtn');
-  if (btnMas) btnMas.addEventListener('click', zoomMas);
-  if (btnMenos) btnMenos.addEventListener('click', zoomMenos);
+  const btnZoomMas = document.getElementById('zoomMasBtn');
+  const btnZoomMenos = document.getElementById('zoomMenosBtn');
+  const btnTextoMas = document.getElementById('textoMasBtn');
+  const btnTextoMenos = document.getElementById('textoMenosBtn');
+  if (btnZoomMas) btnZoomMas.addEventListener('click', zoomMas);
+  if (btnZoomMenos) btnZoomMenos.addEventListener('click', zoomMenos);
+  if (btnTextoMas) btnTextoMas.addEventListener('click', textoMas);
+  if (btnTextoMenos) btnTextoMenos.addEventListener('click', textoMenos);
 });
 
 // ========== WHATSAPP ==========
@@ -347,7 +381,7 @@ function setMode(m) {
   document.getElementById("stats").style.display = m==="stats" ? "flex" : "none";
   document.getElementById("admin").style.display = m==="admin" ? "flex" : "none";
   if(m==="cajero") { buildMenu(); updateOrderUI(); renderCola(); }
-  if(m==="cocina") { restaurarAnchoTarjetas(); renderTV(); }
+  if(m==="cocina") { restaurarZoomTarjetas(); restaurarTvitFontSize(); renderTV(); }
   if(m==="stats") { document.getElementById("stats-date").value = new Date().toISOString().slice(0,10); renderStats(); }
   if(m==="admin") { cargarAdminLista(); actualizarInfoAdmin(); }
 }
@@ -531,7 +565,7 @@ function moverPrio(key, dir) {
   setTimeout(renderCola, 100);
 }
 
-// ========== TV COCINA (con zoom de ancho) ==========
+// ========== TV COCINA (con zoom de ancho y zoom de texto) ==========
 function renderTV() {
   if (!suscripcionActiva) return;
   let grid = document.getElementById("tv-grid"); if(!grid) return;
@@ -546,12 +580,14 @@ function renderTV() {
     card.className = "tvcard" + (p.prioridad ? " sprio" : "");
     if(p.estado === "listo") card.style.animation = "pulse 0.8s infinite";
     let starHtml = p.prioridad ? `<div style="font-size: 2.5rem; line-height: 1; text-align: right;">⭐</div>` : "";
+    // Crear el div de productos con clase tvit y aplicar el tamaño actual
+    let productosHtml = `<div class="tvit" style="font-size: ${tvitFontSize}rem;">${p.items.map(i=>`${i.qty}× ${i.name}`).join("<br>")}</div>`;
     card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center;">
         <div class="tvnum">#${String(p.num).padStart(3,"0")}</div>
         ${starHtml}
       </div>
       <div class="tvcli">${p.cliente} · ${p.tipo}</div>
-      <div class="tvit">${p.items.map(i=>`${i.qty}× ${i.name}`).join("<br>")}</div>
+      ${productosHtml}
       ${p.obs?`<div style="color:var(--yellow); margin-top:4px;">📝 ${p.obs}</div>`:""}
       <div class="tvbar"><div class="tvbarfill" style="width:${pct}%;background:${barCol};"></div></div>
       <div class="tvtime">⏱ ${mins} min · ${p.estado}</div>`;
@@ -574,7 +610,7 @@ function renderStats() {
   lista.forEach(([,p])=>{
     let hora = new Date(p.ts).toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"});
     let tr = document.createElement("tr");
-    tr.innerHTML = `<td>${hora}</td><td>${p.cliente}</td><td>${p.waRaw||p.wa||"-"}</td><td>${p.tipo==="llevar"?"Llevar":"Local"}</td><td style="font-size:9px;">${p.items.map(i=>i.qty+"× "+i.name).join(", ")}</td><td>$${(p.total/1000).toFixed(0)}K</td><td>${p.estado}</td>`;
+    tr.innerHTML = `<tr>${hora}</td><td>${p.cliente}</td><td>${p.waRaw||p.wa||"-"}</td><td>${p.tipo==="llevar"?"Llevar":"Local"}</td><td style="font-size:9px;">${p.items.map(i=>i.qty+"× "+i.name).join(", ")}</td><td>$${(p.total/1000).toFixed(0)}K</td><td>${p.estado}</td>`;
     tbody.appendChild(tr);
   });
 }
