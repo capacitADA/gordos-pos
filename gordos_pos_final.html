@@ -19,27 +19,27 @@
 html,body{height:100%; overflow:hidden;}
 body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-serif; font-size:12px;}
 
-/* ========== PANTALLA DE SELECCIÓN (INICIO) ========== */
+/* PANTALLA DE SELECCIÓN (INICIO) */
 #sel{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; gap:1rem; padding:1rem;}
-.sel-logo{width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--yellow); background:var(--red); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.5rem;} /* Logo con texto "GB" */
-.sel-title{font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--red);} /* Título principal */
-.sel-sub{font-size:.6rem; color:var(--mu);} /* Subtítulo */
-.sel-cards{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center;} /* Contenedor de tarjetas de opciones */
-.sel-card{flex:1; min-width:120px; background:var(--d3); border:1px solid var(--bo); border-radius:10px; padding:0.8rem 0.5rem; text-align:center; cursor:pointer;} /* Cada tarjeta (Cajero, Cocina, etc.) */
-.sel-card .ic{font-size:1.5rem;} /* Icono emoji dentro de la tarjeta */
-.sel-card h2{font-family:'Bebas Neue',sans-serif; font-size:1rem; color:#fff;} /* Texto de la tarjeta */
-.fb-note{font-size:9px; padding:.5rem; background:var(--d3); border-radius:6px;} /* Estado de conexión a Firebase */
+.sel-logo{width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--yellow); background:var(--red); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.5rem;}
+.sel-title{font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--red);}
+.sel-sub{font-size:.6rem; color:var(--mu);}
+.sel-cards{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center;}
+.sel-card{flex:1; min-width:120px; background:var(--d3); border:1px solid var(--bo); border-radius:10px; padding:0.8rem 0.5rem; text-align:center; cursor:pointer;}
+.sel-card .ic{font-size:1.5rem;}
+.sel-card h2{font-family:'Bebas Neue',sans-serif; font-size:1rem; color:#fff;}
+.fb-note{font-size:9px; padding:.5rem; background:var(--d3); border-radius:6px;}
 
-/* ========== BARRA SUPERIOR (común a todas las vistas) ========== */
+/* BARRA SUPERIOR */
 .topbar{display:flex; align-items:center; justify-content:space-between; padding:5px 8px; background:var(--red);}
 .tb-left{display:flex; align-items:center; gap:5px;}
-.tb-logo{width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;} /* Logo pequeño */
-.tb-brand{font-family:'Bebas Neue',sans-serif; font-size:0.9rem;} /* Nombre de la vista */
-.pill{font-size:8px; padding:2px 5px; background:var(--yellow); color:#412402; border-radius:12px;} /* Indicador "Cloud" */
-.bsm{font-size:8px; padding:2px 5px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:4px; cursor:pointer;} /* Botón "Inicio" */
+.tb-logo{width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:0.8rem;}
+.tb-brand{font-family:'Bebas Neue',sans-serif; font-size:0.9rem;}
+.pill{font-size:8px; padding:2px 5px; background:var(--yellow); color:#412402; border-radius:12px;}
+.bsm{font-size:8px; padding:2px 5px; background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:4px; cursor:pointer;}
 .zoom-tv-btn{background:rgba(0,0,0,0.5); border:1px solid #fff; color:#fff; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer; margin-left:5px;}
 
-/* ========== CAJERO (vista principal) ========== */
+/* CAJERO */
 #caj{display:none; flex-direction:column; height:100vh;}
 .caj-body{display:grid; grid-template-columns:1fr 260px; flex:1; overflow:hidden;}
 @media (max-width:680px){
@@ -47,77 +47,96 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   .caj-right{position:fixed; bottom:0; left:0; right:0; max-height:40vh; background:var(--d2); border-top:2px solid var(--red); border-radius:12px 12px 0 0; padding:6px; z-index:20; overflow-y:auto;}
   .caj-left{padding-bottom:42vh;}
 }
-.caj-left{padding:6px; overflow-y:auto;} /* Panel izquierdo (menú y cola) */
-.caj-right{background:var(--d2); border-left:1px solid var(--bo); padding:6px; display:flex; flex-direction:column; gap:4px;} /* Panel derecho (carrito y datos cliente) */
-.cats{display:flex; gap:4px; flex-wrap:wrap; margin-bottom:4px;} /* Contenedor de botones de categorías */
+.caj-left{padding:6px; overflow-y:auto;}
+.caj-right{background:var(--d2); border-left:1px solid var(--bo); padding:6px; display:flex; flex-direction:column; gap:4px;}
+.cats{display:flex; gap:4px; flex-wrap:wrap; margin-bottom:4px;}
 .cat{font-size:9px; padding:2px 8px; border-radius:16px; border:1px solid var(--bo); background:transparent; color:var(--mu); cursor:pointer;}
-.cat.on{background:var(--red); color:#fff;} /* Categoría activa */
-.mgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:4px;} /* Cuadrícula de productos del menú */
-.mitem{background:var(--d3); border-radius:6px; padding:5px 2px; text-align:center; cursor:pointer;} /* Cada producto */
-.mn{font-size:9px; font-weight:500;} /* Nombre del producto */
-.mp{font-size:10px; color:var(--yellow);} /* Precio del producto */
-.mt{font-size:7px; color:var(--mu);} /* Etiqueta adicional (tag) */
-.cbox{background:var(--dark); border-radius:6px; padding:5px; display:flex; flex-direction:column; gap:3px;} /* Campos de datos del cliente */
-.lbl{font-size:8px; color:var(--mu);} /* Etiquetas de campos */
+.cat.on{background:var(--red); color:#fff;}
+.mgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:4px;}
+.mitem{background:var(--d3); border-radius:6px; padding:5px 2px; text-align:center; cursor:pointer;}
+.mn{font-size:9px; font-weight:500;}
+.mp{font-size:10px; color:var(--yellow);}
+.mt{font-size:7px; color:var(--mu);}
+.cbox{background:var(--dark); border-radius:6px; padding:5px; display:flex; flex-direction:column; gap:3px;}
+.lbl{font-size:8px; color:var(--mu);}
 .cbox input,.cbox select,.cbox textarea{background:var(--d4); border:1px solid var(--bo); border-radius:4px; padding:4px; color:var(--cream); font-size:10px; width:100%;}
-.oit{flex:1; overflow-y:auto; max-height:120px;} /* Lista de productos en el carrito */
-.orow{display:flex; align-items:center; gap:4px; padding:3px 0; border-bottom:1px solid var(--bo); font-size:9px;} /* Fila de producto en carrito */
-.qc{display:flex; gap:2px;} /* Controles de cantidad */
-.qb{width:16px; height:16px; font-size:10px; cursor:pointer;} /* Botón + / - */
-.qn{font-size:10px; min-width:14px; text-align:center;} /* Cantidad */
-.on2{flex:1;} /* Nombre del producto en carrito */
-.opr{font-size:9px;} /* Precio del producto en carrito */
-.empty-o{text-align:center; padding:0.5rem; font-size:10px;} /* Mensaje de carrito vacío */
-.trow{font-size:11px; padding-top:3px;} /* Fila del total */
-.tv2{font-size:13px;} /* Monto total */
-.bmain,.bsec{padding:5px; font-size:10px; cursor:pointer;} /* Botones principales (Confirmar, Imprimir) */
-.blnk{font-size:9px; cursor:pointer;} /* Botón "Limpiar pedido" */
-.cola-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:5px; margin-top:5px;} /* Cuadrícula de pedidos activos en cola */
-.pc{background:var(--d3); border:1px solid var(--bo); border-radius:8px; padding:5px;} /* Tarjeta de pedido en cola */
-.pc.sprio{border-color:var(--gold); box-shadow:0 0 0 1px gold;} /* Pedido con prioridad (borde dorado) */
-.pcnum{font-family:'Bebas Neue',sans-serif; font-size:1rem;} /* Número de pedido */
-.pcli{font-size:9px;} /* Nombre del cliente y tipo */
-.pitem{font-size:9px; border-top:1px solid var(--bo); padding-top:2px; margin-top:2px;} /* Lista de productos del pedido */
-.kbtn{padding:3px 5px; font-size:8px; border-radius:4px; cursor:pointer;} /* Botones de acción (Preparar, Listo, WhatsApp) */
-.ptime{font-size:8px; text-align:right;} /* Tiempo transcurrido */
-.tbar{height:2px; margin-top:2px;} /* Barra de progreso de tiempo */
-.prioctrl{display:flex; gap:2px; margin-top:3px;} /* Controles de prioridad (↑ ↓) */
+.oit{flex:1; overflow-y:auto; max-height:120px;}
+.orow{display:flex; align-items:center; gap:4px; padding:3px 0; border-bottom:1px solid var(--bo); font-size:9px;}
+.qc{display:flex; gap:2px;}
+.qb{width:16px; height:16px; font-size:10px; cursor:pointer;}
+.qn{font-size:10px; min-width:14px; text-align:center;}
+.on2{flex:1;}
+.opr{font-size:9px;}
+.empty-o{text-align:center; padding:0.5rem; font-size:10px;}
+.trow{font-size:11px; padding-top:3px;}
+.tv2{font-size:13px;}
+.bmain,.bsec{padding:5px; font-size:10px; cursor:pointer;}
+.blnk{font-size:9px; cursor:pointer;}
+.cola-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:5px; margin-top:5px;}
+.pc{background:var(--d3); border:1px solid var(--bo); border-radius:8px; padding:5px;}
+.pc.sprio{border-color:var(--gold); box-shadow:0 0 0 1px gold;}
+.pcnum{font-family:'Bebas Neue',sans-serif; font-size:1rem;}
+.pcli{font-size:9px;}
+.pitem{font-size:9px; border-top:1px solid var(--bo); padding-top:2px; margin-top:2px;}
+.kbtn{padding:3px 5px; font-size:8px; border-radius:4px; cursor:pointer;}
+.ptime{font-size:8px; text-align:right;}
+.tbar{height:2px; margin-top:2px;}
+.prioctrl{display:flex; gap:2px; margin-top:3px;}
 .priobtn{padding:2px 4px; font-size:8px; cursor:pointer; background:var(--d4); border:1px solid var(--bo); color:var(--cream); border-radius:4px;}
 
-/* ========== COCINA TV (pantalla para el cocinero) ========== */
+/* COCINA TV */
 #coc{display:none; flex-direction:column; height:100vh;}
-.tv-body{padding:6px; font-size: 18px;} /* Contenedor principal de la TV, tamaño base de letra 18px */
-.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;} /* Cuadrícula de tarjetas de pedidos. El minmax se ajusta con zoom de ancho */
-.tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:14px; padding:10px; transition: all 0.2s;} /* Tarjeta individual de un pedido */
+.tv-body{padding:6px; font-size: 18px;}
+.tv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;}
+.tvcard{background:var(--d3); border:2px solid var(--bo); border-radius:14px; padding:10px; transition: all 0.2s;}
 .tvcard.sprio{
-  border: 4px solid var(--gold) !important; /* Pedido con prioridad: borde dorado grueso */
+  border: 4px solid var(--gold) !important;
   box-shadow: 0 0 20px rgba(255,215,0,0.8);
   background: rgba(30,30,20,0.95);
 }
-.tvnum{font-family:'Bebas Neue',sans-serif; font-size: 2rem; font-weight: bold;} /* Número de pedido (grande) */
-.tvcli{font-size: 0.9rem; margin: 5px 0;} /* Nombre del cliente y tipo (para llevar/local) */
-.tvit{font-size: 1.5rem; border-top:1px solid var(--bo); padding-top:8px; margin-top:6px;} /* Lista de productos del pedido. Tamaño ajustable dinámicamente con zoom de texto */
-.tvtime{font-size: 0.8rem; text-align:right; margin-top:5px;} /* Tiempo transcurrido y estado */
-.tvbar{height:4px; margin-top:5px;} /* Barra de progreso de tiempo */
+.tvnum{font-family:'Bebas Neue',sans-serif; font-size: 2rem; font-weight: bold;}
+.tvcli{font-size: 0.9rem; margin: 5px 0;}
+.tvit{font-size: 2rem; border-top:1px solid var(--bo); padding-top:8px; margin-top:6px;}
+.tvtime{font-size: 0.8rem; text-align:right; margin-top:5px;}
+.tvbar{height:4px; margin-top:5px;}
 
-/* ========== ADMIN y ESTADÍSTICAS ========== */
-#admin, #stats{display:none; flex-direction:column; height:100vh;}
-.admin-body, .stats-body{padding:6px;}
-.kpis{gap:5px;}
-.kpi{padding:6px;}
-.kpin{font-size:1.2rem;}
-.stbl th, .stbl td{padding:3px; font-size:9px;}
+/* ADMIN - SOLO GESTIÓN DE MENÚ (sin suscripción) */
+#admin{display:none; flex-direction:column; height:100vh;}
+.admin-body{padding:6px;}
+.admin-form{background:var(--d3); padding:6px; border-radius:8px; margin-bottom:6px;}
+.admin-form input, .admin-form select, .admin-form button{font-size:10px; padding:4px; width:100%; margin-bottom:4px;}
+.admin-form label{font-size:9px;}
+.admin-list{margin-top:6px;}
+
+/* ESTADÍSTICAS */
+#stats{display:none; flex-direction:column; height:100vh;}
+.stats-body{padding:6px;}
+.kpis{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:5px; margin-bottom:8px;}
+.kpi{background:var(--d3); border-radius:10px; padding:6px; text-align:center;}
+.kpin{font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--yellow);}
+.kpil{font-size:8px; color:var(--mu);}
+.stbl{width:100%; border-collapse:collapse; font-size:9px;}
+.stbl th, .stbl td{padding:3px; border-bottom:1px solid var(--bo);}
+.bxl{background:#217346; color:#fff; border:none; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:10px;}
+
 .toast{font-size:10px; padding:4px 10px; position:fixed; bottom:10px; left:50%; transform:translateX(-50%); background:var(--d3); border-radius:6px; z-index:1000;}
-
-#blockScreen{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:var(--dark); text-align:center; padding:2rem;}
+#blockScreen{display:none; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:var(--dark); text-align:center; padding:2rem;}
 #blockScreen h2{color:var(--red); margin-bottom:1rem;}
 #blockScreen button{background:var(--red); color:#fff; border:none; padding:8px 16px; border-radius:8px; margin-top:1rem; cursor:pointer;}
 </style>
 </head>
 <body>
 
-<div id="blockScreen" style="display:none;"><div class="sel-logo" style="margin-bottom:1rem;">GB</div><h2>SUSCRIPCIÓN VENCIDA</h2><p>Contacta al administrador.</p><button onclick="location.reload()">Reintentar</button></div>
+<!-- Pantalla de bloqueo (se muestra si la suscripción expiró) -->
+<div id="blockScreen">
+  <div class="sel-logo" style="margin-bottom:1rem;">GB</div>
+  <h2>SUSCRIPCIÓN VENCIDA</h2>
+  <p>El período de acceso a Gordo's Burger ha expirado.</p>
+  <p>Contacta al administrador para renovar.</p>
+  <button onclick="location.reload()">Reintentar</button>
+</div>
 
+<!-- SELECTOR INICIAL -->
 <div id="sel">
   <img class="sel-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="sel-logo" style="display:none;">GB</div>
   <div class="sel-title">GORDO'S BURGER</div>
@@ -131,6 +150,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="fb-note" id="fb-status">🔄 Conectando...</div>
 </div>
 
+<!-- CAJERO -->
 <div id="caj">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">CAJERO</div></div><div class="tb-right"><span class="pill">Cloud</span><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="caj-body">
@@ -157,6 +177,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   </div>
 </div>
 
+<!-- COCINA -->
 <div id="coc">
   <div class="topbar">
     <div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">COCINA</div></div>
@@ -172,34 +193,31 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="tv-body"><div class="tv-grid" id="tv-grid"></div></div>
 </div>
 
+<!-- ADMIN (solo gestión de menú) -->
 <div id="admin">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">ADMIN</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="admin-body">
-    <div class="admin-form" style="background:var(--d3); padding:6px; border-radius:8px; margin-bottom:6px;">
-      <h3 style="font-size:0.8rem;">Suscripción</h3>
-      <div id="adminSuscripcionInfo" style="background:var(--d4); padding:6px; border-radius:6px; margin-bottom:6px; font-size:10px;"></div>
-      <input type="datetime-local" id="nuevaFechaExpiracion" style="font-size:10px; padding:4px; width:100%; margin-bottom:6px;">
-      <button onclick="cambiarFechaExpiracion()" style="font-size:10px; padding:4px;">Cambiar fecha</button>
-      <hr style="margin:8px 0;">
+    <div class="admin-form">
       <h3 style="font-size:0.8rem;">Gestión de Menú</h3>
       <input type="text" id="prod-id" style="display:none;">
-      <input type="text" id="prod-nombre" placeholder="Nombre" style="font-size:10px; padding:4px; width:100%; margin-bottom:4px;">
-      <input type="number" id="prod-precio" placeholder="Precio COP" style="font-size:10px; padding:4px; width:100%; margin-bottom:4px;">
-      <select id="prod-categoria" style="font-size:10px; padding:4px; width:100%; margin-bottom:4px;"><option>Burgers</option><option>Combos</option><option>Bebidas</option><option>Adicionales</option></select>
-      <label style="font-size:9px;"><input type="checkbox" id="prod-empaque"> Empaque llevar</label>
-      <label style="font-size:9px;"><input type="checkbox" id="prod-sabores"> Sabores</label>
-      <input type="text" id="prod-sabores-list" placeholder="Sabores (ej: Coca, Sprite)" style="font-size:9px; padding:3px; width:100%; margin-bottom:4px;">
-      <button onclick="guardarProducto()" style="font-size:10px; padding:4px;">Guardar</button>
-      <button onclick="limpiarFormProducto()" style="background:#555; font-size:10px;">Cancelar</button>
+      <input type="text" id="prod-nombre" placeholder="Nombre">
+      <input type="number" id="prod-precio" placeholder="Precio COP">
+      <select id="prod-categoria"><option>Burgers</option><option>Combos</option><option>Bebidas</option><option>Adicionales</option></select>
+      <label><input type="checkbox" id="prod-empaque"> Empaque llevar</label>
+      <label><input type="checkbox" id="prod-sabores"> Sabores</label>
+      <input type="text" id="prod-sabores-list" placeholder="Sabores (ej: Coca, Sprite)">
+      <button onclick="guardarProducto()">Guardar</button>
+      <button onclick="limpiarFormProducto()" style="background:#555;">Cancelar</button>
     </div>
     <div id="admin-lista"></div>
   </div>
 </div>
 
+<!-- ESTADÍSTICAS -->
 <div id="stats">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">ESTADÍSTICAS</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="stats-body">
-    <div class="stats-hdr" style="display:flex; gap:5px; margin-bottom:8px;"><input type="date" id="stats-date" style="font-size:10px;"><button class="bxl" onclick="exportXlsx()" style="font-size:10px;">Exportar</button></div>
+    <div class="stats-hdr" style="display:flex; gap:5px; margin-bottom:8px;"><input type="date" id="stats-date" style="font-size:10px;"><button class="bxl" onclick="exportXlsx()">Exportar Excel</button></div>
     <div class="kpis" id="kpis"></div>
     <div style="overflow-x:auto;"><table class="stbl"><thead><tr><th>Hora</th><th>Cliente</th><th>WA</th><th>Tipo</th><th>Productos</th><th>Total</th><th>Estado</th></tr></thead><tbody id="stbl-body"></tbody></table></div>
   </div>
@@ -228,7 +246,7 @@ let orden = [];
 let pedidoNum = 1;
 let catActual = "Burgers";
 let modo = "";
-let suscripcionActiva = false;
+let suscripcionActiva = true; // se actualizará con Firebase
 
 const EMPAQUE_PRECIO = 500;
 const TIEMPO_OBJETIVO = 12;
@@ -247,9 +265,8 @@ const DEFAULT_MENU = {
 };
 let MENU = JSON.parse(JSON.stringify(DEFAULT_MENU));
 
-// ========== ZOOM PARA ANCHO DE TARJETAS (minmax) ==========
-let anchoMinimoTarjeta = 220; // valor inicial en px
-
+// ========== ZOOM PARA ANCHO DE TARJETAS ==========
+let anchoMinimoTarjeta = 220;
 function actualizarGridTV() {
   const tvGrid = document.getElementById('tv-grid');
   if (tvGrid) {
@@ -257,111 +274,56 @@ function actualizarGridTV() {
     localStorage.setItem('tvGridMinWidth', anchoMinimoTarjeta);
   }
 }
-
-function zoomMas() {
-  anchoMinimoTarjeta = Math.min(anchoMinimoTarjeta + 30, 500);
-  actualizarGridTV();
-}
-
-function zoomMenos() {
-  anchoMinimoTarjeta = Math.max(anchoMinimoTarjeta - 30, 150);
-  actualizarGridTV();
+function zoomMas() { anchoMinimoTarjeta = Math.min(anchoMinimoTarjeta + 30, 500); actualizarGridTV(); }
+function zoomMenos() { anchoMinimoTarjeta = Math.max(anchoMinimoTarjeta - 30, 150); actualizarGridTV(); }
+function restaurarZoomTarjetas() {
+  const saved = localStorage.getItem('tvGridMinWidth');
+  if (saved && !isNaN(parseInt(saved))) { anchoMinimoTarjeta = parseInt(saved); actualizarGridTV(); }
 }
 
 // ========== ZOOM PARA TEXTO DE PRODUCTOS (.tvit) ==========
-let tvitFontSize = 2.0; // valor en rem, inicial 2rem
-
+let tvitFontSize = 2.0;
 function aplicarTvitFontSize() {
-  // Aplica a todos los elementos .tvit existentes (incluyendo los que ya están renderizados)
-  document.querySelectorAll('#tv-grid .tvit').forEach(el => {
-    el.style.fontSize = tvitFontSize + 'rem';
-  });
-  // Guardar en localStorage
+  document.querySelectorAll('#tv-grid .tvit').forEach(el => el.style.fontSize = tvitFontSize + 'rem');
   localStorage.setItem('tvitFontSize', tvitFontSize);
 }
-
-function textoMas() {
-  tvitFontSize = Math.min(tvitFontSize + 0.2, 3.5); // máximo 3.5rem
-  aplicarTvitFontSize();
-}
-
-function textoMenos() {
-  tvitFontSize = Math.max(tvitFontSize - 0.2, 1.0); // mínimo 1rem
-  aplicarTvitFontSize();
-}
-
-// Restaurar valores guardados
-function restaurarZoomTarjetas() {
-  const savedAncho = localStorage.getItem('tvGridMinWidth');
-  if (savedAncho && !isNaN(parseInt(savedAncho))) {
-    anchoMinimoTarjeta = parseInt(savedAncho);
-    actualizarGridTV();
-  }
-}
-
+function textoMas() { tvitFontSize = Math.min(tvitFontSize + 0.2, 3.5); aplicarTvitFontSize(); }
+function textoMenos() { tvitFontSize = Math.max(tvitFontSize - 0.2, 1.0); aplicarTvitFontSize(); }
 function restaurarTvitFontSize() {
-  const savedSize = localStorage.getItem('tvitFontSize');
-  if (savedSize && !isNaN(parseFloat(savedSize))) {
-    tvitFontSize = parseFloat(savedSize);
-    // No aplicar aquí porque aún no hay elementos .tvit; se aplicará en renderTV
-  }
+  const saved = localStorage.getItem('tvitFontSize');
+  if (saved && !isNaN(parseFloat(saved))) tvitFontSize = parseFloat(saved);
 }
 
-// Asignar eventos a los botones de zoom después de que el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-  const btnZoomMas = document.getElementById('zoomMasBtn');
-  const btnZoomMenos = document.getElementById('zoomMenosBtn');
-  const btnTextoMas = document.getElementById('textoMasBtn');
-  const btnTextoMenos = document.getElementById('textoMenosBtn');
-  if (btnZoomMas) btnZoomMas.addEventListener('click', zoomMas);
-  if (btnZoomMenos) btnZoomMenos.addEventListener('click', zoomMenos);
-  if (btnTextoMas) btnTextoMas.addEventListener('click', textoMas);
-  if (btnTextoMenos) btnTextoMenos.addEventListener('click', textoMenos);
-});
-
-// ========== WHATSAPP ==========
-function enviarWhatsApp(key) {
-  const pedido = pedidos[key];
-  if (!pedido) { toast("Pedido no encontrado"); return; }
-  let waNum = pedido.wa || pedido.waRaw;
-  if (!waNum) { toast("Cliente sin WhatsApp"); return; }
-  waNum = normalizeWA(waNum);
-  const mensaje = encodeURIComponent(`¡Hola ${pedido.cliente}! 🍔 Tu pedido #${pedido.num} está listo. Si tienes un momento, nos ayudaría mucho con una reseña en Google Maps: https://www.google.com/maps/place/Gordo's+Burger/@7.1222284,-73.1188766,17z/`);
-  window.open(`https://wa.me/${waNum}?text=${mensaje}`, '_blank');
-  setTimeout(() => cambiarEstado(key, 'entregado'), 500);
-}
-
-// ========== VERIFICACIÓN SUSCRIPCIÓN ==========
+// ========== VERIFICACIÓN DE SUSCRIPCIÓN (SOLO LECTURA DESDE FIREBASE) ==========
 function verificarSuscripcion() {
   db.ref('config/fechaExpiracion').on('value', (snap) => {
     let fechaExpiracion = snap.val();
     if (!fechaExpiracion) {
-      fechaExpiracion = new Date(2026, 3, 23, 23, 59, 59).getTime();
+      // Primera vez: crear fecha por defecto (23 de abril de 2026 a las 23:59:59 hora Colombia)
+      // Para evitar problemas de zona horaria, usamos UTC-5
+      const fechaDefecto = new Date(Date.UTC(2026, 3, 24, 4, 59, 59)); // 2026-04-24 04:59:59 UTC = 2026-04-23 23:59:59 COT
+      fechaExpiracion = fechaDefecto.getTime();
       db.ref('config/fechaExpiracion').set(fechaExpiracion);
     }
-    suscripcionActiva = Date.now() <= fechaExpiracion;
+    const ahora = Date.now();
+    suscripcionActiva = ahora <= fechaExpiracion;
+    
     const block = document.getElementById('blockScreen');
     const sel = document.getElementById('sel');
     if (!suscripcionActiva) {
       block.style.display = 'flex';
       sel.style.display = 'none';
-      ['caj','coc','stats','admin'].forEach(id => document.getElementById(id).style.display = 'none');
+      // Ocultar cualquier otra vista que estuviera activa
+      document.getElementById('caj').style.display = 'none';
+      document.getElementById('coc').style.display = 'none';
+      document.getElementById('stats').style.display = 'none';
+      document.getElementById('admin').style.display = 'none';
     } else {
       block.style.display = 'none';
+      // Si no hay ningún modo activo, mostrar el selector
       if (modo === '') sel.style.display = 'flex';
     }
-    if (modo === 'admin') actualizarInfoAdmin(fechaExpiracion);
   });
-}
-function actualizarInfoAdmin(fechaExpiracion) {
-  const div = document.getElementById('adminSuscripcionInfo');
-  if (div) div.innerHTML = `<strong>Expira:</strong> ${new Date(fechaExpiracion).toLocaleString('es-ES')}<br><strong>Estado:</strong> ${suscripcionActiva ? 'ACTIVA' : 'VENCIDA'}`;
-}
-function cambiarFechaExpiracion() {
-  const input = document.getElementById('nuevaFechaExpiracion');
-  if (!input.value) { alert('Selecciona fecha'); return; }
-  db.ref('config/fechaExpiracion').set(new Date(input.value).getTime());
-  alert('Fecha actualizada');
 }
 
 // ========== FUNCIONES GENERALES ==========
@@ -383,7 +345,7 @@ function setMode(m) {
   if(m==="cajero") { buildMenu(); updateOrderUI(); renderCola(); }
   if(m==="cocina") { restaurarZoomTarjetas(); restaurarTvitFontSize(); renderTV(); }
   if(m==="stats") { document.getElementById("stats-date").value = new Date().toISOString().slice(0,10); renderStats(); }
-  if(m==="admin") { cargarAdminLista(); actualizarInfoAdmin(); }
+  if(m==="admin") { cargarAdminLista(); }
 }
 function goHome() { modo=""; document.getElementById("sel").style.display="flex"; document.getElementById("caj").style.display="none"; document.getElementById("coc").style.display="none"; document.getElementById("stats").style.display="none"; document.getElementById("admin").style.display="none"; }
 
@@ -436,8 +398,6 @@ function addToOrder(item) {
 }
 function changeQty(id, delta) { let idx = orden.findIndex(i=>i.id===id); if(idx<0) return; orden[idx].qty += delta; if(orden[idx].qty<=0) orden.splice(idx,1); updateOrderUI(); }
 function clearOrder() { orden=[]; document.getElementById("c-nombre").value=""; document.getElementById("c-wa").value=""; document.getElementById("c-obs").value=""; document.getElementById("recur-box").style.display="none"; updateOrderUI(); }
-
-// EMPAQUE: aplica a Burgers y Combos
 function getEmpaque() {
   if (document.getElementById("c-tipo").value !== "llevar") return 0;
   let totalEmpaque = 0;
@@ -524,31 +484,18 @@ function renderCola() {
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:3px;">${actHtml}${prioCtrl}</div>`;
     el.appendChild(card);
   });
-  // Asignar eventos a los botones después de renderizar
+  // Asignar eventos después de renderizar
   document.querySelectorAll('#cola-d .kbtn.kpre').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const key = btn.getAttribute('data-key');
-      cambiarEstado(key, 'preparando');
-    });
+    btn.addEventListener('click', () => cambiarEstado(btn.getAttribute('data-key'), 'preparando'));
   });
   document.querySelectorAll('#cola-d .kbtn.klisto').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const key = btn.getAttribute('data-key');
-      cambiarEstado(key, 'listo');
-    });
+    btn.addEventListener('click', () => cambiarEstado(btn.getAttribute('data-key'), 'listo'));
   });
   document.querySelectorAll('#cola-d .kbtn.kwa').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const key = btn.getAttribute('data-key');
-      enviarWhatsApp(key);
-    });
+    btn.addEventListener('click', () => enviarWhatsApp(btn.getAttribute('data-key')));
   });
   document.querySelectorAll('#cola-d .priobtn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const key = btn.getAttribute('data-key');
-      const dir = parseInt(btn.getAttribute('data-dir'));
-      moverPrio(key, dir);
-    });
+    btn.addEventListener('click', () => moverPrio(btn.getAttribute('data-key'), parseInt(btn.getAttribute('data-dir'))));
   });
 }
 function cambiarEstado(key, estado) { persistField(key,"estado",estado); if(estado==="listo") { playBeep(); toast("¡Pedido listo!"); } }
@@ -564,8 +511,18 @@ function moverPrio(key, dir) {
   persistField(activos[target][0], "prioridad", prioActual);
   setTimeout(renderCola, 100);
 }
+function enviarWhatsApp(key) {
+  const pedido = pedidos[key];
+  if (!pedido) { toast("Pedido no encontrado"); return; }
+  let waNum = pedido.wa || pedido.waRaw;
+  if (!waNum) { toast("Cliente sin WhatsApp"); return; }
+  waNum = normalizeWA(waNum);
+  const mensaje = encodeURIComponent(`¡Hola ${pedido.cliente}! 🍔 Tu pedido #${pedido.num} está listo. Si tienes un momento, nos ayudaría mucho con una reseña en Google Maps: https://www.google.com/maps/place/Gordo's+Burger/@7.1222284,-73.1188766,17z/`);
+  window.open(`https://wa.me/${waNum}?text=${mensaje}`, '_blank');
+  setTimeout(() => cambiarEstado(key, 'entregado'), 500);
+}
 
-// ========== TV COCINA (con zoom de ancho y zoom de texto) ==========
+// ========== TV COCINA ==========
 function renderTV() {
   if (!suscripcionActiva) return;
   let grid = document.getElementById("tv-grid"); if(!grid) return;
@@ -580,7 +537,6 @@ function renderTV() {
     card.className = "tvcard" + (p.prioridad ? " sprio" : "");
     if(p.estado === "listo") card.style.animation = "pulse 0.8s infinite";
     let starHtml = p.prioridad ? `<div style="font-size: 2.5rem; line-height: 1; text-align: right;">⭐</div>` : "";
-    // Crear el div de productos con clase tvit y aplicar el tamaño actual
     let productosHtml = `<div class="tvit" style="font-size: ${tvitFontSize}rem;">${p.items.map(i=>`${i.qty}× ${i.name}`).join("<br>")}</div>`;
     card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center;">
         <div class="tvnum">#${String(p.num).padStart(3,"0")}</div>
@@ -610,7 +566,7 @@ function renderStats() {
   lista.forEach(([,p])=>{
     let hora = new Date(p.ts).toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"});
     let tr = document.createElement("tr");
-    tr.innerHTML = `<tr>${hora}</td><td>${p.cliente}</td><td>${p.waRaw||p.wa||"-"}</td><td>${p.tipo==="llevar"?"Llevar":"Local"}</td><td style="font-size:9px;">${p.items.map(i=>i.qty+"× "+i.name).join(", ")}</td><td>$${(p.total/1000).toFixed(0)}K</td><td>${p.estado}</td>`;
+    tr.innerHTML = `<td>${hora}</td><td>${p.cliente}</td><td>${p.waRaw||p.wa||"-"}</td><td>${p.tipo==="llevar"?"Llevar":"Local"}<td><td style="font-size:9px;">${p.items.map(i=>i.qty+"× "+i.name).join(", ")}</td><td>$${(p.total/1000).toFixed(0)}K</td><td>${p.estado}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -631,8 +587,6 @@ function exportXlsx() {
   XLSX.utils.book_append_sheet(wb, ws, "Pedidos "+dateVal);
   XLSX.writeFile(wb, `GordosBurger_${dateVal}.xlsx`);
 }
-
-// ========== IMPRESIÓN 57mm ==========
 function printComanda() {
   if (!suscripcionActiva) return;
   if(!orden.length) { toast("No hay productos"); return; }
@@ -644,7 +598,6 @@ function printComanda() {
   let total = getTotal();
   let empaque = getEmpaque();
   let line = "------------------------------";
-  
   let html = `<div style="font-family: 'Courier New', monospace; width: 56mm; margin: 0 auto; padding: 1mm; font-size: 9px;">
     <div style="text-align: center; font-size: 11px; font-weight: bold;">GORDO'S BURGER</div>
     <div style="text-align: center;">${line}</div>
@@ -654,40 +607,15 @@ function printComanda() {
     <div>Tipo: ${tipo === "llevar" ? "Para llevar" : "En local"}</div>
     ${obs ? `<div>Obs: ${obs}</div>` : ""}
     <div>${line}</div>`;
-  
   orden.forEach(item => {
     let sub = item.price * item.qty;
-    html += `<div style="display: flex; justify-content: space-between;">
-      <span>${item.qty}x ${item.name}</span>
-      <span>$${(sub/1000).toFixed(0)}K</span>
-    </div>`;
+    html += `<div style="display: flex; justify-content: space-between;"><span>${item.qty}x ${item.name}</span><span>$${(sub/1000).toFixed(0)}K</span></div>`;
   });
-  
-  if(empaque > 0) {
-    html += `<div style="display: flex; justify-content: space-between;">
-      <span>Empaque llevar</span>
-      <span>$${(empaque/1000).toFixed(0)}K</span>
-    </div>`;
-  }
-  
-  html += `<div>${line}</div>
-    <div style="display: flex; justify-content: space-between; font-weight: bold;">
-      <span>TOTAL</span>
-      <span>$${(total/1000).toFixed(0)}K</span>
-    </div>
-    <div>${line}</div>
-    <div style="text-align: center; font-size: 8px;">¡Gracias por su compra!</div>
-  </div>`;
-  
+  if(empaque > 0) html += `<div style="display: flex; justify-content: space-between;"><span>Empaque llevar</span><span>$${(empaque/1000).toFixed(0)}K</span></div>`;
+  html += `<div>${line}</div><div style="display: flex; justify-content: space-between; font-weight: bold;"><span>TOTAL</span><span>$${(total/1000).toFixed(0)}K</span></div>
+    <div>${line}</div><div style="text-align: center; font-size: 8px;">¡Gracias por su compra!</div></div>`;
   let ventana = window.open("", "_blank", "width=300,height=400");
-  ventana.document.write(`
-    <html><head><title>Comanda #${numStr}</title>
-    <style>
-      @page { margin: 0; size: auto; }
-      body { margin: 0; padding: 0; background: white; }
-    </style>
-    </head><body>${html}</body></html>
-  `);
+  ventana.document.write(`<html><head><title>Comanda #${numStr}</title><style>@page { margin: 0; } body { margin: 0; background: white; }</style></head><body>${html}</body></html>`);
   ventana.document.close();
   ventana.print();
 }
@@ -748,11 +676,15 @@ function limpiarFormProducto() {
 }
 
 // ========== EVENTOS Y SUSCRIPCIONES ==========
+document.getElementById('zoomMasBtn')?.addEventListener('click', zoomMas);
+document.getElementById('zoomMenosBtn')?.addEventListener('click', zoomMenos);
+document.getElementById('textoMasBtn')?.addEventListener('click', textoMas);
+document.getElementById('textoMenosBtn')?.addEventListener('click', textoMenos);
+document.querySelectorAll('.sel-card').forEach(card => card.addEventListener('click', () => setMode(card.getAttribute('data-modo'))));
+
 db.ref("menu").once("value", snap => { if(snap.exists()) MENU = snap.val(); else db.ref("menu").set(DEFAULT_MENU); if(modo === "cajero") { buildMenu(); renderItems(); } if(modo === "admin") cargarAdminLista(); });
 db.ref("pedidos").on("value", snap => { pedidos = snap.val() || {}; if(modo === "cajero") renderCola(); if(modo === "cocina") renderTV(); if(modo === "stats") renderStats(); });
 db.ref("meta/ultimoNumero").once("value", snap => { pedidoNum = (snap.val() || 0) + 1; db.ref("meta/ultimoNumero").set(pedidoNum); });
-
-document.querySelectorAll('.sel-card').forEach(card => card.addEventListener('click', () => setMode(card.getAttribute('data-modo'))));
 
 verificarSuscripcion();
 </script>
