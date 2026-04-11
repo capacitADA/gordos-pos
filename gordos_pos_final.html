@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
-/* ========== ESTILOS GENERALES ========== */
+/* ========== ESTILOS COMPLETOS ========== */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
 :root{
   --red:#D32B2B; --red2:#A82222; --cream:#F5EDD6; --yellow:#F5C842;
@@ -19,7 +19,7 @@
 html,body{height:100%; overflow:hidden;}
 body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-serif; font-size:12px;}
 
-/* PANTALLA DE SELECCIÓN (INICIO) */
+/* SELECTOR INICIAL */
 #sel{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; gap:1rem; padding:1rem;}
 .sel-logo{width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--yellow); background:var(--red); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.5rem;}
 .sel-title{font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--red);}
@@ -100,7 +100,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .tvtime{font-size: 0.8rem; text-align:right; margin-top:5px;}
 .tvbar{height:4px; margin-top:5px;}
 
-/* ADMIN - SOLO GESTIÓN DE MENÚ (sin suscripción) */
+/* ADMIN - GESTIÓN MENÚ */
 #admin{display:none; flex-direction:column; height:100vh;}
 .admin-body{padding:6px;}
 .admin-form{background:var(--d3); padding:6px; border-radius:8px; margin-bottom:6px;}
@@ -108,16 +108,19 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 .admin-form label{font-size:9px;}
 .admin-list{margin-top:6px;}
 
-/* ESTADÍSTICAS */
+/* ESTADÍSTICAS CON RANGO */
 #stats{display:none; flex-direction:column; height:100vh;}
-.stats-body{padding:6px;}
+.stats-body{padding:6px; overflow-y:auto;}
+.stats-hdr{display:flex; gap:5px; margin-bottom:8px; flex-wrap:wrap; align-items:center;}
+.stats-hdr input[type="date"]{background:var(--d3); border:1px solid var(--bo); border-radius:4px; padding:4px; color:var(--cream); font-size:10px;}
+.stats-hdr .rango-label{font-size:9px; color:var(--mu); margin-left:4px;}
+.bxl{background:#217346; color:#fff; border:none; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:10px;}
 .kpis{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:5px; margin-bottom:8px;}
 .kpi{background:var(--d3); border-radius:10px; padding:6px; text-align:center;}
 .kpin{font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--yellow);}
 .kpil{font-size:8px; color:var(--mu);}
 .stbl{width:100%; border-collapse:collapse; font-size:9px;}
-.stbl th, .stbl td{padding:3px; border-bottom:1px solid var(--bo);}
-.bxl{background:#217346; color:#fff; border:none; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:10px;}
+.stbl th, .stbl td{padding:3px; border-bottom:1px solid var(--bo); text-align:left;}
 
 .toast{font-size:10px; padding:4px 10px; position:fixed; bottom:10px; left:50%; transform:translateX(-50%); background:var(--d3); border-radius:6px; z-index:1000;}
 #blockScreen{display:none; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:var(--dark); text-align:center; padding:2rem;}
@@ -127,16 +130,8 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 </head>
 <body>
 
-<!-- Pantalla de bloqueo (se muestra si la suscripción expiró) -->
-<div id="blockScreen">
-  <div class="sel-logo" style="margin-bottom:1rem;">GB</div>
-  <h2>SUSCRIPCIÓN VENCIDA</h2>
-  <p>El período de acceso a Gordo's Burger ha expirado.</p>
-  <p>Contacta al administrador para renovar.</p>
-  <button onclick="location.reload()">Reintentar</button>
-</div>
+<div id="blockScreen"><div class="sel-logo" style="margin-bottom:1rem;">GB</div><h2>SUSCRIPCIÓN VENCIDA</h2><p>Contacta al administrador.</p><button onclick="location.reload()">Reintentar</button></div>
 
-<!-- SELECTOR INICIAL -->
 <div id="sel">
   <img class="sel-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="sel-logo" style="display:none;">GB</div>
   <div class="sel-title">GORDO'S BURGER</div>
@@ -150,7 +145,6 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="fb-note" id="fb-status">🔄 Conectando...</div>
 </div>
 
-<!-- CAJERO -->
 <div id="caj">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">CAJERO</div></div><div class="tb-right"><span class="pill">Cloud</span><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="caj-body">
@@ -177,7 +171,6 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   </div>
 </div>
 
-<!-- COCINA -->
 <div id="coc">
   <div class="topbar">
     <div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">COCINA</div></div>
@@ -193,7 +186,6 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   <div class="tv-body"><div class="tv-grid" id="tv-grid"></div></div>
 </div>
 
-<!-- ADMIN (solo gestión de menú) -->
 <div id="admin">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">ADMIN</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="admin-body">
@@ -213,11 +205,14 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
   </div>
 </div>
 
-<!-- ESTADÍSTICAS -->
 <div id="stats">
   <div class="topbar"><div class="tb-left"><img class="tb-logo" src="LOGO_GBURGER.jpg" onerror="this.style.display='none'; this.nextSibling.style.display='flex';"><div class="tb-logo" style="display:none;">GB</div><div class="tb-brand">ESTADÍSTICAS</div></div><div class="tb-right"><button class="bsm" onclick="goHome()">Inicio</button></div></div>
   <div class="stats-body">
-    <div class="stats-hdr" style="display:flex; gap:5px; margin-bottom:8px;"><input type="date" id="stats-date" style="font-size:10px;"><button class="bxl" onclick="exportXlsx()">Exportar Excel</button></div>
+    <div class="stats-hdr">
+      <div><span class="rango-label">Desde</span> <input type="date" id="stats-fecha-desde"></div>
+      <div><span class="rango-label">Hasta</span> <input type="date" id="stats-fecha-hasta"></div>
+      <button class="bxl" onclick="exportXlsx()">📎 Exportar Excel</button>
+    </div>
     <div class="kpis" id="kpis"></div>
     <div style="overflow-x:auto;"><table class="stbl"><thead><tr><th>Hora</th><th>Cliente</th><th>WA</th><th>Tipo</th><th>Productos</th><th>Total</th><th>Estado</th></tr></thead><tbody id="stbl-body"></tbody></table></div>
   </div>
@@ -226,7 +221,7 @@ body{background:var(--dark); color:var(--cream); font-family:'DM Sans',sans-seri
 <div id="prt" style="display:none;"></div>
 
 <script>
-// ========== CONFIGURACIÓN DE FIREBASE ==========
+// ========== CONFIGURACIÓN FIREBASE ==========
 const firebaseConfig = {
   apiKey: "AIzaSyDdoj6UZEBGetMNgfucn2kQsv12EtgEju4",
   authDomain: "gordos-burger-443fb.firebaseapp.com",
@@ -246,7 +241,7 @@ let orden = [];
 let pedidoNum = 1;
 let catActual = "Burgers";
 let modo = "";
-let suscripcionActiva = true; // se actualizará con Firebase
+let suscripcionActiva = true;
 
 const EMPAQUE_PRECIO = 500;
 const TIEMPO_OBJETIVO = 12;
@@ -265,14 +260,12 @@ const DEFAULT_MENU = {
 };
 let MENU = JSON.parse(JSON.stringify(DEFAULT_MENU));
 
-// ========== ZOOM PARA ANCHO DE TARJETAS ==========
+// ========== ZOOM EN COCINA ==========
 let anchoMinimoTarjeta = 220;
 function actualizarGridTV() {
   const tvGrid = document.getElementById('tv-grid');
-  if (tvGrid) {
-    tvGrid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${anchoMinimoTarjeta}px, 1fr))`;
-    localStorage.setItem('tvGridMinWidth', anchoMinimoTarjeta);
-  }
+  if (tvGrid) tvGrid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${anchoMinimoTarjeta}px, 1fr))`;
+  localStorage.setItem('tvGridMinWidth', anchoMinimoTarjeta);
 }
 function zoomMas() { anchoMinimoTarjeta = Math.min(anchoMinimoTarjeta + 30, 500); actualizarGridTV(); }
 function zoomMenos() { anchoMinimoTarjeta = Math.max(anchoMinimoTarjeta - 30, 150); actualizarGridTV(); }
@@ -280,8 +273,6 @@ function restaurarZoomTarjetas() {
   const saved = localStorage.getItem('tvGridMinWidth');
   if (saved && !isNaN(parseInt(saved))) { anchoMinimoTarjeta = parseInt(saved); actualizarGridTV(); }
 }
-
-// ========== ZOOM PARA TEXTO DE PRODUCTOS (.tvit) ==========
 let tvitFontSize = 2.0;
 function aplicarTvitFontSize() {
   document.querySelectorAll('#tv-grid .tvit').forEach(el => el.style.fontSize = tvitFontSize + 'rem');
@@ -294,33 +285,24 @@ function restaurarTvitFontSize() {
   if (saved && !isNaN(parseFloat(saved))) tvitFontSize = parseFloat(saved);
 }
 
-// ========== VERIFICACIÓN DE SUSCRIPCIÓN (SOLO LECTURA DESDE FIREBASE) ==========
+// ========== SUSCRIPCIÓN (solo lectura) ==========
 function verificarSuscripcion() {
   db.ref('config/fechaExpiracion').on('value', (snap) => {
     let fechaExpiracion = snap.val();
     if (!fechaExpiracion) {
-      // Primera vez: crear fecha por defecto (23 de abril de 2026 a las 23:59:59 hora Colombia)
-      // Para evitar problemas de zona horaria, usamos UTC-5
-      const fechaDefecto = new Date(Date.UTC(2026, 3, 24, 4, 59, 59)); // 2026-04-24 04:59:59 UTC = 2026-04-23 23:59:59 COT
+      const fechaDefecto = new Date(Date.UTC(2026, 3, 24, 4, 59, 59));
       fechaExpiracion = fechaDefecto.getTime();
       db.ref('config/fechaExpiracion').set(fechaExpiracion);
     }
-    const ahora = Date.now();
-    suscripcionActiva = ahora <= fechaExpiracion;
-    
+    suscripcionActiva = Date.now() <= fechaExpiracion;
     const block = document.getElementById('blockScreen');
     const sel = document.getElementById('sel');
     if (!suscripcionActiva) {
       block.style.display = 'flex';
       sel.style.display = 'none';
-      // Ocultar cualquier otra vista que estuviera activa
-      document.getElementById('caj').style.display = 'none';
-      document.getElementById('coc').style.display = 'none';
-      document.getElementById('stats').style.display = 'none';
-      document.getElementById('admin').style.display = 'none';
+      ['caj','coc','stats','admin'].forEach(id => document.getElementById(id).style.display = 'none');
     } else {
       block.style.display = 'none';
-      // Si no hay ningún modo activo, mostrar el selector
       if (modo === '') sel.style.display = 'flex';
     }
   });
@@ -344,12 +326,22 @@ function setMode(m) {
   document.getElementById("admin").style.display = m==="admin" ? "flex" : "none";
   if(m==="cajero") { buildMenu(); updateOrderUI(); renderCola(); }
   if(m==="cocina") { restaurarZoomTarjetas(); restaurarTvitFontSize(); renderTV(); }
-  if(m==="stats") { document.getElementById("stats-date").value = new Date().toISOString().slice(0,10); renderStats(); }
+  if(m==="stats") { 
+    // Por defecto, mostrar los últimos 30 días si los campos están vacíos
+    const hoy = new Date();
+    const hace30 = new Date();
+    hace30.setDate(hoy.getDate() - 30);
+    if (!document.getElementById("stats-fecha-desde").value) 
+      document.getElementById("stats-fecha-desde").value = hace30.toISOString().slice(0,10);
+    if (!document.getElementById("stats-fecha-hasta").value) 
+      document.getElementById("stats-fecha-hasta").value = hoy.toISOString().slice(0,10);
+    renderStats();
+  }
   if(m==="admin") { cargarAdminLista(); }
 }
 function goHome() { modo=""; document.getElementById("sel").style.display="flex"; document.getElementById("caj").style.display="none"; document.getElementById("coc").style.display="none"; document.getElementById("stats").style.display="none"; document.getElementById("admin").style.display="none"; }
 
-// ========== MENÚ (BEBIDAS EXPANDIDAS) ==========
+// ========== MENÚ Y CARRITO ==========
 function buildMenu() {
   let catsDiv = document.getElementById("cats"); catsDiv.innerHTML = "";
   Object.keys(MENU).forEach(c => {
@@ -484,19 +476,10 @@ function renderCola() {
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:3px;">${actHtml}${prioCtrl}</div>`;
     el.appendChild(card);
   });
-  // Asignar eventos después de renderizar
-  document.querySelectorAll('#cola-d .kbtn.kpre').forEach(btn => {
-    btn.addEventListener('click', () => cambiarEstado(btn.getAttribute('data-key'), 'preparando'));
-  });
-  document.querySelectorAll('#cola-d .kbtn.klisto').forEach(btn => {
-    btn.addEventListener('click', () => cambiarEstado(btn.getAttribute('data-key'), 'listo'));
-  });
-  document.querySelectorAll('#cola-d .kbtn.kwa').forEach(btn => {
-    btn.addEventListener('click', () => enviarWhatsApp(btn.getAttribute('data-key')));
-  });
-  document.querySelectorAll('#cola-d .priobtn').forEach(btn => {
-    btn.addEventListener('click', () => moverPrio(btn.getAttribute('data-key'), parseInt(btn.getAttribute('data-dir'))));
-  });
+  document.querySelectorAll('#cola-d .kbtn.kpre').forEach(btn => btn.addEventListener('click', () => cambiarEstado(btn.dataset.key, 'preparando')));
+  document.querySelectorAll('#cola-d .kbtn.klisto').forEach(btn => btn.addEventListener('click', () => cambiarEstado(btn.dataset.key, 'listo')));
+  document.querySelectorAll('#cola-d .kbtn.kwa').forEach(btn => btn.addEventListener('click', () => enviarWhatsApp(btn.dataset.key)));
+  document.querySelectorAll('#cola-d .priobtn').forEach(btn => btn.addEventListener('click', () => moverPrio(btn.dataset.key, parseInt(btn.dataset.dir))));
 }
 function cambiarEstado(key, estado) { persistField(key,"estado",estado); if(estado==="listo") { playBeep(); toast("¡Pedido listo!"); } }
 function moverPrio(key, dir) {
@@ -551,42 +534,72 @@ function renderTV() {
   });
 }
 
-// ========== ESTADÍSTICAS ==========
+// ========== ESTADÍSTICAS CON RANGO DE FECHAS ==========
+function obtenerRangoStats() {
+  const desde = document.getElementById("stats-fecha-desde").value;
+  const hasta = document.getElementById("stats-fecha-hasta").value;
+  let desdeTimestamp = 0;
+  let hastaTimestamp = Date.now();
+  if (desde) desdeTimestamp = new Date(desde + "T00:00:00").getTime();
+  if (hasta) hastaTimestamp = new Date(hasta + "T23:59:59").getTime();
+  return { desde: desdeTimestamp, hasta: hastaTimestamp };
+}
+
 function renderStats() {
   if (!suscripcionActiva) return;
-  let dateVal = document.getElementById("stats-date").value;
-  let dayStart = new Date(dateVal+"T00:00:00").getTime();
-  let dayEnd = dayStart+86400000;
-  let lista = Object.entries(pedidos).filter(([,p])=>p.ts>=dayStart && p.ts<dayEnd).sort(([,a],[,b])=>a.ts-b.ts);
-  let total = lista.reduce((s,[,p])=>s+p.total,0);
-  let cnt = lista.length;
-  let ticket = cnt?Math.round(total/cnt):0;
-  document.getElementById("kpis").innerHTML = `<div class="kpi"><div class="kpin">${cnt}</div><div class="kpil">PEDIDOS</div></div><div class="kpi"><div class="kpin" style="color:#4CAF50;">$${(total/1000).toFixed(0)}K</div><div class="kpil">VENTAS</div></div><div class="kpi"><div class="kpin">$${(ticket/1000).toFixed(0)}K</div><div class="kpil">TICKET PROM.</div></div>`;
-  let tbody = document.getElementById("stbl-body"); tbody.innerHTML = "";
-  lista.forEach(([,p])=>{
-    let hora = new Date(p.ts).toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"});
-    let tr = document.createElement("tr");
-    tr.innerHTML = `<td>${hora}</td><td>${p.cliente}</td><td>${p.waRaw||p.wa||"-"}</td><td>${p.tipo==="llevar"?"Llevar":"Local"}<td><td style="font-size:9px;">${p.items.map(i=>i.qty+"× "+i.name).join(", ")}</td><td>$${(p.total/1000).toFixed(0)}K</td><td>${p.estado}</td>`;
+  const { desde, hasta } = obtenerRangoStats();
+  const lista = Object.entries(pedidos)
+    .filter(([,p]) => p.ts >= desde && p.ts <= hasta)
+    .sort(([,a],[,b]) => a.ts - b.ts);
+  const total = lista.reduce((s,[,p]) => s + p.total, 0);
+  const cnt = lista.length;
+  const ticket = cnt ? Math.round(total / cnt) : 0;
+  const recurSet = new Set();
+  lista.forEach(([,p]) => {
+    const wa = normalizeWA(p.wa || "");
+    const hist = Object.values(pedidos).filter(x => normalizeWA(x.wa||"") === wa && x.estado === "entregado");
+    if (hist.length >= VISITAS_RECURRENTE) recurSet.add(wa);
+  });
+  const recur = recurSet.size;
+  const tiempos = lista.filter(([,p]) => p.tsListo && p.ts).map(([,p]) => Math.floor((p.tsListo - p.ts) / 60000));
+  const avgTime = tiempos.length ? Math.round(tiempos.reduce((a,b)=>a+b,0)/tiempos.length) : 0;
+  document.getElementById("kpis").innerHTML = `
+    <div class="kpi"><div class="kpin">${cnt}</div><div class="kpil">PEDIDOS</div></div>
+    <div class="kpi"><div class="kpin" style="color:#4CAF50;">$${(total/1000).toFixed(0)}K</div><div class="kpil">VENTAS TOTALES</div></div>
+    <div class="kpi"><div class="kpin">$${(ticket/1000).toFixed(0)}K</div><div class="kpil">TICKET PROM.</div></div>
+    <div class="kpi"><div class="kpin" style="color:var(--gold);">${recur}</div><div class="kpil">CLIENTES FREC.</div></div>
+    <div class="kpi"><div class="kpin">${avgTime || "—"} min</div><div class="kpil">TIEMPO PROM.</div></div>
+  `;
+  const tbody = document.getElementById("stbl-body");
+  tbody.innerHTML = "";
+  lista.forEach(([,p]) => {
+    const hora = new Date(p.ts).toLocaleTimeString("es-CO", {hour:"2-digit",minute:"2-digit"});
+    const productos = p.items.map(i => `${i.qty}× ${i.name}`).join(", ");
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${hora}</td><td>${p.cliente}</td><td>${p.waRaw || p.wa || "-"}</td><td>${p.tipo === "llevar" ? "Llevar" : "Local"}</td><td style="font-size:9px;">${productos}</td><td>$${(p.total/1000).toFixed(0)}K</td><td>${p.estado}</td>`;
     tbody.appendChild(tr);
   });
 }
+
 function exportXlsx() {
   if (!suscripcionActiva) return;
-  let dateVal = document.getElementById("stats-date").value;
-  let dayStart = new Date(dateVal+"T00:00:00").getTime();
-  let dayEnd = dayStart+86400000;
-  let lista = Object.values(pedidos).filter(p=>p.ts>=dayStart && p.ts<dayEnd).sort((a,b)=>a.ts-b.ts);
-  let rows = [["Hora","Cliente","WhatsApp","Tipo","Productos","Observaciones","Total","Estado"]];
-  lista.forEach(p=>{
-    let hora = new Date(p.ts).toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"});
-    rows.push([hora, p.cliente, p.waRaw||p.wa||"", p.tipo, p.items.map(i=>i.qty+"x "+i.name).join(", "), p.obs||"", p.total, p.estado]);
+  const { desde, hasta } = obtenerRangoStats();
+  const lista = Object.values(pedidos).filter(p => p.ts >= desde && p.ts <= hasta).sort((a,b)=>a.ts-b.ts);
+  const fechaDesde = new Date(desde).toISOString().slice(0,10);
+  const fechaHasta = new Date(hasta).toISOString().slice(0,10);
+  const rows = [["Hora","Cliente","WhatsApp","Tipo","Productos","Observaciones","Empaque","Total","Estado"]];
+  lista.forEach(p => {
+    const hora = new Date(p.ts).toLocaleTimeString("es-CO", {hour:"2-digit",minute:"2-digit"});
+    rows.push([hora, p.cliente, p.waRaw || p.wa || "", p.tipo, p.items.map(i=>i.qty+"x "+i.name).join(", "), p.obs||"", p.empaque||0, p.total, p.estado]);
   });
-  rows.push([],["TOTAL","","","","","",lista.reduce((s,p)=>s+p.total,0),""]);
-  let wb = XLSX.utils.book_new();
-  let ws = XLSX.utils.aoa_to_sheet(rows);
-  XLSX.utils.book_append_sheet(wb, ws, "Pedidos "+dateVal);
-  XLSX.writeFile(wb, `GordosBurger_${dateVal}.xlsx`);
+  rows.push([], [`RESUMEN: ${fechaDesde} al ${fechaHasta}`, "", "", "", "", "", lista.reduce((s,p)=>s+p.total,0), ""]);
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  XLSX.utils.book_append_sheet(wb, ws, `Pedidos_${fechaDesde}_a_${fechaHasta}`);
+  XLSX.writeFile(wb, `GordosBurger_${fechaDesde}_a_${fechaHasta}.xlsx`);
 }
+
+// ========== IMPRESIÓN COMANDA ==========
 function printComanda() {
   if (!suscripcionActiva) return;
   if(!orden.length) { toast("No hay productos"); return; }
@@ -675,12 +688,14 @@ function limpiarFormProducto() {
   document.getElementById("prod-sabores-list").value = "";
 }
 
-// ========== EVENTOS Y SUSCRIPCIONES ==========
+// ========== EVENTOS Y ARRANQUE ==========
 document.getElementById('zoomMasBtn')?.addEventListener('click', zoomMas);
 document.getElementById('zoomMenosBtn')?.addEventListener('click', zoomMenos);
 document.getElementById('textoMasBtn')?.addEventListener('click', textoMas);
 document.getElementById('textoMenosBtn')?.addEventListener('click', textoMenos);
 document.querySelectorAll('.sel-card').forEach(card => card.addEventListener('click', () => setMode(card.getAttribute('data-modo'))));
+document.getElementById('stats-fecha-desde')?.addEventListener('change', renderStats);
+document.getElementById('stats-fecha-hasta')?.addEventListener('change', renderStats);
 
 db.ref("menu").once("value", snap => { if(snap.exists()) MENU = snap.val(); else db.ref("menu").set(DEFAULT_MENU); if(modo === "cajero") { buildMenu(); renderItems(); } if(modo === "admin") cargarAdminLista(); });
 db.ref("pedidos").on("value", snap => { pedidos = snap.val() || {}; if(modo === "cajero") renderCola(); if(modo === "cocina") renderTV(); if(modo === "stats") renderStats(); });
